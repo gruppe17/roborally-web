@@ -12,8 +12,9 @@ body {
 /* Navigation bar styles */
 
 .nav {
+  margin-left: 1vh;
   width: 10vw;
-  height: 100vh;
+  height: 95vh;
   background: red;
   background: #333333;
   border-radius: 1vh;
@@ -60,10 +61,10 @@ body {
   justify-content: center;
   width: 60vw;
   height: 100vh;
-  background: #272727;
 }
 .board {
-  background: white;
+  background: url("./board.jpg");
+  background-size: contain;
   width: 95%;
   height: 95%;
   border-radius: 1vh;
@@ -79,6 +80,7 @@ body {
   background: blue;
   background: #333333;
   border-radius: 1vh;
+  margin-right: 1vh;
 }
 
 .menu-content{
