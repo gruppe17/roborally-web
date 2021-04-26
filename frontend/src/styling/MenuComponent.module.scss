@@ -1,45 +1,42 @@
-  /* Navigation bar styles */
+ /* Right menu styles */
   
-  .navbar {
-    margin-left: 1vh;
-    width: 10vw;
+ .menu {
+    width: 30vw;
     height: 95vh;
-    background: red;
+    background: blue;
     background: #333333;
     border-radius: 1vh;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    color: white;
-  }
-  
-  
-  .nav-link-row{
-    display: flex;
-    flex-direction: row;
-    margin: 1vh;
-    padding: 1vh;
-    text-decoration: none;
-  }
-  
-  .nav-link-text{
-    color: white;
-    font-size: larger;
-    
-  }
-  
-  .nav-icon{
     margin-right: 1vh;
   }
   
-  .nav-title{
-    margin-left: 1vw;
-    margin-top: 2vh;
-    color: white;
-    font-size: large;
+  .menu-content{
+    margin: 1vh;
+    margin-top: 4vh;
+  }
   
+  .button-row {
+    display: flex;
+  
+    height: 5vh;
+    justify-content: stretch;
+  }
+  
+  
+  .btn{
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    width: 100%;
+    height: 5vh;
+    margin: 1vh;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 12px;
+    transition-duration: 10ms;
     font-family: monospace;
-    font-weight: bold;
+  
   }
   
   .nav-link-row:hover ,.btn:hover{

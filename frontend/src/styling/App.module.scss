@@ -29,72 +29,7 @@ body {
   
   
   
-  /* Right menu styles */
-  
-  .menu {
-    width: 30vw;
-    height: 95vh;
-    background: blue;
-    background: #333333;
-    border-radius: 1vh;
-    margin-right: 1vh;
-  }
-  
-  .menu-content{
-    margin: 1vh;
-    margin-top: 4vh;
-  }
-  
-  .button-row {
-    display: flex;
-  
-    height: 5vh;
-    justify-content: stretch;
-  }
-  
-  
-  .btn{
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    width: 100%;
-    height: 5vh;
-    margin: 1vh;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 12px;
-    transition-duration: 10ms;
-    font-family: monospace;
-  
-  }
-  
-  .nav-link-row:hover ,.btn:hover{
-    background-color: #6db46f;
-    scale: 1.1;
-  }
-  
-  .nav-link-row:active, .btn:active{
-    background-color: #427944;
-    scale: 1.025;
-  }
-  
-  .active{
-    background-color: white;
-    color: black;
-    font-weight: bolder;
-  }
-  
-  .active:hover{
-    background-color: white;
-    scale: 1;
-  }
-  
-  .active:active{
-    background-color: white;
-    scale: 1;
-  }
+ 
   /* Misc. styles */
   
   .centered {
