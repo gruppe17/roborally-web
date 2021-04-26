@@ -1,0 +1,49 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+    
+    .container{
+        display: flex;
+        flex-direction: row;
+      justify-content: space-between;
+      margin: 0;
+    }
+    
+    .nav{
+      width: 10vw;
+      height: 100vh;
+      background: red;
+    }
+    
+    .game{
+        display: flex;
+      justify-content: center;
+        width: 60vw;
+      height: 100vh;
+      background: green;
+    }
+    .menu{
+        width: 30vw;
+      height: 100vh;
+      background: blue;
+    }
+    
+    .button-row{
+        height: 5vh;
+        background: yellow;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .board{
+        background: yellow;
+      width: 95%;
+         height: 95%;
+    
+    }
+    
+    
+    
