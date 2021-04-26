@@ -1,10 +1,11 @@
 body {
-  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-family: monospace;
   display: flex;
   flex-direction: column;
   margin: 0;
   background: #272727;
   overflow: hidden;
+  color: white;
 }
 
 
@@ -41,6 +42,16 @@ body {
   margin-right: 1vh;
 }
 
+.nav-title{
+  margin-left: 1vw;
+  margin-top: 2vh;
+  color: white;
+  font-size: large;
+
+  font-family: monospace;
+  font-weight: bold;
+}
+
 /* Game styles */
 
 .game {
@@ -70,12 +81,18 @@ body {
   border-radius: 1vh;
 }
 
+.menu-content{
+  margin: 1vh;
+  margin-top: 4vh;
+}
+
 .button-row {
   display: flex;
 
   height: 5vh;
   justify-content: stretch;
 }
+
 
 .btn{
   background-color: #4CAF50;
@@ -90,7 +107,7 @@ body {
   font-size: 16px;
   border-radius: 12px;
   transition-duration: 10ms;
-
+  font-family: monospace;
 
 }
 
@@ -104,7 +121,21 @@ body {
   scale: 1.025;
 }
 
+.active{
+  background-color: white;
+  color: black;
+  font-weight: bolder;
+}
 
+.active:hover{
+  background-color: white;
+  scale: 1;
+}
+
+.active:active{
+  background-color: white;
+  scale: 1;
+}
 /* Misc. styles */
 
 .centered {
