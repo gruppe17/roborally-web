@@ -1,49 +1,160 @@
 body {
-    font-family: "Helvetica Neue", Helvetica, sans-serif;
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-  }
-    
-    .container{
-        display: flex;
-        flex-direction: row;
-      justify-content: space-between;
-      margin: 0;
-    }
-    
-    .nav{
-      width: 10vw;
-      height: 100vh;
-      background: red;
-    }
-    
-    .game{
-        display: flex;
-      justify-content: center;
-        width: 60vw;
-      height: 100vh;
-      background: green;
-    }
-    .menu{
-        width: 30vw;
-      height: 100vh;
-      background: blue;
-    }
-    
-    .button-row{
-        height: 5vh;
-        background: yellow;
-        display: flex;
-        justify-content: space-between;
-    }
-    
-    .board{
-        background: yellow;
-      width: 95%;
-         height: 95%;
-    
-    }
-    
-    
-    
+  font-family: monospace;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  background: #272727;
+  overflow: hidden;
+  color: white;
+}
+
+
+/* Navigation bar styles */
+
+.nav {
+  margin-left: 1vh;
+  width: 10vw;
+  height: 95vh;
+  background: red;
+  background: #333333;
+  border-radius: 1vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: white;
+}
+
+
+.nav-link-row{
+  display: flex;
+  flex-direction: row;
+  margin: 1vh;
+  padding: 1vh;
+  text-decoration: none;
+}
+
+.nav-link-text{
+  color: white;
+  font-size: larger;
+  
+}
+
+.nav-icon{
+  margin-right: 1vh;
+}
+
+.nav-title{
+  margin-left: 1vw;
+  margin-top: 2vh;
+  color: white;
+  font-size: large;
+
+  font-family: monospace;
+  font-weight: bold;
+}
+
+/* Game styles */
+
+.game {
+  border-radius: 1vh;
+  display: flex;
+  justify-content: center;
+  width: 60vw;
+  height: 100vh;
+}
+.board {
+  background: url("./board.jpg");
+  background-size: contain;
+  width: 95%;
+  height: 95%;
+  border-radius: 1vh;
+}
+
+
+
+/* Right menu styles */
+
+.menu {
+  width: 30vw;
+  height: 95vh;
+  background: blue;
+  background: #333333;
+  border-radius: 1vh;
+  margin-right: 1vh;
+}
+
+.menu-content{
+  margin: 1vh;
+  margin-top: 4vh;
+}
+
+.button-row {
+  display: flex;
+
+  height: 5vh;
+  justify-content: stretch;
+}
+
+
+.btn{
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  width: 100%;
+  height: 5vh;
+  margin: 1vh;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 12px;
+  transition-duration: 10ms;
+  font-family: monospace;
+
+}
+
+.nav-link-row:hover ,.btn:hover{
+  background-color: #6db46f;
+  scale: 1.1;
+}
+
+.nav-link-row:active, .btn:active{
+  background-color: #427944;
+  scale: 1.025;
+}
+
+.active{
+  background-color: white;
+  color: black;
+  font-weight: bolder;
+}
+
+.active:hover{
+  background-color: white;
+  scale: 1;
+}
+
+.active:active{
+  background-color: white;
+  scale: 1;
+}
+/* Misc. styles */
+
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.shadowed{
+  box-shadow:  0 0 10px 5px rgba(0,0,0,0.6);
+  -moz-box-shadow: 0 0 10px  5px rgba(0,0,0,0.6);
+  -webkit-box-shadow: 0 0 10px 5px rgba(0,0,0,0.6);
+  -o-box-shadow: 0 0 10px 5px rgba(0,0,0,0.6);
+}
