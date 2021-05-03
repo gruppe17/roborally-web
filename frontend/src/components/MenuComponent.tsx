@@ -3,9 +3,8 @@ import styles from "../styling/MenuComponent.module.scss";
 import { NewGameTab } from "./menu-tabs/NewGameTabComponent";
 import { GamesListTab } from "./menu-tabs/GamesListTabComponent";
 import { PlayersTab } from "./menu-tabs/PlayersTabComponent";
-interface Props {}
 
-function MenuComponent({}: Props): ReactElement {
+function MenuComponent(): ReactElement {
   const [currentTab, setCurrentTab] = useState<
     "new-game" | "games" | "players"
   >("new-game");
