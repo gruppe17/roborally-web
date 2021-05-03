@@ -2,6 +2,7 @@ import React, {FunctionComponent, useContext} from 'react';
 import {SpaceComponent} from "./SpaceComponent";
 import styles from "../styling/BoardComponent.module.scss" //Import css module
 import GameContext from "../context/GameContext";
+import { HashLoader } from 'react-spinners';
 /*
 If the board component took any props/arguments they would be declared inside the type below
 see the space component for an example.
@@ -44,7 +45,7 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
                     </div>
                 )
 
-            ) : <h1>loading...</h1>}
+            ) : <HashLoader color="#4CAF50"/>}
 
 
         </div>
