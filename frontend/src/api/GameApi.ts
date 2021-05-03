@@ -4,7 +4,7 @@ import {Space} from "../types/Space";
 
 class GameApi{
     private static instance : GameApi;
-    private readonly BACKEND_URL = "http://roborallybeackend-env.eba-xwc3f9mq.us-east-1.elasticbeanstalk.com/"
+    private readonly BACKEND_URL = "https://roborallyserver.tobiasmaneschijn.com/"
     private constructor() {}
 
     public static getInstance():GameApi{
