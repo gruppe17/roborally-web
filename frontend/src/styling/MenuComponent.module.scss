@@ -7,6 +7,11 @@
     background: #333333;
     border-radius: 1vh;
     margin-right: 1vh;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.12), 
+    0 2px 2px rgba(0,0,0,0.12), 
+    0 4px 4px rgba(0,0,0,0.12), 
+    0 8px 8px rgba(0,0,0,0.12),
+    0 16px 16px rgba(0,0,0,0.12);
   }
   
   .menu-content{
@@ -34,10 +39,20 @@
     display: inline-block;
     font-size: 16px;
     border-radius: 12px;
-    transition-duration: 10ms;
+    transition: transform 100ms ease;
     font-family: monospace;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.12), 
+    0 2px 2px rgba(0,0,0,0.12), 
+    0 4px 4px rgba(0,0,0,0.12), 
+    0 8px 8px rgba(0,0,0,0.12),
+    0 16px 16px rgba(0,0,0,0.12);
   
   }
+
+  .btn:hover{
+    transform: scale(1.05);
+  }
+ 
   
   .nav-link-row:hover ,.btn:hover{
     background-color: #6db46f;
