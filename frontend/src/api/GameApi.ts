@@ -4,7 +4,7 @@ import {Space} from "../types/Space";
 
 class GameApi{
     private static instance : GameApi;
-    private readonly BACKEND_URL = "https://roborally-backend.herokuapp.com/" // "https://roborallyserver.tobiasmaneschijn.com/"
+    private readonly BACKEND_URL = "https://roborally-backend.herokuapp.com" // "https://roborallyserver.tobiasmaneschijn.com/"
     private constructor() {}
 
     public static getInstance():GameApi{
