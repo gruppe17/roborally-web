@@ -107,7 +107,7 @@ const GameContextProvider = ({children}: GameContextProviderPropsType) => {
                     loaded: loaded,
                     board: board,
                     setCurrentPlayerOnSpace: setPlayerOnSpace,
-                    switchCurrentPlayer: switchToNextPlayer
+                    switchCurrentPlayer: switchToNextPlayer,
                 }
             }>
             {children} {/*See: https://reactjs.org/docs/composition-vs-inheritance.html*/}

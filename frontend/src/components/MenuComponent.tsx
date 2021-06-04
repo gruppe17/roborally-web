@@ -3,48 +3,48 @@ import styles from "../styling/MenuComponent.module.scss";
 import { NewGameTab } from "./menu-tabs/NewGameTabComponent";
 import { GamesListTab } from "./menu-tabs/GamesListTabComponent";
 import { PlayersTab } from "./menu-tabs/PlayersTabComponent";
+import { Button } from "@material-ui/core";
 
 function MenuComponent(): ReactElement {
-  const [currentTab, setCurrentTab] = useState<
-    "new-game" | "games" | "players"
-  >("new-game");
+  const [currentTab, setCurrentTab] =
+    useState<"new-game" | "games" | "players">("new-game");
 
   const tabContent = () => {
     switch (currentTab) {
       case "new-game":
         return <NewGameTab />;
       case "games":
-        return <GamesListTab/>;
+        return <GamesListTab />;
       case "players":
-        return <PlayersTab/>;
+        return <PlayersTab />;
     }
   };
   return (
     <div className={styles["menu"]}>
       <div className={styles["button-row"]}>
-        <button
+        <Button
+         variant="contained" color="primary" 
           onClick={() => setCurrentTab("new-game")}
-          className={styles["btn"]}
         >
           New game
-        </button>
-        <button
+        </Button>
+        <Button
+         variant="contained" color="primary" 
+
           onClick={() => setCurrentTab("games")}
-          className={styles["btn"]}
         >
           Games
-        </button>
-        <button
+        </Button>
+        <Button
+         variant="contained" color="primary" 
+
           onClick={() => setCurrentTab("players")}
-          className={styles["btn"]}
         >
           Players
-        </button>
+        </Button>
       </div>
 
-      <div className={styles["menu-content"]}>
-       {tabContent()}
-      </div>
+      <div className={styles["menu-content"]}>{tabContent()}</div>
     </div>
   );
 }

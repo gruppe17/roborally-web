@@ -47,7 +47,6 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
 
             ) : <HashLoader color="#4CAF50"/>}
 
-
         </div>
     )
 }
