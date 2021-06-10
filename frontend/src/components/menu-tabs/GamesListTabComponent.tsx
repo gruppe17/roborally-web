@@ -1,36 +1,47 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
-import GameApi from '../../api/GameApi';
+import { Box, Typography } from "@material-ui/core";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import GameApi from "../../api/GameApi";
 import { Board } from '../../types/Board';
 
-export interface IGamesListProps {
+export interface IGamesListProps {}
+
+function GameComponent(props : {game: Board}) {
+  
+  return (
+    <Box height="64px" justifyContent="start"
+     alignItems="center" bgcolor="#404040" display="flex" flexDirection="row" width="100%">
+      <Typography>
+        Game: "{props.game.boardName }" Players: { props.game.playerDtos && props.game.playerDtos.length}
+      </Typography>
+    </Box>
+  );
 }
 
-export function GamesListTab (props: IGamesListProps) {
-  
-  const [boards, setBoards] = useState<Board[]>()
-  
+export function GamesListTab(props: IGamesListProps) {
+  const [boards, setBoards] = useState<Board[]>();
 
   useEffect(() => {
     async function fetchBoard() {
-    let fetchedBoards = await GameApi.getBoards();
+      let fetchedBoards = await GameApi.getBoards();
       setBoards(fetchedBoards.data);
     }
 
-    fetchBoard()
-  }, [])
+    fetchBoard();
+  }, []);
 
   return (
-    <div>
-    {
-      boards != null ?  boards?.map
-      (
-        (board, index) => 
-        (
-          <h1 key={index}> { board.boardName } </h1>
-        )
-      ) : (<p> No games found!</p>)
-    }
-    </div>
+    <Box display="flex" flexDirection="column">
+      {boards != null ? (
+        boards?.map((board, index) => (
+          <GameComponent
+            key={index}
+            game={board}
+          ></GameComponent>
+        ))
+      ) : (
+        <p> No games found!</p>
+      )}
+    </Box>
   );
 }
