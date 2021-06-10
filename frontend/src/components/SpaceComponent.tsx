@@ -2,7 +2,6 @@ import {FunctionComponent, useCallback, useContext, useMemo} from "react";
 import {Space} from "../types/Space";
 import GameContext from "../context/GameContext";
 import styles from "../styling/SpaceComponent.module.scss"
-import { Box, Button } from "grommet";
 
 export type SpaceComponentProps = {
     space: Space
@@ -38,11 +37,11 @@ export const SpaceComponent: FunctionComponent<SpaceComponentProps> = ({space}) 
     }, [board.playerDtos, space.playerId])
     return (
         //The classname is set dynamically and can either take the value styles.whiteSpace or styles.blackSpace
-        //We also define that the callback should be called when the Box is clicked
-        <Box className={styles[color + "Space"]} onClick={onClickField}>
-            {/*if space.player is set render the Box*/}
-            {(space.playerId && playerColor) && <Box className={styles[playerColor + "Player"]}/>}
-        </Box>
+        //We also define that the callback should be called when the div is clicked
+        <div className={styles[color + "Space"]} onClick={onClickField}>
+            {/*if space.player is set render the div*/}
+            {(space.playerId && playerColor) && <div className={styles[playerColor + "Player"]}/>}
+        </div>
     )
 
 

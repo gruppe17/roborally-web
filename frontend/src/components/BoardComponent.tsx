@@ -3,7 +3,6 @@ import {SpaceComponent} from "./SpaceComponent";
 import styles from "../styling/BoardComponent.module.scss" //Import css module
 import GameContext from "../context/GameContext";
 import { HashLoader } from 'react-spinners';
-import { Box, Button } from "grommet";
 /*
 If the board component took any props/arguments they would be declared inside the type below
 see the space component for an example.
@@ -15,40 +14,40 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
     const {board, loaded} = useContext(GameContext) //Hook form of Context.Consumer, used to access the context
 
     return (
-        /*Apply css on Box below*/
-        <Box className={styles.container}>
+        /*Apply css on div below*/
+        <div className={styles.container}>
             {/*
                 The {...} notation is JSX allowing us to blend HTML and JS/TS together
-                The first map call returns an array of "Boxs" which are rendered.
+                The first map call returns an array of "divs" which are rendered.
                 Keys helps react identify where a change has happend and thus which component to rerender upon changes
                 The last map returns an array of space components, note that a prop/argument is passed ("space")
                 The result of the code segment below will be something like:
-                    <Box key="spaceArray0">
+                    <div key="spaceArray0">
                         <SpaceComponent key="space0" space={SOME_SPACE_OBJECT}/>
                         ...
                         <SpaceComponent key="space7" space={SOME_SPACE_OBJECT}/>
-                    </Box>
+                    </div>
                     ....
-                    <Box key="spaceArray7">
+                    <div key="spaceArray7">
                         <SpaceComponent key="space0" space={SOME_SPACE_OBJECT}/>
                         ...
                         <SpaceComponent key="space7" space={SOME_SPACE_OBJECT}/>
-                    </Box>
+                    </div>
 
             */}
             {loaded ? (
 
                 board.spaceDtos.map((spaceArray, index) =>
-                    <Box key={"spaceArray" + index}>
+                    <div key={"spaceArray" + index}>
                         {
                             spaceArray.map((space, index) => <SpaceComponent key={"space" + index} space={space}/>)
                         }
-                    </Box>
+                    </div>
                 )
 
             ) : <HashLoader color="#4CAF50"/>}
 
-        </Box>
+        </div>
     )
 }
 
