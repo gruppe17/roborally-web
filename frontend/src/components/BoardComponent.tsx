@@ -15,7 +15,7 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
 
     return (
         /*Apply css on div below*/
-        <div className={styles.container}>
+        <div data-testid="board" className={styles.container}>
             {/*
                 The {...} notation is JSX allowing us to blend HTML and JS/TS together
                 The first map call returns an array of "divs" which are rendered.

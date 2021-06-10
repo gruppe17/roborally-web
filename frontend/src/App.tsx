@@ -32,7 +32,7 @@ function App() {
         <GameContextProvider>
           <Box fill flex direction="row">
             <Main pad="large" flex="grow" justify="center" align="center">
-              <BoardComponent />
+              <BoardComponent  />
             </Main>
             <Box>
               <MenuComponent />
