@@ -102,6 +102,9 @@ const GameContextProvider = ({children}: GameContextProviderPropsType) => {
         <GameContext.Provider
             value={
                 {
+                    games: [],
+                    selectGame: async () => {},
+                    unselectGame: async () => {},
                     loaded: loaded,
                     board: board,
                     setCurrentPlayerOnSpace: setPlayerOnSpace,
