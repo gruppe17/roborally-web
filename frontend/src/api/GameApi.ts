@@ -38,22 +38,20 @@ class GameApi {
     }
 
     public async joinGame(gameId: number, user : User)  {
-        // Not yet implemented
         return await axios.put(`${this.BACKEND_URL}/games/${gameId}/join/${user.userId}`)
     }
 
-    public async leaveGame(user : User) {
-        // Not yet implemented
-        return null;
+    public async leaveGame (user : User) : Promise<Boolean>{
+        return await true;
     }
 
     public async editGameName(gameId : number, title: string){
        // return await axios.put(`${this.BACKEND_URL}/games/`)
     }
 
+    // Should return a boolean or an error message from the backend 
     public async removeGame(gameId : number) {
-        // Not yet implemented
-        return null;
+        return await true;
     }
     
 
