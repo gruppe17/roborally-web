@@ -4,12 +4,10 @@ import { Game } from "../types/Game";
 import {Space} from "../types/Space";
 
 export type GameContextType = {
-    
     // Information about games
     games: Game[]
     selectGame: (game: Game) => Promise<void>,
     unselectGame: () => Promise<void>,
-
 
     loaded : boolean,
     board: Board,
