@@ -5,6 +5,7 @@ import { Space } from "../types/Space";
 import { User } from "../types/User";
 
 class GameApi {
+
     private static instance: GameApi;
     private readonly BACKEND_URL = "https://roborally-backend.herokuapp.com" // "https://roborallyserver.tobiasmaneschijn.com/"
     private constructor() { }
@@ -32,6 +33,9 @@ class GameApi {
         return await axios.get<Game[]>(`${this.BACKEND_URL}/games`)
     }
 
+    public async createGame() : Promise<Game> {
+        throw new Error("Method not implemented.");
+    }
 
     public async joinGame(gameId: number, user : User)  {
         // Not yet implemented
@@ -43,8 +47,13 @@ class GameApi {
         return null;
     }
 
-    public async editGameName(gameId : string, title: string){
+    public async editGameName(gameId : number, title: string){
        // return await axios.put(`${this.BACKEND_URL}/games/`)
+    }
+
+    public async removeGame(gameId : number) {
+        // Not yet implemented
+        return null;
     }
     
 
