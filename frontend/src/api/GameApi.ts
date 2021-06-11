@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Board } from "../types/Board";
 import { Space } from "../types/Space";
+import { User } from "../types/User";
 
 class GameApi {
     private static instance: GameApi;
@@ -30,13 +31,24 @@ class GameApi {
         return await axios.get<Board[]>(`${this.BACKEND_URL}/games`)
     }
 
-    /**
-     * Add player to a game
-     */
-    public async joinGame() {
+
+    public async joinGame(user : User) {
         // Not yet implemented
         return null;
     }
+
+    public async leaveGame(user : User) {
+        // Not yet implemented
+        return null;
+    }
+
+    public async editGameName(gameId : string, title: string){
+       // return await axios.put(`${this.BACKEND_URL}/games/`)
+    }
+    
+
+
+
 
     public async createBoard(name: String, height: Number, width: Number) {
 
