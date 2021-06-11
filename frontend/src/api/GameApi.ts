@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Board } from "../types/Board";
+import { Game } from "../types/Game";
 import { Space } from "../types/Space";
 import { User } from "../types/User";
 
@@ -28,13 +29,13 @@ class GameApi {
      * @returns 
      */
     public async getGames() {
-        return await axios.get<Board[]>(`${this.BACKEND_URL}/games`)
+        return await axios.get<Game[]>(`${this.BACKEND_URL}/games`)
     }
 
 
-    public async joinGame(user : User) {
+    public async joinGame(gameId: number, user : User)  {
         // Not yet implemented
-        return null;
+        return await axios.put(`${this.BACKEND_URL}/games/${gameId}/join/${user.userId}`)
     }
 
     public async leaveGame(user : User) {
