@@ -21,12 +21,21 @@ class GameApi {
     public async getBoards() {
         return await axios.get<Board[]>(`${this.BACKEND_URL}/boards`)
     }
+
     /**
      * Gets games from backend
      * @returns 
      */
     public async getGames() {
         return await axios.get<Board[]>(`${this.BACKEND_URL}/games`)
+    }
+
+    /**
+     * Add player to a game
+     */
+    public async joinGame() {
+        // Not yet implemented
+        return null;
     }
 
     public async createBoard(name: String, height: Number, width: Number) {
