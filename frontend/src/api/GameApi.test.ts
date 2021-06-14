@@ -51,6 +51,7 @@ describe('User', () => {
     let newUsersIds : number[]
 
     beforeAll(async () => {
+        newUsersIds = []
         for (let i = 0; i < 10; i++) {
             newUsersIds.push((await GameApi.createUser()).data);
         }
