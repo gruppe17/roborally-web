@@ -7,7 +7,7 @@ import { Game } from '../types/Game';
 import { User } from '../types/User';
 
 
-describe('Creating, reciving and removing users', () => {
+describe('Creating and removing users', () => {
     let user: User;
     test('should create a user and receive its id and name', async () => {
         const userId = (await GameApi.createUser()).data;
@@ -18,15 +18,15 @@ describe('Creating, reciving and removing users', () => {
         expect(user.userId).toBe(userId);
     })
 
-    test("Getting all users")
+    test('should remove a user and receive a success', async () => {
+        const initialUserList = (await GameApi.getAllUsers()).data
+        expect(initialUserList.length).toBe(1);
 
-    test('should remove a game and receive a success', async () => {
-        const result = await GameApi.removeUser(user.userId)
+        const result = (await GameApi.removeUser(user.userId)).data
         expect(result).toBe(true);
 
-        const allUsers = await GameApi.getAllUsers();
-        
-        //... check if contained  
+        const allUsers = (await GameApi.getAllUsers()).data;
+        expect(allUsers.length).toBe(0);
     })
 
 })
@@ -38,6 +38,10 @@ describe('Games', () => {
         game = (await GameApi.getGame(gameId)).data;
     })
 
+
+    test("Getting all users" , async () => {
+        const allUsers = await GameApi.getAllUsers
+    })
 
     afterEach(() => {
         GameApi.removeGame(game.gameId);
