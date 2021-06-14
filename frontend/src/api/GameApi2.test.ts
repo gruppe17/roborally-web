@@ -46,11 +46,12 @@ describe('Games', () => {
     })
 
     test('should change the game name', async () => {
-        expect(game.name).not.toBe("Awesomesauce")
-         const result = (await GameApi.editGameName(game.gameId, "Awesomesauce")).data
-         expect(result).toBeTrue()
-         expect(game.name).toBe("Awesomesauce")
-        })
+        expect(game.name).not.toBe("Awesome sauce")
+        const result = (await GameApi.editGameName(game.gameId, "Awesome sauce")).data
+        game = (await GameApi.getGame(game.gameId)).data;
+        expect(result).toBeTrue()
+        expect(game.name).toBe("Awesome sauce")
+    })
 
     afterEach(() => {
         GameApi.removeGame(game.gameId);
