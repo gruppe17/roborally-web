@@ -44,8 +44,16 @@ describe('Creating and removing users', () => {
 
 })
 
-describe('Games', () => {
+describe('User', () => {
     let game: Game
+    let newUsersIds : Number[]
+
+    beforeAll(async () => {
+        for (let i = 0; i < 10; i++) {
+            newUsersIds.push((await GameApi.createUser()).data);
+        }
+    } )
+
     beforeEach(async () => {
         const gameId = (await GameApi.createGame()).data;
         game = (await GameApi.getGame(gameId)).data;
@@ -53,10 +61,19 @@ describe('Games', () => {
 
 
     test("Getting all users" , async () => {
-        const allUsers = await GameApi.getAllUsers
+        const allUsers = (await GameApi.getAllUsers()).data
+        newUsersIds.forEach(userId => {
+            expect(allUsers).toContain(GameApi.getUser(userId));
+        });
     })
 
     afterEach(() => {
         GameApi.removeGame(game.gameId);
+    })
+    
+    afterAll(async () => {
+        newUsersIds.forEach(userId => {
+            GameApi.removeUser(userId);
+        });
     })
 })
