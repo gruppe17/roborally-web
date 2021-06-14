@@ -65,8 +65,8 @@ describe('User', () => {
 
     test("Getting all users" , async () => {
         const allUsers = (await GameApi.getAllUsers()).data
-        newUsersIds.forEach(userId => {
-            expect(allUsers).toContain(GameApi.getUser(userId));
+        newUsersIds.forEach(async userId => {
+            expect(allUsers).toContain((await GameApi.getUser(userId)).data);
         });
     })
 
