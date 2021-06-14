@@ -7,6 +7,7 @@ import { Game } from '../types/Game';
 import { User } from '../types/User';
 import "jest-extended";
 import { initial } from "cypress/types/lodash";
+import { assert } from "cypress/types/sinon";
 
 
 describe('Creating and removing users', () => {
@@ -67,7 +68,23 @@ describe('User', () => {
             expect(allUsers).toContain(GameApi.getUser(userId));
         });
     })
-    
+
+    test("User join empty game", async () => {
+        expect(false).toBe(true);
+    })
+
+    test("User join full game", async () => {
+        expect(false).toBe(true);
+    })
+
+    test("User leave otherwise empty game", async () => {
+        expect(false).toBe(true);
+    })
+
+    test("User leave full game, other user joins", async () => {
+        expect(false).toBe(true);
+    })
+
 
     afterEach(() => {
         GameApi.removeGame(game.gameId);
