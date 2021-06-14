@@ -19,6 +19,7 @@ describe('Creating and removing users', () => {
     test('should create a user and receive its id and name', async () => {
         const userId = (await GameApi.createUser()).data;
         expect(userId).toBeNumber();
+
         user = (await GameApi.getUser(userId)).data;
         expect(user.userName).toBeString();
         expect(user.userName).not.toBeEmpty();
@@ -66,6 +67,7 @@ describe('User', () => {
             expect(allUsers).toContain(GameApi.getUser(userId));
         });
     })
+    
 
     afterEach(() => {
         GameApi.removeGame(game.gameId);
