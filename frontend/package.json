@@ -28,6 +28,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage",
     "cy:open": "$(npm bin)/cypress open",
     "cy:run": "$(npm bin)/cypress run",
     "test:all": "npm run && npm run cy:run",
