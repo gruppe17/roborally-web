@@ -91,11 +91,18 @@ describe('User', () => {
     })
 
     test("User leave otherwise empty game", async () => {
-        expect(false).toBe(true);
+        GameApi.joinGame(game.gameId, newUsersIds[0]);
+        expect((await GameApi.getGame(game.gameId)).data.users).not.toBeEmpty();
+        expect((await GameApi.leave(game.gameId, newUsersIds[0])).data).toBeTrue();
+        expect((await GameApi.getGame(game.gameId)).data.users).toBeArrayOfSize(0);
     })
 
     test("User leave full game, other user joins", async () => {
-        expect(false).toBe(true);
+        for (let i = 0; i < 6; i++) {
+            await GameApi.joinGame(game.gameId, newUsersIds[i])
+        }
+        expect((await GameApi.leave(game.gameId, newUsersIds[0])).data).toBeTrue();
+        expect((await GameApi.joinGame(game.gameId, newUsersIds[7])).data).toBeTrue();
     })
 
 
