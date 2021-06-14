@@ -4,8 +4,7 @@
 
 import GameApi from "./GameApi"
 import { Game } from '../types/Game';
-
-
+import "jest-extended";
 
 describe('creating and removing games', () => {
     let game: Game;
