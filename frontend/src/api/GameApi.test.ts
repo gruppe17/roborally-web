@@ -6,35 +6,40 @@ import GameApi from "./GameApi"
 import { Game } from '../types/Game';
 import { User } from '../types/User';
 import "jest-extended";
+import { initial } from "cypress/types/lodash";
 
 
 describe('Creating and removing users', () => {
     let user: User;
+    let initialUserList : User[];
+    beforeEach(async () => {
+        initialUserList = (await GameApi.getAllUsers()).data;
+    })
+
     test('should create a user and receive its id and name', async () => {
         const userId = (await GameApi.createUser()).data;
-        expect(userId).toBe(Number);
+        expect(userId).toBeNumber();
         user = (await GameApi.getUser(userId)).data;
-        expect(user.userName).toBe(String);
+        expect(user.userName).toBeString();
         expect(user.userName).not.toBeEmpty();
         expect(user.userId).toBe(userId);
+
+        const userList = (await GameApi.getAllUsers()).data
+        expect(userList).toBeArrayOfSize(initialUserList.length + 1)
     })
 
     test('should remove a user and receive a success', async () => {
         const initialUserList = (await GameApi.getAllUsers()).data
-        expect(initialUserList).toBeArrayOfSize(1);
 
         const result = (await GameApi.removeUser(user.userId)).data
         expect(result).toBe(true);
 
         const allUsers = (await GameApi.getAllUsers()).data;
-        expect(allUsers).toBeArrayOfSize(0);
+        expect(allUsers).toBeArrayOfSize(initialUserList.length - 1);
     })
 
     afterAll(async () => {
-        const allUsers = (await GameApi.getAllUsers()).data;
-        allUsers.forEach(user => {
-            GameApi.removeUser(user.userId);
-        });
+        GameApi.removeUser(user.userId)
     })
 
 })
