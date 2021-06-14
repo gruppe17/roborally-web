@@ -59,7 +59,21 @@ class GameApi {
     }
     
 
+    public async getAllUsers() {
+        return await axios.get<User[]>(`${this.BACKEND_URL}/user/all`);
+    }
 
+    public async createUser() {
+        return await axios.post<Number>(`${this.BACKEND_URL}/user/new`)
+    }
+
+    public async getUser(userId : Number) {
+        return await axios.get<User>(`${this.BACKEND_URL}/user/get/${userId}`)
+    }
+
+    public async removeUser(userId : Number) {
+        return await axios.delete(`${this.BACKEND_URL}/user/get/${userId}/remove`)
+    }
 
 
     public async createBoard(name: String, height: Number, width: Number) {
