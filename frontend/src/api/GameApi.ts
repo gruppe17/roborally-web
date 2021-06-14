@@ -51,7 +51,7 @@ class GameApi {
     }
 
     public async editGameName(gameId: number, title: string) {
-        return await axios.put(`${this.BACKEND_URL}/game/get/${gameId}/edit/${title}`)
+        return await axios.put<boolean>(`${this.BACKEND_URL}/game/get/${gameId}/edit/${title}`)
     }
 
     // Should return a boolean or an error message from the backend 
