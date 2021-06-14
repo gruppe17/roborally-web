@@ -37,27 +37,27 @@ class GameApi {
         return await axios.post<Number>(`${this.BACKEND_URL}/game/new`)
     }
 
-    public async getGame(gameId : Number) {
+    public async getGame(gameId: Number) {
         return await axios.get<Game>(`${this.BACKEND_URL}/game/get/${gameId}`)
     }
 
-    public async joinGame(gameId: number, user : User)  {
+    public async joinGame(gameId: number, user: User) {
         return await axios.put(`${this.BACKEND_URL}/game/${gameId}/join/${user.userId}`)
     }
 
-    public async leaveGame (user : User) : Promise<Boolean>{
+    public async leaveGame(user: User): Promise<Boolean> {
         return await true;
     }
 
-    public async editGameName(gameId : number, title: string){
-       // return await axios.put(`${this.BACKEND_URL}/games/`)
+    public async editGameName(gameId: number, title: string) {
+        return await axios.put(`${this.BACKEND_URL}/game/get/${gameId}/edit/${title}`)
     }
 
     // Should return a boolean or an error message from the backend 
-    public async removeGame(gameId : number) {
+    public async removeGame(gameId: number) {
         return await axios.delete(`${this.BACKEND_URL}/game/get/${gameId}/remove`)
     }
-    
+
 
     public async getAllUsers() {
         return await axios.get<User[]>(`${this.BACKEND_URL}/user/all`);
@@ -67,14 +67,13 @@ class GameApi {
         return await axios.post<Number>(`${this.BACKEND_URL}/user/new`)
     }
 
-    public async getUser(userId : Number) {
+    public async getUser(userId: Number) {
         return await axios.get<User>(`${this.BACKEND_URL}/user/get/${userId}`)
     }
 
-    public async removeUser(userId : Number) {
+    public async removeUser(userId: Number) {
         return await axios.delete(`${this.BACKEND_URL}/user/get/${userId}/remove`)
     }
-
 
     public async createBoard(name: String, height: Number, width: Number) {
 
