@@ -30,11 +30,11 @@ class GameApi {
      * @returns 
      */
     public async getGames() {
-        return await axios.get<Game[]>(`${this.BACKEND_URL}/games`)
+        return await axios.get<Game[]>(`${this.BACKEND_URL}/game/all`)
     }
 
-    public async createGame() : Promise<Number> {
-        return await axios.post(`${this.BACKEND_URL}/game/new`)
+    public async createGame() {
+        return await axios.post<Number>(`${this.BACKEND_URL}/game/new`)
     }
 
     public async getGame(gameId : Number) {
@@ -55,7 +55,7 @@ class GameApi {
 
     // Should return a boolean or an error message from the backend 
     public async removeGame(gameId : number) {
-        return await true;
+        return await axios.delete(`${this.BACKEND_URL}/game/get/${gameId}/remove`)
     }
     
 
