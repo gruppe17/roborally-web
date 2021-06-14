@@ -44,7 +44,7 @@ describe('Games', () => {
         expect(foundGame).toBe(true);
 
     })
-
+        
     afterEach(() => {
         GameApi.removeGame(game.gameId);
     })
