@@ -51,12 +51,6 @@
       "last 1 safari version"
     ]
   },
-  "jest": {
-    "verbose": true,
-    "setupFilesAfterEnv": [
-      "jest-extended"
-    ]
-  },
   "devDependencies": {
     "@types/jasmine-expect": "^3.8.1",
     "jasmine-expect": "^5.0.0",
