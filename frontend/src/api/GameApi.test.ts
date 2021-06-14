@@ -5,6 +5,7 @@
 import GameApi from "./GameApi"
 import { Game } from '../types/Game';
 import { User } from '../types/User';
+import "jest-extended";
 
 
 describe('Creating and removing users', () => {
@@ -20,13 +21,20 @@ describe('Creating and removing users', () => {
 
     test('should remove a user and receive a success', async () => {
         const initialUserList = (await GameApi.getAllUsers()).data
-        expect(initialUserList.length).toBe(1);
+        expect(initialUserList).toBeArrayOfSize(1);
 
         const result = (await GameApi.removeUser(user.userId)).data
         expect(result).toBe(true);
 
         const allUsers = (await GameApi.getAllUsers()).data;
-        expect(allUsers.length).toBe(0);
+        expect(allUsers).toBeArrayOfSize(0);
+    })
+
+    afterAll(async () => {
+        const allUsers = (await GameApi.getAllUsers()).data;
+        allUsers.forEach(user => {
+            GameApi.removeUser(user.userId);
+        });
     })
 
 })
