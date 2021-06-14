@@ -34,15 +34,16 @@ class GameApi {
     }
 
     public async createGame() {
-        return await axios.post<Number>(`${this.BACKEND_URL}/game/new`)
+        return await axios.post<number>(`${this.BACKEND_URL}/game/new`)
     }
 
-    public async getGame(gameId: Number) {
+
+    public async getGame(gameId : number) {
         return await axios.get<Game>(`${this.BACKEND_URL}/game/get/${gameId}`)
     }
 
-    public async joinGame(gameId: number, user: User) {
-        return await axios.put(`${this.BACKEND_URL}/game/${gameId}/join/${user.userId}`)
+    public async joinGame(gameId: number, userId : number)  {
+        return await axios.put(`${this.BACKEND_URL}/game/${gameId}/join/${userId}`)
     }
 
     public async leaveGame(user: User): Promise<Boolean> {
@@ -64,18 +65,20 @@ class GameApi {
     }
 
     public async createUser() {
-        return await axios.post<Number>(`${this.BACKEND_URL}/user/new`)
+        return await axios.post<number>(`${this.BACKEND_URL}/user/new`)
     }
 
-    public async getUser(userId: Number) {
+
+    public async getUser(userId : number) {
         return await axios.get<User>(`${this.BACKEND_URL}/user/get/${userId}`)
     }
 
-    public async removeUser(userId: Number) {
+    public async removeUser(userId : number) {
         return await axios.delete(`${this.BACKEND_URL}/user/get/${userId}/remove`)
     }
 
-    public async createBoard(name: String, height: Number, width: Number) {
+
+    public async createBoard(name: String, height: number, width: Number) {
 
         const board = {
             "boardId": 1,
