@@ -5,8 +5,6 @@
 import GameApi from "./GameApi"
 import { Game } from '../types/Game';
 
-
-
 describe('creating and removing games', () => {
     let game: Game;
     test('should create a game and receive it back', async () => {
