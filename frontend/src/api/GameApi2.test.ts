@@ -15,7 +15,7 @@ describe('creating and removing games', () => {
         expect(game.gameId).not.toBeNull()
         expect(game.started).toBeFalsy()
         expect(game.users).toBeNull();
-        expect(game.name).toBeNull()
+        expect(game.name).toBeString()
     })
 
     test('should remove a game and receive a success', async () => {
@@ -44,7 +44,7 @@ describe('Games', () => {
         expect(foundGame).toBe(true);
 
     })
-        
+
     afterEach(() => {
         GameApi.removeGame(game.gameId);
     })
