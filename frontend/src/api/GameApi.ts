@@ -46,8 +46,8 @@ class GameApi {
         return await axios.put(`${this.BACKEND_URL}/game/${gameId}/join/${userId}`)
     }
 
-    public async leaveGame(user: User): Promise<Boolean> {
-        return await true;
+    public async leaveGame (gameId : number, userId : number) {
+        return await axios.put<Boolean>("");
     }
 
     public async editGameName(gameId: number, title: string) {
