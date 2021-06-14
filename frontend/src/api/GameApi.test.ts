@@ -84,11 +84,13 @@ describe('User', () => {
       })
 
     test("User join full game", async () => {
+        let succeded = true;
         for (let i = 0; i < newUsersIds.length; i++) {
             let joined = (await GameApi.joinGame(game.gameId, newUsersIds[i])).data;
-            if(i < 6) joined = !joined;
-            expect(joined).toBeFalse();
+            if(i >= 6) joined = !joined;
+            succeded = joined && succeded; 
         }
+        expect(succeded).toBeTrue();
     })
 
     test("User leave otherwise empty game", async () => {
