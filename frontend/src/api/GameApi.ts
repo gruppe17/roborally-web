@@ -34,15 +34,15 @@ class GameApi {
     }
 
     public async createGame() {
-        return await axios.post<Number>(`${this.BACKEND_URL}/game/new`)
+        return await axios.post<number>(`${this.BACKEND_URL}/game/new`)
     }
 
-    public async getGame(gameId : Number) {
+    public async getGame(gameId : number) {
         return await axios.get<Game>(`${this.BACKEND_URL}/game/get/${gameId}`)
     }
 
-    public async joinGame(gameId: number, user : User)  {
-        return await axios.put(`${this.BACKEND_URL}/game/${gameId}/join/${user.userId}`)
+    public async joinGame(gameId: number, userId : number)  {
+        return await axios.put(`${this.BACKEND_URL}/game/${gameId}/join/${userId}`)
     }
 
     public async leaveGame (user : User) : Promise<Boolean>{
