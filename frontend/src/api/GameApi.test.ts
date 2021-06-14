@@ -5,13 +5,13 @@ import { Game } from '../types/Game';
 describe('creating and removing games', () => {
     let game: Game;
     test('should create a game and receive it back', async () => {
-        const newGame = await GameApi.createGame();
-        game = newGame;
-        expect(newGame).not.toBeNull()
-        expect(newGame.gameId).not.toBeNull()
-        expect(newGame.started).toBeFalsy()
-        expect(newGame.users).toBeNull();
-        expect(newGame.name).toBeNull()
+        const gameId = await GameApi.createGame();
+        game = (await GameApi.getGame(gameId)).data;
+        expect(game).not.toBeNull()
+        expect(game.gameId).not.toBeNull()
+        expect(game.started).toBeFalsy()
+        expect(game.users).toBeNull();
+        expect(game.name).toBeNull()
     })
 
     test('should remove a game and receive a success', async () => {
@@ -20,16 +20,12 @@ describe('creating and removing games', () => {
     })
 
 })
-
-
-
 describe('Games', () => {
-
     let game: Game
     beforeEach(async () => {
-        game = await GameApi.createGame();
+        const gameId = await GameApi.createGame();
+        game = (await GameApi.getGame(gameId)).data;
     })
-
     test('should get games from backend', async () => {
         // getGames has already been tested in the previous test.
         const result = await GameApi.getGames()
@@ -38,15 +34,10 @@ describe('Games', () => {
             if (resultGame.gameId === game.gameId) {
                 foundGame = true;
             }
-            
         });
         expect(foundGame).toBe(true);
 
     })
-
-    
-
-
     afterEach(() => {
         GameApi.removeGame(game.gameId);
     })

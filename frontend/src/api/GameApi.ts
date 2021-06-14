@@ -33,12 +33,16 @@ class GameApi {
         return await axios.get<Game[]>(`${this.BACKEND_URL}/games`)
     }
 
-    public async createGame() : Promise<Game> {
-        throw new Error("Method not implemented.");
+    public async createGame() : Promise<Number> {
+        return await axios.post(`${this.BACKEND_URL}/game/new`)
+    }
+
+    public async getGame(gameId : Number) {
+        return await axios.get<Game>(`${this.BACKEND_URL}/game/get/${gameId}`)
     }
 
     public async joinGame(gameId: number, user : User)  {
-        return await axios.put(`${this.BACKEND_URL}/games/${gameId}/join/${user.userId}`)
+        return await axios.put(`${this.BACKEND_URL}/game/${gameId}/join/${user.userId}`)
     }
 
     public async leaveGame (user : User) : Promise<Boolean>{
