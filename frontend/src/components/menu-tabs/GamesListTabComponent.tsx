@@ -6,13 +6,13 @@ import { useContext, useEffect, useState } from "react";
 import GameApi from "../../api/GameApi";
 import { Board } from "../../types/Board";
 import { Game } from "../../types/Game";
-import GameContext from '../../context/GameContext';
+import GameContext from "../../context/GameContext";
 
 export interface IGamesListProps {}
 
 function GameComponent(props: { game: Game }) {
   const [isEditing, setIsEditing] = useState(false);
-
+  const { currentUser } = useContext(GameContext);
   return (
     <Box
       height="64px"
@@ -31,12 +31,18 @@ function GameComponent(props: { game: Game }) {
           }
         ></TextInput>
       ) : (
-        <Button variant="contained" color="primary" onClick={() => {}}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            GameApi.joinGame(props.game.gameId, currentUser.userId);
+          }}
+        >
           {!isEditing && (
             <Box flexDirection="row">
               <Typography>{props.game.name}</Typography>
               <Typography>
-              {props.game.users && props.game.users.length}
+                {props.game.users && props.game.users.length}
               </Typography>
             </Box>
           )}
@@ -45,7 +51,7 @@ function GameComponent(props: { game: Game }) {
       <IconButton onClick={() => setIsEditing(!isEditing)}>
         <Edit />
       </IconButton>
-      <IconButton onClick={ () => GameApi.removeGame(props.game.gameId)} >
+      <IconButton onClick={() => GameApi.removeGame(props.game.gameId)}>
         <RemoveCircle />
       </IconButton>
     </Box>
@@ -53,8 +59,7 @@ function GameComponent(props: { game: Game }) {
 }
 
 export function GamesListTab(props: IGamesListProps) {
-  
-  const {games} = useContext(GameContext)
+  const { games } = useContext(GameContext);
 
   return (
     <Box display="flex" bgcolor="transparent" flexDirection="column">
