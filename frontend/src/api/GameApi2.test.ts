@@ -14,7 +14,7 @@ describe('creating and removing games', () => {
         expect(game).not.toBeNull()
         expect(game.gameId).not.toBeNull()
         expect(game.started).toBeFalsy()
-        expect(game.users).toBeNull();
+        expect(game.users).toBeEmpty();
         expect(game.name).toBeString()
     })
 

@@ -10,7 +10,7 @@ import "jest-extended";
 
 describe('Creating and removing users', () => {
     let user: User;
-    let initialUserList : User[];
+    let initialUserList: User[];
     beforeEach(async () => {
         initialUserList = (await GameApi.getAllUsers()).data;
     })
@@ -25,6 +25,7 @@ describe('Creating and removing users', () => {
         expect(user.userId).toBe(userId);
 
         const userList = (await GameApi.getAllUsers()).data
+
         expect(userList).toBeArrayOfSize(initialUserList.length + 1)
     })
 
@@ -46,24 +47,24 @@ describe('Creating and removing users', () => {
 
 describe('User', () => {
     let game: Game
-    let newUsersIds : number[]
+    let newUsersIds: number[]
 
     beforeAll(async () => {
         newUsersIds = []
         for (let i = 0; i < 10; i++) {
             newUsersIds.push((await GameApi.createUser()).data);
         }
-    } )
+    })
 
     beforeEach(async () => {
         const gameId = (await GameApi.createGame()).data;
         game = (await GameApi.getGame(gameId)).data;
         await GameApi.createBoard(gameId, "Default Board", 8, 8)
-        
+
     })
 
 
-    test("Getting all users" , async () => {
+    test("Getting all users", async () => {
         const allUsers = (await GameApi.getAllUsers()).data
         newUsersIds.forEach(async userId => {
             let isFound = false;
@@ -78,22 +79,25 @@ describe('User', () => {
     })
 
     test("User join empty game", async () => {
-      expect((await GameApi.joinGame(game.gameId, newUsersIds[0])).data).toBeTrue();
-      game = (await GameApi.getGame(game.gameId)).data
-      expect(game.users).toBeArrayOfSize(1);
-      expect((await GameApi.getBoard(game.gameId)).playerDtos).toBeArrayOfSize(1);
+        expect((await GameApi.joinGame(game.gameId, newUsersIds[0])).data).toBeTrue();
+        game = (await GameApi.getGame(game.gameId)).data
+        expect(game.users).toBeArrayOfSize(1);
+        const board = (await GameApi.getBoard(game.gameId)).playerDtos;
+        console.log(board);
+        
+        expect(board).toBeArrayOfSize(1);
     })
 
     test("User join multiple games", async () => {
         expect((await GameApi.joinGame(game.gameId, newUsersIds[0])).data).toBeTrue();
         const game2Id = (await GameApi.createGame()).data;
         expect(GameApi.joinGame(game2Id, newUsersIds[0])).toBeFalse();
-      })
+    })
 
     test("User join full game", async () => {
         for (let i = 0; i < newUsersIds.length; i++) {
             let joined = (await GameApi.joinGame(game.gameId, newUsersIds[i])).data;
-            if(i >= 6) joined = !joined;
+            if (i >= 6) joined = !joined;
             expect(joined).toBeTrue();
         }
     })
@@ -117,7 +121,7 @@ describe('User', () => {
     afterEach(() => {
         GameApi.removeGame(game.gameId);
     })
-    
+
     afterAll(async () => {
         newUsersIds.forEach(userId => {
             GameApi.removeUser(userId);

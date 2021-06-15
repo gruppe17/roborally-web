@@ -17,8 +17,8 @@ class GameApi {
         return GameApi.instance;
     }
 
-    public getBoard(boardId: number) {
-        return axios.get<Board>(`${this.BACKEND_URL}/board/${boardId}`).then(value => value.data)
+    public getBoard(gameId : number) {
+        return axios.get<Board>(`${this.BACKEND_URL}/game/get/${gameId}/board`).then(value => value.data)
     }
 
     public async getBoards() {
