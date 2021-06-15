@@ -64,7 +64,14 @@ describe('User', () => {
     test("Getting all users" , async () => {
         const allUsers = (await GameApi.getAllUsers()).data
         newUsersIds.forEach(async userId => {
-            expect(allUsers).toContain((await GameApi.getUser(userId)).data);
+            let isFound = false;
+            for (let i = 0; i < allUsers.length; i++) {
+                if (allUsers[i].userId === userId) {
+                    isFound = true
+                    break;
+                }
+            }
+            expect(isFound).toBeTrue();
         });
     })
 
@@ -82,13 +89,11 @@ describe('User', () => {
       })
 
     test("User join full game", async () => {
-        let succeded = true;
         for (let i = 0; i < newUsersIds.length; i++) {
             let joined = (await GameApi.joinGame(game.gameId, newUsersIds[i])).data;
             if(i >= 6) joined = !joined;
-            succeded = joined && succeded; 
+            expect(joined).toBeTrue();
         }
-        expect(succeded).toBeTrue();
     })
 
     test("User leave otherwise empty game", async () => {
