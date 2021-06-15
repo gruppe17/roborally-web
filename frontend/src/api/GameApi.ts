@@ -43,11 +43,11 @@ class GameApi {
     }
 
     public async joinGame(gameId: number, userId : number)  {
-        return await axios.put(`${this.BACKEND_URL}/game/${gameId}/join/${userId}`)
+        return await axios.post(`${this.BACKEND_URL}/game/join/${gameId}/${userId}`)
     }
 
     public async leaveGame (gameId : number, userId : number) {
-        return await axios.put<Boolean>("");
+        return await axios.put(`${this.BACKEND_URL}/game/leave/${gameId}/${userId}`)
     }
 
     public async editGameName(gameId: number, title: string) {
@@ -90,12 +90,12 @@ class GameApi {
     }
 
 
-    public moveCurrentPlayer(boardId: number, space: Space) {
-        return axios.put(`${this.BACKEND_URL}/board/${boardId}/move`, space)
+    public moveCurrentPlayer(gameId: number, space: Space) {
+        return axios.put(`${this.BACKEND_URL}/game/get/${gameId}/board/move`, space)
     }
 
-    public switchPlayer(boardId: number) {
-        return axios.put(`${this.BACKEND_URL}/board/${boardId}/switchplayer`)
+    public switchPlayer(gameId: number) {
+        return axios.put(`${this.BACKEND_URL}/game/get/${gameId}/board/switchplayer`)
     }
 }
 
