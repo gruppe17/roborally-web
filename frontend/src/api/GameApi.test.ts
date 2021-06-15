@@ -6,8 +6,6 @@ import GameApi from "./GameApi"
 import { Game } from '../types/Game';
 import { User } from '../types/User';
 import "jest-extended";
-import { initial } from "cypress/types/lodash";
-import { assert } from "cypress/types/sinon";
 
 
 describe('Creating and removing users', () => {
