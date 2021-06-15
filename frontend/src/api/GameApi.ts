@@ -7,7 +7,7 @@ import { User } from "../types/User";
 class GameApi {
 
     private static instance: GameApi;
-    private readonly BACKEND_URL = "https://roborally-backend.herokuapp.com" // "https://roborallyserver.tobiasmaneschijn.com/"
+    private readonly BACKEND_URL = "http://localhost:8080" //"https://roborally-backend.herokuapp.com" // "https://roborallyserver.tobiasmaneschijn.com/"
     private constructor() { }
 
     public static getInstance(): GameApi {
@@ -78,7 +78,7 @@ class GameApi {
     }
 
 
-    public async createBoard(name: String, height: number, width: Number) {
+    public async createBoard(gameId: number, name: String, height: number, width: Number) {
 
         const board = {
             "boardId": 1,
@@ -86,7 +86,7 @@ class GameApi {
             "height": height,
             "width": width,
         }
-        return await axios.post(`${this.BACKEND_URL}/board`, board)
+        return await axios.post(`${this.BACKEND_URL}/game/get/${gameId}/board/new`, board)
     }
 
 

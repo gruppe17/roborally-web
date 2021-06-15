@@ -58,6 +58,8 @@ describe('User', () => {
     beforeEach(async () => {
         const gameId = (await GameApi.createGame()).data;
         game = (await GameApi.getGame(gameId)).data;
+        await GameApi.createBoard(gameId, "Default Board", 8, 8)
+        
     })
 
 
