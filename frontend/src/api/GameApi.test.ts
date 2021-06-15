@@ -83,15 +83,13 @@ describe('User', () => {
         game = (await GameApi.getGame(game.gameId)).data
         expect(game.users).toBeArrayOfSize(1);
         const board = (await GameApi.getBoard(game.gameId)).playerDtos;
-        console.log(board);
-        
         expect(board).toBeArrayOfSize(1);
     })
 
     test("User join multiple games", async () => {
         expect((await GameApi.joinGame(game.gameId, newUsersIds[0])).data).toBeTrue();
         const game2Id = (await GameApi.createGame()).data;
-        expect(GameApi.joinGame(game2Id, newUsersIds[0])).toBeFalse();
+        expect((await GameApi.joinGame(game2Id, newUsersIds[0])).data).toBeFalse();
     })
 
     test("User join full game", async () => {

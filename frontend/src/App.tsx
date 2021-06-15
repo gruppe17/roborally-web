@@ -26,21 +26,30 @@ const theme: ThemeType = {
 
 function App() {
   return (
-    <Grommet theme={theme}>
-      <Box fill background="#121212" height="100vh" className="App">
-        {/*Context provider component below makes sure the context is accessible in any children components*/}
-        <GameContextProvider>
-          <Box fill flex direction="row">
-            <Main pad="large" flex="grow" justify="center" align="center">
-              <BoardComponent  />
+    <div className={styles.app}>
+      <Grommet theme={theme}>
+        <Box background="#121212" height="100%" width="100%" direction="row">
+          <GameContextProvider>
+            <Main
+              pad="large"
+              width="100vw"
+              flex="grow"
+              justify="center"
+              align="center"
+              direction="row"
+            >
+              <Box flex="grow" justify="center" align="center">
+                <BoardComponent />
+              </Box>
+
+              <Box height="100%" >
+                <MenuComponent />
+              </Box>
             </Main>
-            <Box>
-              <MenuComponent />
-            </Box>
-          </Box>
-        </GameContextProvider>
-      </Box>
-    </Grommet>
+          </GameContextProvider>
+        </Box>
+      </Grommet>
+    </div>
   );
 }
 

@@ -9,7 +9,7 @@ export interface INewGameTabProps {
 export function NewGameTab (props: INewGameTabProps) {
   return (
     <Box>
-      <Button variant="contained" color="primary" onClick={() => GameApi.createBoard("Noice game", 8, 8)}>
+      <Button variant="contained" color="primary" onClick={() => GameApi.createGame()}>
         New Default Game
       </Button>
     </Box>
