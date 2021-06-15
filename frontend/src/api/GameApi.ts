@@ -81,7 +81,7 @@ class GameApi {
     public async createBoard(gameId: number, name: String, height: number, width: Number) {
         
         const board = {
-            "boardId": 1,
+            "boardId": gameId,
             "boardName": name,
             "height": height,
             "width": width,
