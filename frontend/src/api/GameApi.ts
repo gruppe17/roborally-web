@@ -7,7 +7,7 @@ import { User } from "../types/User";
 class GameApi {
 
     private static instance: GameApi;
-    private readonly BACKEND_URL = "http://localhost:8080" //"https://roborally-backend.herokuapp.com" // "https://roborallyserver.tobiasmaneschijn.com/"
+    private readonly BACKEND_URL = "https://roborally-backend.herokuapp.com" // "http://localhost:8080" "https://roborallyserver.tobiasmaneschijn.com/"
     private constructor() { }
 
     public static getInstance(): GameApi {
@@ -79,7 +79,7 @@ class GameApi {
 
 
     public async createBoard(gameId: number, name: String, height: number, width: Number) {
-        
+
         const board = {
             "boardId": gameId,
             "boardName": name,

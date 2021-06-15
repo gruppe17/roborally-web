@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
   ReactNode,
   useCallback,
@@ -12,61 +13,14 @@ import { Space } from "../types/Space";
 import GameApi from "../api/GameApi";
 import { Game } from "../types/Game";
 import { User } from "../types/User";
+import useCookie from "react-use-cookie";
 
 type GameContextProviderPropsType = {
   children: ReactNode;
 };
 
 const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
-  const updateGameContext = (boardId: number) =>
-    updateGameContextBoard(boardId);
-
-  const updateGameContextGamesList = () =>
-    GameApi.getGames()
-      .then((gamesResponse) => {
-        const games = gamesResponse.data;
-        setGames(games);
-        setLoaded(true);
-      })
-      .catch(() => {
-        console.error("Error while fetching board from backend");
-      });
-
-  const updateGameContextBoard = (boardId: number) =>
-    GameApi.getBoard(boardId)
-      .then((board) => {
-
-        let updatedBoard = currentBoard!
-        updatedBoard.spaceDtos = board.spaceDtos
-        updatedBoard.playerDtos = board.playerDtos
-        updatedBoard.width = board.width
-        updatedBoard.height = board.height
-
-        if (board.currentPlayerDto) {
-        updatedBoard.currentPlayerDto = board.currentPlayerDto
-          board.playerDtos.forEach((player, index) => {
-            if (player.playerId === board.currentPlayerDto?.playerId) {
-              setCurrentPlayerIndex(index);
-            }
-          });
-        }
-        setCurrentBoard(updatedBoard)
-
-        setLoaded(true);
-      })
-      .catch(() => {
-        console.error("Error while fetching board from backend");
-      });
-
-  const [loaded, setLoaded] = useState<boolean>(false);
-  useEffect(() => {
-    updateGameContextGamesList();
-  }, []);
-  //The code below is executed when the provider is rendered (inside App.tsx)
-  //The code should fetch the data from the API instead of using a static assignment
-  //Define a useState variable, note that useState returns an array, containing that state itself aswell as
-  // a function to set a new state value, here we use array destructuring (the [..., ...] notation).
-  // we also declare that the state variable and setter should be of type /take type Player[]
+  const [userToken, setUserToken] = useCookie("user");
   const [currentGame, setCurrentGame] = useState<Game>();
   const [games, setGames] = useState<Game[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
@@ -76,6 +30,92 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     [currentBoard?.playerDtos]
   );
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+
+useEffect(() => {
+    if (userToken === undefined) {
+      GameApi.createUser().then(async (response) => {
+        setUserToken("" + response.data);
+  
+        const fetched = (await GameApi.getUser(response.data)).data;
+        setCurrentUser(fetched);
+      });
+    } else {
+      GameApi.getUser(parseInt(userToken)).then((res) => {
+        setCurrentUser(res.data);
+      });
+    }
+  
+  return () => {
+    
+  }
+}, [])
+
+  const updateGameContextGamesList = () =>
+    GameApi.getGames()
+      .then((gamesResponse) => {
+        const games = gamesResponse.data;
+        setGames(games);
+      })
+      .catch(() => {
+        console.error("Error while fetching all games from backend");
+      });
+
+  const updateGameContextGame = (gameId: number) =>
+    GameApi.getGame(gameId)
+      .then((game) => {
+        setCurrentGame(game.data);
+      })
+      .catch(() => {
+        console.error("Error while fetching chosen game from backend");
+      });
+
+  const updateGameContext = (id: number) => {
+    const updateGameContextBoard = (gameId: number) =>
+      GameApi.getBoard(gameId)
+        .then((board) => {
+          let updatedBoard = currentBoard!;
+          updatedBoard.spaceDtos = board.spaceDtos;
+          updatedBoard.playerDtos = board.playerDtos;
+          updatedBoard.width = board.width;
+          updatedBoard.height = board.height;
+
+          if (board.currentPlayerDto) {
+            updatedBoard.currentPlayerDto = board.currentPlayerDto;
+            board.playerDtos.forEach((player, index) => {
+              if (player.playerId === board.currentPlayerDto?.playerId) {
+                setCurrentPlayerIndex(index);
+              }
+            });
+          }
+          setCurrentBoard(updatedBoard);
+
+          setLoaded(true);
+        })
+        .catch(() => {
+          console.error("Error while fetching board from backend");
+        });
+
+    updateGameContextGamesList();
+    updateGameContextBoard(id);
+    updateGameContextGame(id);
+  };
+
+  const [loaded, setLoaded] = useState<boolean>(false);
+  useEffect(() => {
+    updateGameContext(0);
+  }, [updateGameContext]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (currentGame) {
+        updateGameContext(currentGame.gameId);
+      }
+    }, 5000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [currentGame, updateGameContext]);
+
   //Define a function used to set a player ona  specific space
   const setPlayerOnSpace = useCallback(
     async (space: Space) => {
@@ -124,49 +164,71 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   }, [currentGame, currentBoard, currentPlayerIndex, playerCount]);
 
   const game = useMemo<Game>(() => {
+    if (currentGame)
+      return {
+        gameId: currentGame!.gameId,
+        name: currentGame!.name,
+        started: currentGame!.started,
+        users: currentGame!.users,
+      };
     return {
-      gameId: currentGame!.gameId,
-      name: currentGame!.name,
-      started: currentGame!.started,
-      users: currentGame!.users,
+      gameId: 0,
+      name: "No game loaded",
+      started: false,
+      users: [],
     };
   }, [currentGame]);
 
   const user = useMemo<User>(() => {
+    if (currentUser)
+      return {
+        userId: currentUser!.userId,
+        userName: currentUser!.userName,
+      };
+
     return {
-    userId: currentUser!.userId,
-    userName: currentUser!.userName
+      userId: 0,
+      userName: "Not logged in!",
     };
-  }, [currentGame]);
+  }, [currentUser]);
 
   const board = useMemo<Board>(() => {
+    if (currentBoard)
+      return {
+        spaceDtos: currentBoard!.spaceDtos,
+        playerDtos: currentBoard!.playerDtos,
+        currentPlayerDto: currentBoard!.currentPlayerDto,
+        currentPlayerIndex: currentPlayerIndex,
+        width: currentBoard!.width,
+        height: currentBoard!.height,
+        boardName: currentBoard!.boardName,
+        boardId: currentBoard!.boardId,
+      };
+
     return {
-      spaceDtos: currentBoard!.spaceDtos,
-      playerDtos: currentBoard!.playerDtos,
-      currentPlayerDto: currentBoard!.currentPlayerDto,
-      currentPlayerIndex: currentPlayerIndex,
-      width: currentBoard!.width,
-      height: currentBoard!.height,
-      boardName: currentBoard!.boardName,
-      boardId: currentBoard!.boardId,
+      playerDtos: [],
+      spaceDtos: [],
+      boardId: -1,
+      boardName: "",
+      currentPlayerDto: undefined,
+      height: 0,
+      width: 0,
     };
-  }, [currentBoard]);
+  }, [currentBoard, currentPlayerIndex]);
 
   return (
     <GameContext.Provider
       value={{
         games: games,
-        selectGame: async (gameId : number) => {
-          GameApi.joinGame(gameId, currentUser!.userId)
-          setCurrentGame((await GameApi.getGame(gameId)).data)
+        selectGame: async (gameId: number) => {
+          GameApi.joinGame(gameId, currentUser!.userId);
+          setCurrentGame((await GameApi.getGame(gameId)).data);
         },
         unselectGame: async () => {
-          if(!currentGame || !currentUser)
-          return
+          if (!currentGame || !currentUser) return;
           GameApi.leaveGame(currentGame?.gameId, currentUser?.userId);
-          setCurrentGame(undefined)
-          setCurrentBoard(undefined)
-
+          setCurrentGame(undefined);
+          setCurrentBoard(undefined);
         },
         loaded: loaded,
         board: board,

@@ -1,43 +1,66 @@
-import { Box, Button, Typography } from "@material-ui/core";
+import { Button, IconButton, Typography, Box } from "@material-ui/core";
+import { Edit, RemoveCircle } from "@material-ui/icons";
+import { TextInput } from "grommet";
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import GameApi from "../../api/GameApi";
-import { Board } from '../../types/Board';
+import { Board } from "../../types/Board";
+import { Game } from "../../types/Game";
+import GameContext from '../../context/GameContext';
 
 export interface IGamesListProps {}
 
-function GameComponent(props : {game: Board}) {
-  
+function GameComponent(props: { game: Game }) {
+  const [isEditing, setIsEditing] = useState(false);
+
   return (
-    <Box height="64px" justifyContent="start"
-     alignItems="center" bgcolor="#404040" display="flex" flexDirection="row" width="100%">
-      <Button variant="contained" color="primary" onClick={() => {}}>
-        Game: "{props.game.boardName }" Players: { props.game.playerDtos && props.game.playerDtos.length}
-      </Button>
+    <Box
+      height="64px"
+      justifyContent="start"
+      alignItems="center"
+      bgcolor="#404040"
+      display="flex"
+      flexDirection="row"
+      width="100%"
+    >
+      {isEditing ? (
+        <TextInput
+          defaultValue={props.game.name}
+          onChange={(value) =>
+            GameApi.editGameName(props.game.gameId, value.target.value)
+          }
+        ></TextInput>
+      ) : (
+        <Button variant="contained" color="primary" onClick={() => {}}>
+          {!isEditing && (
+            <Box flexDirection="row">
+              <Typography>{props.game.name}</Typography>
+              <Typography>
+              {props.game.users && props.game.users.length}
+              </Typography>
+            </Box>
+          )}
+        </Button>
+      )}
+      <IconButton onClick={() => setIsEditing(!isEditing)}>
+        <Edit />
+      </IconButton>
+      <IconButton onClick={ () => GameApi.removeGame(props.game.gameId)} >
+        <RemoveCircle />
+      </IconButton>
     </Box>
   );
 }
 
 export function GamesListTab(props: IGamesListProps) {
-  const [boards, setBoards] = useState<Board[]>();
-
-  useEffect(() => {
-    async function fetchBoard() {
-      let fetchedBoards = await GameApi.getBoards();
-      setBoards(fetchedBoards.data);
-    }
-
-    fetchBoard();
-  }, []);
+  
+  const {games} = useContext(GameContext)
 
   return (
-    <Box display="flex" flexDirection="column">
-      {boards != null ? (
-        boards?.map((board, index) => (
-          <GameComponent
-            key={index}
-            game={board}
-          ></GameComponent>
+    <Box display="flex" bgcolor="transparent" flexDirection="column">
+      {games != null ? (
+        games?.map((game, index) => (
+          <GameComponent key={index} game={game}></GameComponent>
         ))
       ) : (
         <p> No games found!</p>
