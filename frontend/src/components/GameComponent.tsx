@@ -9,7 +9,7 @@ import GameContext from "../context/GameContext";
 
 export function GameComponent(props: { game: Game; }) {
   const [isEditing, setIsEditing] = useState(false);
-  const {selectGame, unselectGame, deleteGame } = useContext(GameContext);
+  const {selectGame, unselectGame, deleteGame, forceViewUpdate } = useContext(GameContext);
   return (
     <Box
       height="64px"
@@ -43,7 +43,10 @@ export function GameComponent(props: { game: Game; }) {
       <IconButton color={"secondary"} onClick={() => setIsEditing(!isEditing)}>
         <Edit />
       </IconButton>
-      <IconButton color={"secondary"} onClick={() => deleteGame(props.game.gameId)}>
+      <IconButton color={"secondary"} onClick={() => {
+          deleteGame(props.game.gameId)
+          forceViewUpdate()
+        }}>
         <RemoveCircle />
       </IconButton>
       <IconButton color={"secondary"} onClick={() => unselectGame()}>
