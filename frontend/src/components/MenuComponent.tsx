@@ -32,7 +32,7 @@ function MenuComponent(): ReactElement {
   const [currentTab, setCurrentTab] =
     useState<"new-game" | "games" | "players">("new-game");
 
-  const { currentGame, currentUser } = useContext(GameContext);
+  const { currentGame, currentUser, createGame } = useContext(GameContext);
 
   const tabContent = () => {
     switch (currentTab) {
@@ -71,10 +71,7 @@ function MenuComponent(): ReactElement {
         <IconButton
           color={"primary"}
           size={"medium"}
-          onClick={async () => {
-            const gameId = (await GameApi.createGame()).data;
-            GameApi.createBoard(gameId, "Board", 8, 8);
-          }}
+          onClick={createGame}
         >
           <Add/>
         </IconButton>
