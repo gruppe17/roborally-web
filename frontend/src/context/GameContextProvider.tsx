@@ -303,7 +303,7 @@ const   unselectGame= async () => {
           try {
           game = (await GameApi.getGame(gameId)).data
           } catch (e) {
-          
+          console.error(e)
           }
 
           setCurrentGame((await GameApi.getGame(gameId)).data);
