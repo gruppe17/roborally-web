@@ -8,6 +8,7 @@ import { GamesListTab } from "./menu-tabs/GamesListTabComponent";
 import { PlayersTab } from "./menu-tabs/PlayersTabComponent";
 import { Box } from "grommet";
 import GameContext from "../context/GameContext";
+import GameApi from "../api/GameApi";
 
 function TabButton(props: {
   setCurrentTab: Function;
@@ -15,7 +16,7 @@ function TabButton(props: {
   label: string;
   badge?: number;
   icon?: JSX.Element;
-}) {
+}) : JSX.Element {
   return (
     <IconButton
       color={"primary"}
@@ -69,12 +70,16 @@ function MenuComponent(): ReactElement {
         flex
         direction="row"
       >
-        <TabButton
-          setCurrentTab={setCurrentTab}
-          tabName="new-game"
-          label="New game"
-          icon={<Add />}
-        />
+        <IconButton
+          color={"primary"}
+          size={"medium"}
+          onClick={async () => {
+            const gameId = (await GameApi.createGame()).data;
+            GameApi.createBoard(gameId, "Board", 8, 8);
+          }}
+        >
+          <Add/>
+        </IconButton>
         <TabButton
           setCurrentTab={setCurrentTab}
           tabName="games"
