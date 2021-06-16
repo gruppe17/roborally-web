@@ -236,6 +236,13 @@ useEffect(() => {
     };
   }, [currentBoard, currentPlayerIndex]);
 
+const   unselectGame= async () => {
+  if (!currentGame || !currentUser) return;
+  GameApi.leaveGame(currentGame?.gameId, currentUser?.userId);
+  setCurrentGame(undefined);
+  setCurrentBoard(undefined);
+},
+
   return (
     <GameContext.Provider
       value={{
@@ -244,13 +251,12 @@ useEffect(() => {
           GameApi.joinGame(gameId, currentUser!.userId);
           setCurrentGame((await GameApi.getGame(gameId)).data);
         },
-        unselectGame: async () => {
-          if (!currentGame || !currentUser) return;
-          GameApi.leaveGame(currentGame?.gameId, currentUser?.userId);
-          setCurrentGame(undefined);
-          setCurrentBoard(undefined);
-        },
+        unselectGame: unselectGame,
         deleteGame: async(gameid : number) => {
+          if(currentGame){
+            if(currentGame.gameId === gameid)
+              unselectGame();
+          }
           GameApi.removeGame(gameid)
         },
         loaded: loaded,
