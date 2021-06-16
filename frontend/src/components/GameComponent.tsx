@@ -9,7 +9,7 @@ import GameContext from "../context/GameContext";
 
 export function GameComponent(props: { game: Game; }) {
   const [isEditing, setIsEditing] = useState(false);
-  const { currentUser } = useContext(GameContext);
+  const { currentUser, selectGame, unselectGame, deleteGame } = useContext(GameContext);
   return (
     <Box
       height="64px"
@@ -30,7 +30,7 @@ export function GameComponent(props: { game: Game; }) {
           variant="contained"
           color="primary"
           onClick={() => {
-            GameApi.joinGame(props.game.gameId, currentUser.userId);
+            selectGame(props.game.gameId);
           }}>
           <Box flexDirection="row">
             <Typography>{props.game.name}</Typography>
@@ -43,10 +43,10 @@ export function GameComponent(props: { game: Game; }) {
       <IconButton onClick={() => setIsEditing(!isEditing)}>
         <Edit />
       </IconButton>
-      <IconButton onClick={() => GameApi.removeGame(props.game.gameId)}>
+      <IconButton onClick={() => deleteGame(props.game.gameId)}>
         <RemoveCircle />
       </IconButton>
-      <IconButton onClick={() => GameApi.leaveGame(props.game.gameId, currentUser.userId)}>
+      <IconButton onClick={() => unselectGame()}>
         <ExitToApp />
       </IconButton>
     </Box>
