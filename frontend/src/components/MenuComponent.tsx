@@ -2,7 +2,6 @@ import React, { useState, ReactElement, useContext } from "react";
 import { IconButton } from "@material-ui/core/";
 import { Gamepad, Add, People , Games} from "@material-ui/icons";
 
-import styles from "../styling/MenuComponent.module.scss";
 import { GamesListTab } from "./menu-tabs/GamesListTabComponent";
 import { PlayersTab } from "./menu-tabs/PlayersTabComponent";
 import { Box } from "grommet";
@@ -30,7 +29,7 @@ function TabButton(props: {
 
 function MenuComponent(): ReactElement {
   const [currentTab, setCurrentTab] =
-    useState<"new-game" | "games" | "players">("new-game");
+    useState<"games" | "players">("games");
 
   const { currentGame, currentUser } = useContext(GameContext);
 
