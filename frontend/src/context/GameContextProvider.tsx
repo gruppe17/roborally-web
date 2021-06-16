@@ -79,8 +79,10 @@ useEffect(() => {
       .then((game) => {
         setCurrentGame(game.data);
       })
-      .catch(() => {
-        //console.error("Error while fetching chosen game from backend");
+      .catch((error) => {
+        console.error("Error while fetching chosen game from backend");
+        console.error(error);
+
       });
 
   const updateGameContext = (id: number) => {
@@ -115,16 +117,18 @@ useEffect(() => {
   };
 
   const [loaded, setLoaded] = useState<boolean>(false);
-  useEffect(() => {
-    updateGameContext(0);
-  }, [updateGameContext]);
 
   useEffect(() => {
+    /*if (!currentGame) {
+      updateGameContext(0);
+    }*/
     const intervalId = setInterval(() => {
       if (currentGame) {
         updateGameContext(currentGame.gameId);
+      }else{
+        updateGameContext(0);
       }
-    }, 5000);
+    }, 1500);
     return () => {
       clearInterval(intervalId);
     };
@@ -180,10 +184,10 @@ useEffect(() => {
   const game = useMemo<Game>(() => {
     if (currentGame)
       return {
-        gameId: currentGame!.gameId,
-        name: currentGame!.name,
-        started: currentGame!.started,
-        users: currentGame!.users,
+        gameId: currentGame.gameId,
+        name: currentGame.name,
+        started: currentGame.started,
+        users: currentGame.users,
       };
     return {
       gameId: 0,
@@ -196,9 +200,9 @@ useEffect(() => {
   const user = useMemo<User>(() => {
     if (currentUser)
       return {
-        userId: currentUser!.userId,
-        userName: currentUser!.userName,
-        currentGame: currentGame ? currentGame.gameId : 0 
+        userId: currentUser.userId,
+        userName: currentUser.userName,
+        currentGame: currentUser.currentGame
       };
 
     return {
