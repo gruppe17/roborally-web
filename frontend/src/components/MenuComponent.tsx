@@ -3,7 +3,6 @@ import { IconButton } from "@material-ui/core/";
 import { Gamepad, Add, People , Games} from "@material-ui/icons";
 
 import styles from "../styling/MenuComponent.module.scss";
-import { NewGameTab } from "./menu-tabs/NewGameTabComponent";
 import { GamesListTab } from "./menu-tabs/GamesListTabComponent";
 import { PlayersTab } from "./menu-tabs/PlayersTabComponent";
 import { Box } from "grommet";
@@ -36,8 +35,6 @@ function MenuComponent(): ReactElement {
 
   const tabContent = () => {
     switch (currentTab) {
-      case "new-game":
-        return <NewGameTab />;
       case "games":
         return <GamesListTab />;
       case "players":
