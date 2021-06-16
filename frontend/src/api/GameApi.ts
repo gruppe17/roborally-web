@@ -1,10 +1,13 @@
 import axios from "axios";
 import { Board } from "../types/Board";
+import { Game } from "../types/Game";
 import { Space } from "../types/Space";
+import { User } from "../types/User";
 
 class GameApi {
+
     private static instance: GameApi;
-    private readonly BACKEND_URL = "https://roborally-backend.herokuapp.com" // "https://roborallyserver.tobiasmaneschijn.com/"
+    private readonly BACKEND_URL = "https://roborally-backend.herokuapp.com" // "http://localhost:8080" "https://roborallyserver.tobiasmaneschijn.com/"
     private constructor() { }
 
     public static getInstance(): GameApi {
@@ -14,8 +17,8 @@ class GameApi {
         return GameApi.instance;
     }
 
-    public getBoard(boardId: number) {
-        return axios.get<Board>(`${this.BACKEND_URL}/board/${boardId}`).then(value => value.data)
+    public getBoard(gameId : number) {
+        return axios.get<Board>(`${this.BACKEND_URL}/game/get/${gameId}/board`).then(value => value.data)
     }
 
     public async getBoards() {
@@ -27,35 +30,72 @@ class GameApi {
      * @returns 
      */
     public async getGames() {
-        return await axios.get<Board[]>(`${this.BACKEND_URL}/games`)
+        return await axios.get<Game[]>(`${this.BACKEND_URL}/game/all`)
     }
 
-    /**
-     * Add player to a game
-     */
-    public async joinGame() {
-        // Not yet implemented
-        return null;
+    public async createGame() {
+        return await axios.post<number>(`${this.BACKEND_URL}/game/new`)
     }
 
-    public async createBoard(name: String, height: Number, width: Number) {
+
+    public async getGame(gameId : number) {
+        return await axios.get<Game>(`${this.BACKEND_URL}/game/get/${gameId}`)
+    }
+
+    public async joinGame(gameId: number, userId : number)  {
+        return await axios.post(`${this.BACKEND_URL}/game/join/${gameId}/${userId}`)
+    }
+
+    public async leaveGame (gameId : number, userId : number) {
+        return await axios.put(`${this.BACKEND_URL}/game/leave/${gameId}/${userId}`)
+    }
+
+    public async editGameName(gameId: number, title: string) {
+        return await axios.put<boolean>(`${this.BACKEND_URL}/game/get/${gameId}/edit/${title}`)
+    }
+
+    // Should return a boolean or an error message from the backend 
+    public async removeGame(gameId: number) {
+        return await axios.delete(`${this.BACKEND_URL}/game/get/${gameId}/remove`)
+    }
+
+
+    public async getAllUsers() {
+        return await axios.get<User[]>(`${this.BACKEND_URL}/user/all`);
+    }
+
+    public async createUser() {
+        return await axios.post<number>(`${this.BACKEND_URL}/user/new`)
+    }
+
+
+    public async getUser(userId : number) {
+        return await axios.get<User>(`${this.BACKEND_URL}/user/get/${userId}`)
+    }
+
+    public async removeUser(userId : number) {
+        return await axios.delete(`${this.BACKEND_URL}/user/get/${userId}/remove`)
+    }
+
+
+    public async createBoard(gameId: number, name: String, height: number, width: Number) {
 
         const board = {
-            "boardId": 1,
+            "boardId": gameId,
             "boardName": name,
             "height": height,
             "width": width,
         }
-        return await axios.post(`${this.BACKEND_URL}/board`, board)
+        return await axios.post(`${this.BACKEND_URL}/game/get/${gameId}/board/new`, board)
     }
 
 
-    public moveCurrentPlayer(boardId: number, space: Space) {
-        return axios.put(`${this.BACKEND_URL}/board/${boardId}/move`, space)
+    public moveCurrentPlayer(gameId: number, space: Space) {
+        return axios.put(`${this.BACKEND_URL}/game/get/${gameId}/board/move`, space)
     }
 
-    public switchPlayer(boardId: number) {
-        return axios.put(`${this.BACKEND_URL}/board/${boardId}/switchplayer`)
+    public switchPlayer(gameId: number) {
+        return axios.put(`${this.BACKEND_URL}/game/get/${gameId}/board/switchplayer`)
     }
 }
 

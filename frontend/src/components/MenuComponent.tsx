@@ -1,26 +1,37 @@
-import React, { useState, ReactElement } from "react";
+import React, { useState, ReactElement, useContext } from "react";
+import { IconButton } from "@material-ui/core/";
+import { Gamepad, Add, People , Games} from "@material-ui/icons";
+
 import styles from "../styling/MenuComponent.module.scss";
 import { NewGameTab } from "./menu-tabs/NewGameTabComponent";
 import { GamesListTab } from "./menu-tabs/GamesListTabComponent";
 import { PlayersTab } from "./menu-tabs/PlayersTabComponent";
-import { Box, Button } from "grommet";
+import { Box } from "grommet";
+import GameContext from "../context/GameContext";
 
-function TabButton(props : {setCurrentTab: Function, tabName: string, label: string }) {
+function TabButton(props: {
+  setCurrentTab: Function;
+  tabName: string;
+  label: string;
+  badge?: number;
+  icon?: JSX.Element;
+}) {
   return (
-    <Button
-      size="medium"
-      primary    
-      label={props.label}  
+    <IconButton
+      color={"primary"}
+      size={"medium"}
       onClick={() => props.setCurrentTab(props.tabName)}
     >
-     
-    </Button>
+      {props.icon}
+    </IconButton>
   );
 }
 
 function MenuComponent(): ReactElement {
   const [currentTab, setCurrentTab] =
     useState<"new-game" | "games" | "players">("new-game");
+
+  const { currentGame, currentUser } = useContext(GameContext);
 
   const tabContent = () => {
     switch (currentTab) {
@@ -33,13 +44,51 @@ function MenuComponent(): ReactElement {
     }
   };
   return (
-    <Box gap="small" color="white" width="medium" fill background="#181818">
-      <Box gap="medium" flex direction="row" height="small" width="100%">
-        <TabButton setCurrentTab={setCurrentTab} tabName="new-game" label="New game" />
-        <TabButton setCurrentTab={setCurrentTab} tabName="games" label="Games" />
-        <TabButton setCurrentTab={setCurrentTab} tabName="players" label="Players" />
+    <Box
+      pad="small"
+      gap="small"
+      color="white"
+      width="medium"
+      height="100%"
+      background="#181818"
+    >
+      <Box justify="evenly" direction="row">
+        <Box direction="row">
+          <People /> {currentUser.userName}
+        </Box>
+        <Box direction="row">
+          <Games /> {currentGame.name}
+        </Box>
       </Box>
-      <Box height="90%">{tabContent()}</Box>
+
+      <Box
+        pad={"small"}
+        gap="medium"
+        justify="evenly"
+        alignContent="between"
+        flex
+        direction="row"
+      >
+        <TabButton
+          setCurrentTab={setCurrentTab}
+          tabName="new-game"
+          label="New game"
+          icon={<Add />}
+        />
+        <TabButton
+          setCurrentTab={setCurrentTab}
+          tabName="games"
+          label="Games"
+          icon={<Gamepad />}
+        />
+        <TabButton
+          setCurrentTab={setCurrentTab}
+          tabName="players"
+          label="Players"
+          icon={<People />}
+        />
+      </Box>
+      <Box height="85%">{tabContent()}</Box>
     </Box>
   );
 }

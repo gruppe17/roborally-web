@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.6.2",
@@ -20,6 +21,7 @@
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
     "react-spinners": "^0.10.6",
+    "react-use-cookie": "^1.2.1",
     "styled-components": "^5.3.0",
     "typescript": "^4.1.3",
     "web-vitals": "^0.2.4"
@@ -28,6 +30,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage",
     "cy:open": "$(npm bin)/cypress open",
     "cy:run": "$(npm bin)/cypress run",
     "test:all": "npm run && npm run cy:run",
@@ -50,5 +53,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/jasmine-expect": "^3.8.1",
+    "jasmine-expect": "^5.0.0",
+    "jest-extended": "^0.11.5"
   }
 }
