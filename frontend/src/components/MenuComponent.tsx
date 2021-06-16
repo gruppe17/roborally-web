@@ -32,7 +32,7 @@ function MenuComponent(): ReactElement {
   const [currentTab, setCurrentTab] =
     useState<"new-game" | "games" | "players">("new-game");
 
-  const { currentGame, currentUser, createGame } = useContext(GameContext);
+  const { currentGame, currentUser, createGame, forceViewUpdate } = useContext(GameContext);
 
   const tabContent = () => {
     switch (currentTab) {
@@ -71,7 +71,10 @@ function MenuComponent(): ReactElement {
         <IconButton
           color={"primary"}
           size={"medium"}
-          onClick={createGame}
+          onClick={ () => {
+            createGame()
+            forceViewUpdate()
+          }}
         >
           <Add/>
         </IconButton>
