@@ -283,7 +283,7 @@ const   unselectGame= async () => {
   });
 }
 
-const forceViewUpdate = async () => {
+const forceViewUpdate = () => {
   if(!currentUser) return;
   updateGameContext(currentUser.currentGame);
 }
