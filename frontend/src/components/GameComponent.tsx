@@ -9,7 +9,7 @@ import GameContext from "../context/GameContext";
 
 export function GameComponent(props: { game: Game; }) {
   const [isEditing, setIsEditing] = useState(false);
-  const { currentUser, selectGame, unselectGame, deleteGame } = useContext(GameContext);
+  const {selectGame, unselectGame, deleteGame } = useContext(GameContext);
   return (
     <Box
       height="64px"
