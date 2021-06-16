@@ -288,6 +288,12 @@ const forceViewUpdate = async () => {
   updateGameContext(currentUser.currentGame);
 }
 
+const createGame = async () => {
+  const gameId = (await GameApi.createGame()).data;
+  GameApi.createBoard(gameId, "Board", 8, 8);
+  return gameId;
+}
+
   return (
     <GameContext.Provider
       value={{
@@ -331,6 +337,7 @@ const forceViewUpdate = async () => {
         setCurrentPlayerOnSpace: setPlayerOnSpace,
         switchCurrentPlayer: switchToNextPlayer,
         forceViewUpdate: forceViewUpdate,
+        createGame: createGame,
       }}
     >
       {children}
