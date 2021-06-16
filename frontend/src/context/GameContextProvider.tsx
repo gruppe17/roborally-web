@@ -40,42 +40,37 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     width: 0,
   });
   const playerCount = useMemo(
-    () => currentBoard.playerDtos ? currentBoard.playerDtos.length : 0,
+    () => (currentBoard.playerDtos ? currentBoard.playerDtos.length : 0),
     [currentBoard.playerDtos]
   );
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
 
-const getCurrentUser = async () => {
-    if(userToken === undefined)
-    {
-      await createUser()
-    }
-    else{
+  const getCurrentUser = async () => {
+    if (userToken === undefined) {
+      await createUser();
+    } else {
       try {
-      const fetched = (await GameApi.getUser(parseInt(userToken))).data;
-      setCurrentUser(fetched)
+        const fetched = (await GameApi.getUser(parseInt(userToken))).data;
+        setCurrentUser(fetched);
       } catch (error) {
-        await createUser()
+        await createUser();
       }
     }
-}
+  };
 
-const createUser = async () => {
-  const user =  (await GameApi.createUser()).data
-  setUserToken(user + '')
+  const createUser = async () => {
+    const user = (await GameApi.createUser()).data;
+    setUserToken(user + "");
 
-  const fetched = (await GameApi.getUser(user)).data;
-  setCurrentUser(fetched)
-} 
+    const fetched = (await GameApi.getUser(user)).data;
+    setCurrentUser(fetched);
+  };
 
-useEffect(() => {
-    
-      getCurrentUser()
+  useEffect(() => {
+    getCurrentUser();
 
-  return () => {
-    
-  }
-}, [])
+    return () => {};
+  }, []);
 
   const updateGameContextGamesList = () =>
     GameApi.getGames()
@@ -93,9 +88,10 @@ useEffect(() => {
         setCurrentGame(game.data);
       })
       .catch((error) => {
-        console.error(`Error while fetching chosen game ${gameId} from backend`);
+        console.error(
+          `Error while fetching chosen game ${gameId} from backend`
+        );
         console.error(error);
-
       });
 
   const updateGameContext = (id: number) => {
@@ -128,14 +124,9 @@ useEffect(() => {
     updateGameContextGame(id);
     updateGameContextBoard(id);
 
-
-
-
-   //  console.log(currentGame)
-   //  console.log(currentBoard)
-   //  console.log(currentUser)
-
-
+    //  console.log(currentGame)
+    //  console.log(currentBoard)
+    //  console.log(currentUser)
   };
 
   const [loaded, setLoaded] = useState<boolean>(false);
@@ -147,7 +138,7 @@ useEffect(() => {
     const intervalId = setInterval(() => {
       if (currentUser) {
         updateGameContext(currentUser.currentGame);
-      }else{
+      } else {
         updateGameContext(0);
       }
     }, 1500);
@@ -224,13 +215,13 @@ useEffect(() => {
       return {
         userId: currentUser.userId,
         userName: currentUser.userName,
-        currentGame: currentUser.currentGame
+        currentGame: currentUser.currentGame,
       };
 
     return {
       userId: 0,
       userName: "Not logged in!",
-      currentGame: 0
+      currentGame: 0,
     };
   }, [currentUser]);
 
@@ -258,77 +249,80 @@ useEffect(() => {
     };
   }, [currentBoard, currentPlayerIndex]);
 
-const unselectGame = async () => {
-  if (!currentGame || !currentUser) return;
+  const unselectGame = async () => {
+    if (!currentGame || !currentUser) return;
 
-  const usr = currentUser;
-  usr.currentGame = 0;
-  setCurrentUser(usr)
+    const usr = currentUser;
+    usr.currentGame = 0;
+    setCurrentUser(usr);
 
-  GameApi.leaveGame(currentGame.gameId, currentUser.userId);
-  setCurrentGame({
-    gameId: 0,
-    name: "No game loaded",
-    started: false,
-    users: [],
-  });
-  setCurrentBoard({
-    playerDtos: [],
-    spaceDtos: [],
-    boardId: -1,
-    boardName: "",
-    currentPlayerDto: undefined,
-    height: 0,
-    width: 0,
-  });
-  forceViewUpdate();
-}
+    try {
+      GameApi.leaveGame(currentGame.gameId, currentUser.userId).catch((err) =>
+        console.log(err)
+      );
+      setCurrentGame({
+        gameId: 0,
+        name: "No game loaded",
+        started: false,
+        users: [],
+      });
+      setCurrentBoard({
+        playerDtos: [],
+        spaceDtos: [],
+        boardId: -1,
+        boardName: "",
+        currentPlayerDto: undefined,
+        height: 0,
+        width: 0,
+      });
+      forceViewUpdate();
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+  };
 
-const forceViewUpdate = () => {
-  if(!currentUser) return;
-  updateGameContext(currentUser.currentGame);
-}
+  const forceViewUpdate = () => {
+    if (!currentUser) return;
+    updateGameContext(currentUser.currentGame);
+  };
 
-const createGame = async () => {
-  const gameId = (await GameApi.createGame()).data;
-  GameApi.createBoard(gameId, "Board", 8, 8);
-  forceViewUpdate();
-  return gameId;
-}
+  const createGame = async () => {
+    const gameId = (await GameApi.createGame()).data;
+    forceViewUpdate();
+    return gameId;
+  };
 
-const selectGame = async (gameId: number) => {
-  if(!currentUser)
-  return
-  try {
-    await GameApi.joinGame(gameId, currentUser!.userId);
-  } catch (e) {
-  console.error(e)
-  return
-  }
-  const usr = currentUser;
-  usr.currentGame = gameId;
-  setCurrentUser(usr)
-  let game : Game
-  try {
-  game = (await GameApi.getGame(gameId)).data
-  setCurrentGame(game);
-  } catch (e) {
-  console.error(e)
-  }
-  forceViewUpdate();
-}
+  const selectGame = async (gameId: number) => {
+    if (!currentUser) return;
+    try {
+      await GameApi.joinGame(gameId, currentUser!.userId);
+    } catch (e) {
+      console.error(e);
+      return;
+    }
+    const usr = currentUser;
+    usr.currentGame = gameId;
+    setCurrentUser(usr);
+    let game: Game;
+    try {
+      game = (await GameApi.getGame(gameId)).data;
+      setCurrentGame(game);
+    } catch (e) {
+      console.error(e);
+    }
+    forceViewUpdate();
+  };
 
-const deleteGame = async(gameid : number) => {
-  if(!currentUser)
-  return
+  const deleteGame = async (gameid: number) => {
+    if (!currentUser) return;
 
-  if(currentGame){
-    if(currentGame.gameId === gameid)
-      unselectGame();
-  }
-  GameApi.removeGame(gameid).catch((err) => console.error(err))
-  forceViewUpdate(); //suboptimal: this is called twice here and in unselectGame
-}
+    if (currentGame) {
+      if (currentGame.gameId === gameid) unselectGame();
+    }
+    GameApi.removeGame(gameid).catch((err) => {});
+    forceViewUpdate(); //suboptimal: this is called twice here and in unselectGame
+  };
 
   return (
     <GameContext.Provider
