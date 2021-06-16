@@ -4,10 +4,12 @@ import { Game } from "../types/Game";
 import { Space } from "../types/Space";
 import { User } from "../types/User";
 
+
 class GameApi {
+    
 
     private static instance: GameApi;
-    private readonly BACKEND_URL = "http://localhost:8080" //"https://roborally-backend.herokuapp.com" //  "https://roborallyserver.tobiasmaneschijn.com/"
+    private readonly BACKEND_URL = "http://localhost:8080" //"https://roborally-backend.herokuapp.com" //   "https://roborallyserver.tobiasmaneschijn.com/"
     private constructor() { }
 
     public static getInstance(): GameApi {
@@ -48,7 +50,7 @@ class GameApi {
     }
 
     public async leaveGame (gameId : number, userId : number) {
-        return await axios.put(`${this.BACKEND_URL}/game/leave/${gameId}/${userId}`)
+        return await axios.put(`${this.BACKEND_URL}/game/leave/${gameId}/${userId}`, {})
     }
 
     public async editGameName(gameId: number, title: string) {

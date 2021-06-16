@@ -13,7 +13,6 @@ export function NewGameTab(props: INewGameTabProps) {
         color="primary"
         onClick={async () => {
           const gameId = (await GameApi.createGame()).data;
-          GameApi.createBoard(gameId, "Board", 8, 8);
         }}
       >
         New Default Game

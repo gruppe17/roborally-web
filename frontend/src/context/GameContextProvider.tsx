@@ -22,13 +22,26 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   const [userToken, setUserToken] = useCookie("user");
   //const [lastGameToken, setLastGameToken] = useCookie("last-game");
 
-  const [currentGame, setCurrentGame] = useState<Game>();
+  const [currentGame, setCurrentGame] = useState<Game>({
+    gameId: 0,
+    name: "No game loaded",
+    started: false,
+    users: [],
+  });
   const [games, setGames] = useState<Game[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
-  const [currentBoard, setCurrentBoard] = useState<Board>();
+  const [currentBoard, setCurrentBoard] = useState<Board>({
+    playerDtos: [],
+    spaceDtos: [],
+    boardId: -1,
+    boardName: "",
+    currentPlayerDto: undefined,
+    height: 0,
+    width: 0,
+  });
   const playerCount = useMemo(
-    () => currentBoard?.playerDtos.length,
-    [currentBoard?.playerDtos]
+    () => currentBoard.playerDtos ? currentBoard.playerDtos.length : 0,
+    [currentBoard.playerDtos]
   );
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
 
@@ -80,7 +93,7 @@ useEffect(() => {
         setCurrentGame(game.data);
       })
       .catch((error) => {
-        console.error("Error while fetching chosen game from backend");
+        console.error(`Error while fetching chosen game ${gameId} from backend`);
         console.error(error);
 
       });
@@ -112,8 +125,17 @@ useEffect(() => {
         });
 
     updateGameContextGamesList();
-    updateGameContextBoard(id);
     updateGameContextGame(id);
+    updateGameContextBoard(id);
+
+
+
+
+    console.log(currentGame)
+    console.log(currentBoard)
+    console.log(currentUser)
+
+
   };
 
   const [loaded, setLoaded] = useState<boolean>(false);
@@ -123,8 +145,8 @@ useEffect(() => {
       updateGameContext(0);
     }*/
     const intervalId = setInterval(() => {
-      if (currentGame) {
-        updateGameContext(currentGame.gameId);
+      if (currentUser) {
+        updateGameContext(currentUser.currentGame);
       }else{
         updateGameContext(0);
       }
@@ -215,14 +237,14 @@ useEffect(() => {
   const board = useMemo<Board>(() => {
     if (currentBoard)
       return {
-        spaceDtos: currentBoard!.spaceDtos,
-        playerDtos: currentBoard!.playerDtos,
-        currentPlayerDto: currentBoard!.currentPlayerDto,
+        spaceDtos: currentBoard.spaceDtos,
+        playerDtos: currentBoard.playerDtos,
+        currentPlayerDto: currentBoard.currentPlayerDto,
         currentPlayerIndex: currentPlayerIndex,
-        width: currentBoard!.width,
-        height: currentBoard!.height,
-        boardName: currentBoard!.boardName,
-        boardId: currentBoard!.boardId,
+        width: currentBoard.width,
+        height: currentBoard.height,
+        boardName: currentBoard.boardName,
+        boardId: currentBoard.boardId,
       };
 
     return {
@@ -238,9 +260,27 @@ useEffect(() => {
 
 const   unselectGame= async () => {
   if (!currentGame || !currentUser) return;
-  GameApi.leaveGame(currentGame?.gameId, currentUser?.userId);
-  setCurrentGame(undefined);
-  setCurrentBoard(undefined);
+
+  const usr = currentUser;
+  usr.currentGame = 0;
+  setCurrentUser(usr)
+
+  GameApi.leaveGame(currentGame.gameId, currentUser.userId);
+  setCurrentGame({
+    gameId: 0,
+    name: "No game loaded",
+    started: false,
+    users: [],
+  });
+  setCurrentBoard({
+    playerDtos: [],
+    spaceDtos: [],
+    boardId: -1,
+    boardName: "",
+    currentPlayerDto: undefined,
+    height: 0,
+    width: 0,
+  });
 }
 
   return (
@@ -248,11 +288,20 @@ const   unselectGame= async () => {
       value={{
         games: games,
         selectGame: async (gameId: number) => {
+          if(!currentUser)
+          return
           GameApi.joinGame(gameId, currentUser!.userId);
+          const usr = currentUser;
+          usr.currentGame = gameId;
+          setCurrentUser(usr)
           setCurrentGame((await GameApi.getGame(gameId)).data);
+          
         },
         unselectGame: unselectGame,
         deleteGame: async(gameid : number) => {
+          if(!currentUser)
+          return
+
           if(currentGame){
             if(currentGame.gameId === gameid)
               unselectGame();
