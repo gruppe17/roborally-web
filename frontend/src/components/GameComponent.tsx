@@ -31,17 +31,13 @@ export function GameComponent(props: { game: Game; }) {
           color="primary"
           onClick={() => {
             GameApi.joinGame(props.game.gameId, currentUser.userId);
-          }}
-        >
-          {!isEditing && //This is no longer usefull? This is not used if isEditing is true
-          (
-            <Box flexDirection="row">
-              <Typography>{props.game.name}</Typography>
-              <Typography>
-                {props.game.users && props.game.users.length}
-              </Typography>
-            </Box>
-          )}
+          }}>
+          <Box flexDirection="row">
+            <Typography>{props.game.name}</Typography>
+            <Typography>
+              {props.game.users && props.game.users.length}
+            </Typography>
+          </Box>
         </Button>
       )}
       <IconButton onClick={() => setIsEditing(!isEditing)}>
@@ -49,6 +45,9 @@ export function GameComponent(props: { game: Game; }) {
       </IconButton>
       <IconButton onClick={() => GameApi.removeGame(props.game.gameId)}>
         <RemoveCircle />
+      </IconButton>
+      <IconButton onClick={() => GameApi.leaveGame(props.game.gameId, currentUser.userId)}>
+        <ExitToApp />
       </IconButton>
     </Box>
   );
