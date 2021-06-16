@@ -33,7 +33,8 @@ export function GameComponent(props: { game: Game; }) {
             GameApi.joinGame(props.game.gameId, currentUser.userId);
           }}
         >
-          {!isEditing && (
+          {!isEditing && //This is no longer usefull? This is not used if isEditing is true
+          (
             <Box flexDirection="row">
               <Typography>{props.game.name}</Typography>
               <Typography>
