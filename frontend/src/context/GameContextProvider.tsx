@@ -284,7 +284,8 @@ const   unselectGame= async () => {
 }
 
 const forceViewUpdate = async () => {
-
+  if(!currentUser) return;
+  updateGameContext(currentUser.currentGame);
 }
 
   return (
