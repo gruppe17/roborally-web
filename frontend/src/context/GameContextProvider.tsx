@@ -131,9 +131,9 @@ useEffect(() => {
 
 
 
-    console.log(currentGame)
-    console.log(currentBoard)
-    console.log(currentUser)
+   //  console.log(currentGame)
+   //  console.log(currentBoard)
+   //  console.log(currentUser)
 
 
   };
@@ -290,12 +290,23 @@ const   unselectGame= async () => {
         selectGame: async (gameId: number) => {
           if(!currentUser)
           return
-          GameApi.joinGame(gameId, currentUser!.userId);
+          try {
+            await GameApi.joinGame(gameId, currentUser!.userId);
+          } catch (e) {
+          console.error(e)
+          return
+          }
           const usr = currentUser;
           usr.currentGame = gameId;
           setCurrentUser(usr)
-          setCurrentGame((await GameApi.getGame(gameId)).data);
+          let game : Game
+          try {
+          game = (await GameApi.getGame(gameId)).data
+          } catch (e) {
           
+          }
+
+          setCurrentGame((await GameApi.getGame(gameId)).data);
         },
         unselectGame: unselectGame,
         deleteGame: async(gameid : number) => {
@@ -306,7 +317,7 @@ const   unselectGame= async () => {
             if(currentGame.gameId === gameid)
               unselectGame();
           }
-          GameApi.removeGame(gameid)
+          GameApi.removeGame(gameid).catch((err) => console.error(err))
         },
         loaded: loaded,
         board: board,
