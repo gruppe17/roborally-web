@@ -265,7 +265,8 @@ const unselectGame = async () => {
   usr.currentGame = 0;
   setCurrentUser(usr)
 
-  GameApi.leaveGame(currentGame.gameId, currentUser.userId);
+  try {
+  GameApi.leaveGame(currentGame.gameId, currentUser.userId)
   setCurrentGame({
     gameId: 0,
     name: "No game loaded",
@@ -282,6 +283,11 @@ const unselectGame = async () => {
     width: 0,
   });
   forceViewUpdate();
+  } catch (error) {
+    console.error(error)
+  }
+  
+ 
 }
 
 const forceViewUpdate = () => {
