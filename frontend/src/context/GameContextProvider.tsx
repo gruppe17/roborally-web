@@ -241,7 +241,7 @@ const   unselectGame= async () => {
   GameApi.leaveGame(currentGame?.gameId, currentUser?.userId);
   setCurrentGame(undefined);
   setCurrentBoard(undefined);
-},
+}
 
   return (
     <GameContext.Provider
