@@ -40,13 +40,13 @@ export function GameComponent(props: { game: Game; }) {
           </Box>
         </Button>
       )}
-      <IconButton onClick={() => setIsEditing(!isEditing)}>
+      <IconButton color={"secondary"} onClick={() => setIsEditing(!isEditing)}>
         <Edit />
       </IconButton>
-      <IconButton onClick={() => deleteGame(props.game.gameId)}>
+      <IconButton color={"secondary"} onClick={() => deleteGame(props.game.gameId)}>
         <RemoveCircle />
       </IconButton>
-      <IconButton onClick={() => unselectGame()}>
+      <IconButton color={"secondary"} onClick={() => unselectGame()}>
         <ExitToApp />
       </IconButton>
     </Box>

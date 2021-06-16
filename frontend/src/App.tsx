@@ -7,7 +7,7 @@ import GameContextProvider from "./context/GameContextProvider";
 import styles from "./styling/App.module.scss"; //Import css module
 import { createMuiTheme, ThemeProvider, withStyles } from "@material-ui/core/styles";
 import { Box, Grommet, Main, ThemeType } from "grommet";
-import { green, purple } from "@material-ui/core/colors";
+import { red, blue, green, purple } from "@material-ui/core/colors";
 
 const theme: ThemeType = {
   global: {
@@ -28,11 +28,18 @@ const theme: ThemeType = {
 const muiTheme = createMuiTheme({
   palette: {
     primary: {
-      main: purple[500],
+      light: purple[500],
+      main: purple[700],
+      dark: purple[800],
     },
     secondary: {
-      main: green[500],
+      light: green[600],
+      main: green[800],
+      dark: '#b9f6ca',
     },
+    warning:{
+      main: red[500],
+    }
   },
 });
 
