@@ -283,6 +283,10 @@ const   unselectGame= async () => {
   });
 }
 
+const forceViewUpdate = async () => {
+
+}
+
   return (
     <GameContext.Provider
       value={{
@@ -325,6 +329,7 @@ const   unselectGame= async () => {
         currentUser: user,
         setCurrentPlayerOnSpace: setPlayerOnSpace,
         switchCurrentPlayer: switchToNextPlayer,
+        forceViewUpdate: forceViewUpdate,
       }}
     >
       {children}
