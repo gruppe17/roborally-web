@@ -7,7 +7,7 @@ import { User } from "../types/User";
 class GameApi {
 
     private static instance: GameApi;
-    private readonly BACKEND_URL = "https://roborally-backend.herokuapp.com" // "http://localhost:8080" "https://roborallyserver.tobiasmaneschijn.com/"
+    private readonly BACKEND_URL = "http://localhost:8080" //"https://roborally-backend.herokuapp.com" //  "https://roborallyserver.tobiasmaneschijn.com/"
     private constructor() { }
 
     public static getInstance(): GameApi {
@@ -43,7 +43,7 @@ class GameApi {
     }
 
     public async joinGame(gameId: number, userId : number)  {
-        
+
         return await axios.post(`${this.BACKEND_URL}/game/join/${gameId}/${userId}`)
     }
 
