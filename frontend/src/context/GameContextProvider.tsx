@@ -250,6 +250,9 @@ useEffect(() => {
           setCurrentGame(undefined);
           setCurrentBoard(undefined);
         },
+        deleteGame: async(gameid : number) => {
+          GameApi.removeGame(gameid)
+        },
         loaded: loaded,
         board: board,
         currentGame: game,
