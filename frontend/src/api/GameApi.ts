@@ -43,6 +43,7 @@ class GameApi {
     }
 
     public async joinGame(gameId: number, userId : number)  {
+        
         return await axios.post(`${this.BACKEND_URL}/game/join/${gameId}/${userId}`)
     }
 

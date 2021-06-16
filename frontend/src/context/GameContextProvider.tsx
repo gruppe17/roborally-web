@@ -7,7 +7,6 @@ import React, {
   useState,
 } from "react";
 import GameContext from "./GameContext";
-import { Player } from "../types/Player";
 import { Board } from "../types/Board";
 import { Space } from "../types/Space";
 import GameApi from "../api/GameApi";
@@ -21,6 +20,8 @@ type GameContextProviderPropsType = {
 
 const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   const [userToken, setUserToken] = useCookie("user");
+  //const [lastGameToken, setLastGameToken] = useCookie("last-game");
+
   const [currentGame, setCurrentGame] = useState<Game>();
   const [games, setGames] = useState<Game[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
@@ -31,20 +32,33 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   );
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
 
-useEffect(() => {
-    if (userToken === undefined) {
-      GameApi.createUser().then(async (response) => {
-        setUserToken("" + response.data);
-  
-        const fetched = (await GameApi.getUser(response.data)).data;
-        setCurrentUser(fetched);
-      });
-    } else {
-      GameApi.getUser(parseInt(userToken)).then((res) => {
-        setCurrentUser(res.data);
-      });
+const getCurrentUser = async () => {
+    if(userToken === undefined)
+    {
+      await createUser()
     }
-  
+    else{
+      try {
+      const fetched = (await GameApi.getUser(parseInt(userToken))).data;
+      setCurrentUser(fetched)
+      } catch (error) {
+        await createUser()
+      }
+    }
+}
+
+const createUser = async () => {
+  const user =  (await GameApi.createUser()).data
+  setUserToken(user + '')
+
+  const fetched = (await GameApi.getUser(user)).data;
+  setCurrentUser(fetched)
+} 
+
+useEffect(() => {
+    
+      getCurrentUser()
+
   return () => {
     
   }
@@ -57,7 +71,7 @@ useEffect(() => {
         setGames(games);
       })
       .catch(() => {
-        console.error("Error while fetching all games from backend");
+        //console.error("Error while fetching all games from backend");
       });
 
   const updateGameContextGame = (gameId: number) =>
@@ -66,7 +80,7 @@ useEffect(() => {
         setCurrentGame(game.data);
       })
       .catch(() => {
-        console.error("Error while fetching chosen game from backend");
+        //console.error("Error while fetching chosen game from backend");
       });
 
   const updateGameContext = (id: number) => {
@@ -92,7 +106,7 @@ useEffect(() => {
           setLoaded(true);
         })
         .catch(() => {
-          console.error("Error while fetching board from backend");
+          //console.error("Error while fetching board from backend");
         });
 
     updateGameContextGamesList();
@@ -145,7 +159,7 @@ useEffect(() => {
           setLoaded(true);
         })
         .catch(() => {
-          console.error("Error while fetching board from backend");
+          //console.error("Error while fetching board from backend");
         });
     },
     [currentBoard, currentGame]
@@ -184,11 +198,13 @@ useEffect(() => {
       return {
         userId: currentUser!.userId,
         userName: currentUser!.userName,
+        currentGame: currentGame ? currentGame.gameId : 0 
       };
 
     return {
       userId: 0,
       userName: "Not logged in!",
+      currentGame: 0
     };
   }, [currentUser]);
 
@@ -238,8 +254,7 @@ useEffect(() => {
         switchCurrentPlayer: switchToNextPlayer,
       }}
     >
-      {children}{" "}
-      {/*See: https://reactjs.org/docs/composition-vs-inheritance.html*/}
+      {children}
     </GameContext.Provider>
   );
 };

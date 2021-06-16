@@ -31,7 +31,8 @@ const GameContext = createContext<GameContextType>({
     },
     currentUser: {
         userId: 0,
-        userName: "Not logged in!"
+        userName: "Not logged in!",
+        currentGame: 0
     },
     selectGame: async () => {},
     unselectGame: async () => {},
