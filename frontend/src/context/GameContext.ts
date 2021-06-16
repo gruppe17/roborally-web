@@ -16,7 +16,8 @@ export type GameContextType = {
     board: Board,
     setCurrentPlayerOnSpace: (space: Space) => Promise<void>,
     switchCurrentPlayer: () => Promise<void>,
-    forceViewUpdate : () => Promise<void>
+    forceViewUpdate : () => Promise<void>,
+    createGame : () => Promise<number>,
 }
 //Define a new context of type GameContextType
 //Below we define the "default" values which are set upon initialization of the context
@@ -52,7 +53,8 @@ const GameContext = createContext<GameContextType>({
     },
     switchCurrentPlayer: async () => {
     },
-    forceViewUpdate: async () => {}
+    forceViewUpdate: async () => {},
+    createGame: async () => {return -1},
 });
 
 export default GameContext
