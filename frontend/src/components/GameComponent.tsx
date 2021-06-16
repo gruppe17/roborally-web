@@ -43,10 +43,7 @@ export function GameComponent(props: { game: Game; }) {
       <IconButton color={"secondary"} onClick={() => setIsEditing(!isEditing)}>
         <Edit />
       </IconButton>
-      <IconButton color={"secondary"} onClick={() => {
-          deleteGame(props.game.gameId)
-          forceViewUpdate()
-        }}>
+      <IconButton color={"secondary"} onClick={() => {deleteGame(props.game.gameId)}}>
         <RemoveCircle />
       </IconButton>
       <IconButton color={"secondary"} onClick={() => unselectGame()}>

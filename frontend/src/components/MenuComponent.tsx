@@ -70,10 +70,7 @@ function MenuComponent(): ReactElement {
         <IconButton
           color={"primary"}
           size={"medium"}
-          onClick={ () => {
-            createGame()
-            forceViewUpdate()
-          }}
+          onClick={ () => {createGame()}}
         >
           <Add/>
         </IconButton>
