@@ -307,11 +307,11 @@ const forceViewUpdate = async () => {
           let game : Game
           try {
           game = (await GameApi.getGame(gameId)).data
+          setCurrentGame(game);
           } catch (e) {
           console.error(e)
           }
 
-          setCurrentGame((await GameApi.getGame(gameId)).data);
         },
         unselectGame: unselectGame,
         deleteGame: async(gameid : number) => {
