@@ -258,7 +258,7 @@ useEffect(() => {
     };
   }, [currentBoard, currentPlayerIndex]);
 
-const   unselectGame= async () => {
+const unselectGame = async () => {
   if (!currentGame || !currentUser) return;
 
   const usr = currentUser;
@@ -281,6 +281,7 @@ const   unselectGame= async () => {
     height: 0,
     width: 0,
   });
+  forceViewUpdate();
 }
 
 const forceViewUpdate = () => {
@@ -291,45 +292,51 @@ const forceViewUpdate = () => {
 const createGame = async () => {
   const gameId = (await GameApi.createGame()).data;
   GameApi.createBoard(gameId, "Board", 8, 8);
+  forceViewUpdate();
   return gameId;
+}
+
+const selectGame = async (gameId: number) => {
+  if(!currentUser)
+  return
+  try {
+    await GameApi.joinGame(gameId, currentUser!.userId);
+  } catch (e) {
+  console.error(e)
+  return
+  }
+  const usr = currentUser;
+  usr.currentGame = gameId;
+  setCurrentUser(usr)
+  let game : Game
+  try {
+  game = (await GameApi.getGame(gameId)).data
+  setCurrentGame(game);
+  } catch (e) {
+  console.error(e)
+  }
+  forceViewUpdate();
+}
+
+const deleteGame = async(gameid : number) => {
+  if(!currentUser)
+  return
+
+  if(currentGame){
+    if(currentGame.gameId === gameid)
+      unselectGame();
+  }
+  GameApi.removeGame(gameid).catch((err) => console.error(err))
+  forceViewUpdate(); //suboptimal: this is called twice here and in unselectGame
 }
 
   return (
     <GameContext.Provider
       value={{
         games: games,
-        selectGame: async (gameId: number) => {
-          if(!currentUser)
-          return
-          try {
-            await GameApi.joinGame(gameId, currentUser!.userId);
-          } catch (e) {
-          console.error(e)
-          return
-          }
-          const usr = currentUser;
-          usr.currentGame = gameId;
-          setCurrentUser(usr)
-          let game : Game
-          try {
-          game = (await GameApi.getGame(gameId)).data
-          setCurrentGame(game);
-          } catch (e) {
-          console.error(e)
-          }
-
-        },
+        selectGame: selectGame,
         unselectGame: unselectGame,
-        deleteGame: async(gameid : number) => {
-          if(!currentUser)
-          return
-
-          if(currentGame){
-            if(currentGame.gameId === gameid)
-              unselectGame();
-          }
-          GameApi.removeGame(gameid).catch((err) => console.error(err))
-        },
+        deleteGame: deleteGame,
         loaded: loaded,
         board: board,
         currentGame: game,
