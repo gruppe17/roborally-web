@@ -10,7 +10,7 @@ export type UserContextType = {
 
 const UserContext = createContext<UserContextType>({
     currentUser: {
-        userId: 0,
+        userId: NaN,
         userName: "Not logged in!",
         currentGameId: NO_GAME_GAMEID
     },

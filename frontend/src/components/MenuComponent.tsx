@@ -11,7 +11,7 @@ import { GamesListTab } from "./menu-tabs/GamesListTabComponent";
 import { PlayersTab } from "./menu-tabs/PlayersTabComponent";
 import { Box } from "grommet";
 import GameContext from "../context/GameContext";
-import UserContext from '../context/UserContext';
+import UserContext from "../context/UserContext";
 
 function TabButton(props: {
   setCurrentTab: Function;

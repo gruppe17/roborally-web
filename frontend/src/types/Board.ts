@@ -24,3 +24,4 @@ export const noBoardBoard = {
     height: 0,
     width: 0,
 }
+
