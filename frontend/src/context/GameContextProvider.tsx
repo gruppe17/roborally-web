@@ -109,57 +109,57 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       });
   };
 
-  const updateGameContext = (id: number) => {
-    const updateGameContextBoard = () => {
-      if(currentGame.gameId === 0)
-    {
-      setLoaded(false);
-      setCurrentBoard({
-        playerDtos: [],
-        spaceDtos: [],
-        boardId: -1,
-        boardName: "",
-        currentPlayerDto: undefined,
-        height: 0,
-        width: 0,
-      });
-      return;
-    }
-      GameApi.getBoard(currentGame.gameId)
-        .then((result) => {
-          let updatedBoard = currentBoard;
-          const board = result.data;
-          updatedBoard.spaceDtos = board.spaceDtos;
-          updatedBoard.playerDtos = board.playerDtos;
-          updatedBoard.width = board.width;
-          updatedBoard.height = board.height;
+  const updateGameContextBoard = () => {
+    if(currentGame.gameId === 0)
+  {
+    setLoaded(false);
+    setCurrentBoard({
+      playerDtos: [],
+      spaceDtos: [],
+      boardId: -1,
+      boardName: "",
+      currentPlayerDto: undefined,
+      height: 0,
+      width: 0,
+    });
+    return;
+  }
+    GameApi.getBoard(currentGame.gameId)
+      .then((result) => {
+        let updatedBoard = currentBoard;
+        const board = result.data;
+        updatedBoard.spaceDtos = board.spaceDtos;
+        updatedBoard.playerDtos = board.playerDtos;
+        updatedBoard.width = board.width;
+        updatedBoard.height = board.height;
 
-          if (board.currentPlayerDto) {
-            updatedBoard.currentPlayerDto = board.currentPlayerDto;
-            board.playerDtos.forEach((player, index) => {
-              if (player.playerId === board.currentPlayerDto?.playerId) {
-                setCurrentPlayerIndex(index);
-              }
-            });
-          }
-          setCurrentBoard(updatedBoard);
-          console.log(updatedBoard);
-          setLoaded(true);
-        })
-        .catch(() => {
-          setLoaded(false);
-          setCurrentBoard({
-            playerDtos: [],
-            spaceDtos: [],
-            boardId: -1,
-            boardName: "",
-            currentPlayerDto: undefined,
-            height: 0,
-            width: 0,
+        if (board.currentPlayerDto) {
+          updatedBoard.currentPlayerDto = board.currentPlayerDto;
+          board.playerDtos.forEach((player, index) => {
+            if (player.playerId === board.currentPlayerDto?.playerId) {
+              setCurrentPlayerIndex(index);
+            }
           });
+        }
+        setCurrentBoard(updatedBoard);
+        console.log(updatedBoard);
+        setLoaded(true);
+      })
+      .catch(() => {
+        setLoaded(false);
+        setCurrentBoard({
+          playerDtos: [],
+          spaceDtos: [],
+          boardId: -1,
+          boardName: "",
+          currentPlayerDto: undefined,
+          height: 0,
+          width: 0,
         });
-    };
+      });
+  };
 
+  const updateGameContext = (id: number) => {
     updateGameContextGamesList();
     updateGameContextGame(id);
     updateGameContextBoard();
