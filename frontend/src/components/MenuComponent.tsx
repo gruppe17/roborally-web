@@ -31,7 +31,7 @@ function MenuComponent(): ReactElement {
   const [currentTab, setCurrentTab] =
     useState<"games" | "players">("games");
 
-  const { currentGame, currentUser, createGame, forceViewUpdate } = useContext(GameContext);
+  const { currentGame, currentUser, createGame, changeGameName, forceViewUpdate } = useContext(GameContext);
 
   const tabContent = () => {
     switch (currentTab) {
@@ -72,7 +72,7 @@ function MenuComponent(): ReactElement {
           size={"medium"}
           onClick={ () => {
             if(currentTab !== "games") setCurrentTab("games")
-            createGame()
+            createGame().then(gameId => changeGameName(gameId, currentUser.userName + "'s game"));
           }}
         >
           <Add/>
