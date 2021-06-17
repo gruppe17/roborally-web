@@ -4,7 +4,7 @@ import {NO_GAME_GAMEID } from "../types/Game";
 
 export type UserContextType = {
     currentUser : User,
-    setCurrentUser : React.Dispatch<React.SetStateAction<User>>
+    setCurrentUser : React.Dispatch<React.SetStateAction<User | undefined>>
 }
 
 const UserContext = createContext<UserContextType>({
