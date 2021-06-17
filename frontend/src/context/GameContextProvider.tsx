@@ -82,7 +82,17 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         //console.error("Error while fetching all games from backend");
       });
 
-  const updateGameContextGame = (gameId: number) =>
+  const updateGameContextGame = (gameId: number) => {
+    if (gameId === 0) {
+      setCurrentGame({
+        gameId: 0,
+        name: "No current game",
+        started: false,
+        users: [],
+      });
+      return;
+    }
+
     GameApi.getGame(gameId)
       .then((game) => {
         setCurrentGame(game.data);
@@ -97,13 +107,28 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         });
         console.error(error);
       });
+  };
 
   const updateGameContext = (id: number) => {
-    const updateGameContextBoard = () =>
+    const updateGameContextBoard = () => {
+      if(currentGame.gameId === 0)
+    {
+      setLoaded(false);
+      setCurrentBoard({
+        playerDtos: [],
+        spaceDtos: [],
+        boardId: -1,
+        boardName: "",
+        currentPlayerDto: undefined,
+        height: 0,
+        width: 0,
+      });
+      return;
+    }
       GameApi.getBoard(currentGame.gameId)
         .then((result) => {
           let updatedBoard = currentBoard;
-          const board = result.data
+          const board = result.data;
           updatedBoard.spaceDtos = board.spaceDtos;
           updatedBoard.playerDtos = board.playerDtos;
           updatedBoard.width = board.width;
@@ -133,6 +158,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
             width: 0,
           });
         });
+    };
 
     updateGameContextGamesList();
     updateGameContextGame(id);
