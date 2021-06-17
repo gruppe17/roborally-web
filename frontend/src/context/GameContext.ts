@@ -6,14 +6,14 @@ import {Space} from "../types/Space";
 
 export type GameContextType = {
     // Information about games
-    games: Game[]
+    games: Game[],
+    currentGame : Game,
     selectGame: (gameId: number) => Promise<void>,
     unselectGame: () => Promise<void>,
     createGame : () => Promise<number>,
     deleteGame :  (gameId: number) => Promise<void>,
     startGame : (gameId: number) => Promise<Boolean>,
     changeGameName : (gameId: number, name: string) => Promise<boolean>,
-    currentGame : Game,
     board: Board,
     loaded : boolean,
     setCurrentPlayerOnSpace: (space: Space) => Promise<void>,
