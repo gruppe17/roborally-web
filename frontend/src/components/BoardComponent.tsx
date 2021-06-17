@@ -13,7 +13,7 @@ see the space component for an example.
 type BoardComponentProps = {};
 const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
   //{...} context is known as object destructuring
-  const { currentGame,board, loaded } = useContext(GameContext); //Hook form of Context.Consumer, used to access the context
+  const { currentGame,board, loaded, startGame } = useContext(GameContext); //Hook form of Context.Consumer, used to access the context
 
   return (
     /*Apply css on div below*/
@@ -55,8 +55,7 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
         <HashLoader color="#4CAF50" />
       )}
     </div>
-    { (loaded && !currentGame.started) && <Button variant="contained" color="secondary"> Start game </Button>} 
-    
+    { (loaded && !currentGame.started) && <Button variant="contained" onClick={() => startGame(currentGame.gameId)} color="secondary"> Start game </Button>} 
     </Box>
   );
 };
