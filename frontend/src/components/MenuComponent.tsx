@@ -70,7 +70,10 @@ function MenuComponent(): ReactElement {
         <IconButton
           color={"primary"}
           size={"medium"}
-          onClick={ () => {createGame()}}
+          onClick={ () => {
+            createGame()
+            if(currentTab !== "games") setCurrentTab("games")
+          }}
         >
           <Add/>
         </IconButton>
