@@ -110,11 +110,11 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     }
   };
 
-  const forceViewUpdate = async () => {
-    console.log(currentUser);
+  const forceViewUpdate = () => {
     if (!currentUser) {
-      await getCurrentUser();
+      return;
     }
+    if (isNaN(currentUser.userId)) getCurrentUser()
     updateGameContext(currentUser.currentGameId);
     updateBoardContext();
   };
