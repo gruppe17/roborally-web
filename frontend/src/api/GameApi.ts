@@ -19,7 +19,7 @@ class GameApi {
         return GameApi.instance;
     }
 
-    public getBoard(gameId : number) {
+    public async getBoard(gameId : number) {
         return axios.get<Board>(`${this.BACKEND_URL}/game/get/${gameId}/board`).then(value => value.data)
     }
 
