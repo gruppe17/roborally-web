@@ -88,20 +88,21 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         setCurrentGame(game.data);
       })
       .catch((error) => {
+        setLoaded(false);
         setCurrentGame({
           gameId: 0,
           name: "No current game",
           started: false,
-          users: []
+          users: [],
         });
         console.error(error);
       });
 
   const updateGameContext = (id: number) => {
-    const updateGameContextBoard = (gameId: number) =>
-      GameApi.getBoard(gameId)
+    const updateGameContextBoard = () =>
+      GameApi.getBoard(currentGame.gameId)
         .then((board) => {
-          let updatedBoard = currentBoard!;
+          let updatedBoard = currentBoard;
           updatedBoard.spaceDtos = board.spaceDtos;
           updatedBoard.playerDtos = board.playerDtos;
           updatedBoard.width = board.width;
@@ -120,12 +121,21 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
           setLoaded(true);
         })
         .catch(() => {
-          
+          setLoaded(false);
+          setCurrentBoard({
+            playerDtos: [],
+            spaceDtos: [],
+            boardId: -1,
+            boardName: "",
+            currentPlayerDto: undefined,
+            height: 0,
+            width: 0,
+          });
         });
 
     updateGameContextGamesList();
     updateGameContextGame(id);
-    updateGameContextBoard(id);
+    updateGameContextBoard();
 
     //  console.log(currentGame)
     //  console.log(currentBoard)
@@ -279,6 +289,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         width: 0,
       });
       forceViewUpdate();
+      setLoaded(false);
     } catch (error) {
       console.error(error);
       return;
