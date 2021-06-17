@@ -6,34 +6,31 @@ import { useContext } from 'react';
 import { User } from '../../types/User';
 import GameContext from '../../context/GameContext';
 import { Typography } from '@material-ui/core';
+import { Player } from '../../types/Player';
 
 export interface IUserComponentProps {
-  user: User
+  player: Player
 }
 
 
 
 export const UserComponent = (props : IUserComponentProps) => {
-  const {user} = props;
+  const {player} = props;
   return (
 <Box  height="80px" width="100%" gap="medium" justify="start" direction="row">
       <PersonPin/> 
-      <Typography>{user.userName} </Typography>
-      <Typography> {user.userId} </Typography>
+      <Typography>{player.playerName} </Typography>
 </Box>
   )
 }
 
 export function PlayersTab () {
-  const {currentGame, currentUser} = useContext(GameContext)
+  const {board} = useContext(GameContext)
 
   return (
     <>
-      {currentUser && (<UserComponent user={currentUser} />)}
-      {currentGame && ( currentGame.users.map((user) => {
-        if(user.userId !== currentUser.userId)
-        return <UserComponent key={user.userId} user={user}/>
-        return null
+      {board && ( board.playerDtos.map((player) => {
+        return <UserComponent key={player.playerId} player={player}/>
       }))}
     </>
   );
