@@ -32,7 +32,7 @@ export function PlayersTab () {
       {currentUser && (<UserComponent user={currentUser} />)}
       {currentGame && ( currentGame.users.map((user) => {
         if(user.userId !== currentUser.userId)
-        return <UserComponent user={user}/>
+        return <UserComponent key={user.userId} user={user}/>
         return null
       }))}
     </>
