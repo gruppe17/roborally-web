@@ -71,8 +71,8 @@ function MenuComponent(): ReactElement {
           color={"primary"}
           size={"medium"}
           onClick={ () => {
-            if(currentTab !== "games") setCurrentTab("games")
             createGame()
+            if(currentTab !== "games") setCurrentTab("games")
           }}
         >
           <Add/>
