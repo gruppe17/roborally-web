@@ -14,7 +14,7 @@ export function GamesListTab(props: IGamesListProps) {
     <Box display="flex" bgcolor="transparent" flexDirection="column">
       {games != null ? (
         games?.map((game, index) => (
-          <GameComponent key={index} game={game}></GameComponent>
+          <GameComponent key={game.gameId} game={game}></GameComponent>
         ))
       ) : (
         <p> No games found!</p>
