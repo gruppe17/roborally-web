@@ -18,6 +18,7 @@ export type GameContextType = {
     switchCurrentPlayer: () => Promise<void>,
     forceViewUpdate : () => void,
     createGame : () => Promise<number>,
+    changeGameName : (gameId: number, name: string) => Promise<boolean>,
 }
 //Define a new context of type GameContextType
 //Below we define the "default" values which are set upon initialization of the context
@@ -55,6 +56,7 @@ const GameContext = createContext<GameContextType>({
     },
     forceViewUpdate: () => {},
     createGame: async () => {return -1},
+    changeGameName: async (gameId: number, name: string) => {return false},
 });
 
 export default GameContext

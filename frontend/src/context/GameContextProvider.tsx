@@ -309,6 +309,11 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     forceViewUpdate(); //suboptimal: this is called twice here and in unselectGame
   };
 
+  const changeGameName = async (gameId: number, name: string) => {
+    if (name !== "") return (await GameApi.editGameName(gameId, name)).data;
+    return false;
+  }
+
   return (
     <GameContext.Provider
       value={{
@@ -324,6 +329,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         switchCurrentPlayer: switchToNextPlayer,
         forceViewUpdate: forceViewUpdate,
         createGame: createGame,
+        changeGameName: changeGameName,
       }}
     >
       {children}
