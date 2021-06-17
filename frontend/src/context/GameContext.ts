@@ -1,6 +1,6 @@
 import {createContext} from "react";
 import {Board} from "../types/Board";
-import { Game } from "../types/Game";
+import { Game, NO_GAME_GAMEID } from "../types/Game";
 import {Space} from "../types/Space";
 import { User } from "../types/User";
 
@@ -25,7 +25,7 @@ export type GameContextType = {
 const GameContext = createContext<GameContextType>({
     games: [],
     currentGame: {
-        gameId: 0,
+        gameId: NO_GAME_GAMEID,
         name: "No game loaded",
         started: false,
         users: []
@@ -34,7 +34,7 @@ const GameContext = createContext<GameContextType>({
     currentUser: {
         userId: 0,
         userName: "Not logged in!",
-        currentGame: 0
+        currentGame: NO_GAME_GAMEID
     },
     selectGame: async () => {},
     unselectGame: async () => {},
@@ -43,7 +43,7 @@ const GameContext = createContext<GameContextType>({
     board: {
         playerDtos: [],
         spaceDtos: [],
-        gameId: 0,
+        gameId: NO_GAME_GAMEID,
         boardName: "",
         currentPlayerDto: undefined,
         height: 0,
