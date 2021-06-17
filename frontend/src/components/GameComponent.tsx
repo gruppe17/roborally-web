@@ -1,4 +1,5 @@
-import { Button, IconButton, Typography, Box } from "@material-ui/core";
+import { Button, IconButton, Box, Tooltip } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 import { Edit, RemoveCircle, ExitToApp } from "@material-ui/icons";
 import { TextInput } from "grommet";
 import * as React from "react";
@@ -13,10 +14,9 @@ export function GameComponent(props: { game: Game }) {
     useContext(GameContext);
   return (
     <Box
-      height="64px"
+      height="small"
       justifyContent="start"
-      alignItems="center"
-      bgcolor="#404040"
+      alignItems="start"
       display="flex"
       flexDirection="row"
       width="100%"
@@ -24,42 +24,59 @@ export function GameComponent(props: { game: Game }) {
       {isEditing ? (
         <TextInput
           defaultValue={props.game.name}
-          onChange={(value) => { changeGameName(props.game.gameId, value.target.value)}}
+          onChange={(value) => {
+            changeGameName(props.game.gameId, value.target.value);
+          }}
         ></TextInput>
       ) : (
-        <Button
-          variant="contained"
-          color="primary"
+        <Tooltip title={"Join " + props.game.name}>
+          <Button
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              selectGame(props.game.gameId);
+            }}
+          >
+            <Box
+              textOverflow="ellipsis"
+              display="block"
+              overflow="hidden"
+              flexDirection="row"
+            >
+              <Typography style={{fontSize: "12px"}} noWrap>{props.game.name}</Typography>
+              <Typography style={{fontSize: "12px"}} noWrap>
+                {props.game.users && props.game.users.length}
+              </Typography>
+            </Box>
+          </Button>
+        </Tooltip>
+      )}
+      <Tooltip title={"Edit " + props.game.name}>
+        <IconButton
+          color={"secondary"}
+          onClick={() => setIsEditing(!isEditing)}
+        >
+          <Edit />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title={"Delete " + props.game.name}>
+        <IconButton
+          color={"secondary"}
           onClick={() => {
-            selectGame(props.game.gameId);
+            deleteGame(props.game.gameId);
           }}
         >
-          <Box flexDirection="row">
-            <Typography>{props.game.name}</Typography>
-            <Typography>
-              {props.game.users && props.game.users.length}
-            </Typography>
-          </Box>
-        </Button>
+          <RemoveCircle />
+        </IconButton>
+      </Tooltip>
+      {currentGame.gameId === props.game.gameId && (
+        <Tooltip title={"Leave " + props.game.name}>
+          <IconButton color={"secondary"} onClick={() => unselectGame()}>
+            <ExitToApp />
+          </IconButton>
+        </Tooltip>
       )}
-      <IconButton color={"secondary"} onClick={() => setIsEditing(!isEditing)}>
-        <Edit />
-      </IconButton>
-      <IconButton
-        color={"secondary"}
-        onClick={() => {
-          deleteGame(props.game.gameId);
-        }}
-      >
-        <RemoveCircle />
-      </IconButton>
-      {
-      (currentGame.gameId === props.game.gameId) && (
-      <IconButton color={"secondary"} onClick={() => unselectGame()}>
-        <ExitToApp />
-      </IconButton>
-      )
-      }
     </Box>
   );
 }
