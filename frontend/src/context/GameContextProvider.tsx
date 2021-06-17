@@ -143,7 +143,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
             });
           }
           setCurrentBoard(updatedBoard);
-
+          console.log(updatedBoard);
           setLoaded(true);
         })
         .catch(() => {
@@ -163,6 +163,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     updateGameContextGamesList();
     updateGameContextGame(id);
     updateGameContextBoard();
+
 
     //  console.log(currentGame)
     //  console.log(currentBoard)
@@ -298,7 +299,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
 
     try {
       GameApi.leaveGame(currentGame.gameId, currentUser.userId).catch((err) =>
-        console.log(err)
+        {}
       );
       setCurrentGame({
         gameId: 0,
@@ -318,7 +319,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       forceViewUpdate();
       setLoaded(false);
     } catch (error) {
-      console.error(error);
       return;
     }
   };
