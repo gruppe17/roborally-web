@@ -179,7 +179,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       } else {
         updateGameContext(0);
       }
-    }, 1000);
+    }, 500);
     return () => {
       clearInterval(intervalId);
     };

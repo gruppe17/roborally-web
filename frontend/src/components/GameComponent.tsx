@@ -9,7 +9,7 @@ import GameContext from "../context/GameContext";
 
 export function GameComponent(props: { game: Game }) {
   const [isEditing, setIsEditing] = useState(false);
-  const { selectGame, unselectGame, deleteGame, currentGame } =
+  const { selectGame, unselectGame, deleteGame, changeGameName, currentGame } =
     useContext(GameContext);
   return (
     <Box
@@ -24,10 +24,7 @@ export function GameComponent(props: { game: Game }) {
       {isEditing ? (
         <TextInput
           defaultValue={props.game.name}
-          onChange={(value) => {
-            if (value.target.value !== "")
-              GameApi.editGameName(props.game.gameId, value.target.value);
-          }}
+          onChange={(value) => { changeGameName(props.game.gameId, value.target.value)}}
         ></TextInput>
       ) : (
         <Button
