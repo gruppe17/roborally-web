@@ -111,20 +111,19 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
 
   const updateGameContext = (id: number) => {
     const updateGameContextBoard = () => {
-      if(currentGame.gameId === 0)
-    {
-      setLoaded(false);
-      setCurrentBoard({
-        playerDtos: [],
-        spaceDtos: [],
-        gameId: -1,
-        boardName: "",
-        currentPlayerDto: undefined,
-        height: 0,
-        width: 0,
-      });
-      return;
-    }
+      if (currentGame.gameId === 0) {
+        setLoaded(false);
+        setCurrentBoard({
+          playerDtos: [],
+          spaceDtos: [],
+          gameId: -1,
+          boardName: "",
+          currentPlayerDto: undefined,
+          height: 0,
+          width: 0,
+        });
+        return;
+      }
       GameApi.getBoard(currentGame.gameId)
         .then((result) => {
           let updatedBoard = currentBoard;
@@ -163,7 +162,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     updateGameContextGamesList();
     updateGameContextGame(id);
     updateGameContextBoard();
-
 
     //  console.log(currentGame)
     //  console.log(currentBoard)
@@ -235,61 +233,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       .catch(() => console.error("Error while switching player"));
   }, [currentGame, currentBoard, currentPlayerIndex, playerCount]);
 
-  const game = useMemo<Game>(() => {
-    if (currentGame)
-      return {
-        gameId: currentGame.gameId,
-        name: currentGame.name,
-        started: currentGame.started,
-        users: currentGame.users,
-      };
-    return {
-      gameId: 0,
-      name: "No game loaded",
-      started: false,
-      users: [],
-    };
-  }, [currentGame]);
-
-  const user = useMemo<User>(() => {
-    if (currentUser)
-      return {
-        userId: currentUser.userId,
-        userName: currentUser.userName,
-        currentGame: currentUser.currentGame,
-      };
-
-    return {
-      userId: 0,
-      userName: "Not logged in!",
-      currentGame: 0,
-    };
-  }, [currentUser]);
-
-  const board = useMemo<Board>(() => {
-    if (currentBoard)
-      return {
-        spaceDtos: currentBoard.spaceDtos,
-        playerDtos: currentBoard.playerDtos,
-        currentPlayerDto: currentBoard.currentPlayerDto,
-        currentPlayerIndex: currentPlayerIndex,
-        width: currentBoard.width,
-        height: currentBoard.height,
-        boardName: currentBoard.boardName,
-        gameId: currentBoard.gameId,
-      };
-
-    return {
-      playerDtos: [],
-      spaceDtos: [],
-      gameId: -1,
-      boardName: "",
-      currentPlayerDto: undefined,
-      height: 0,
-      width: 0,
-    };
-  }, [currentBoard, currentPlayerIndex]);
-
   const unselectGame = async () => {
     if (!currentGame || !currentUser) return;
 
@@ -298,8 +241,8 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     setCurrentUser(usr);
 
     try {
-      GameApi.leaveGame(currentGame.gameId, currentUser.userId).catch((err) =>
-        {}
+      GameApi.leaveGame(currentGame.gameId, currentUser.userId).catch(
+        (err) => {}
       );
       setCurrentGame({
         gameId: 0,
