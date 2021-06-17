@@ -7,9 +7,10 @@ import GameApi from "../api/GameApi";
 import { Game } from "../types/Game";
 import GameContext from "../context/GameContext";
 
-export function GameComponent(props: { game: Game; }) {
+export function GameComponent(props: { game: Game }) {
   const [isEditing, setIsEditing] = useState(false);
-  const {selectGame, unselectGame, deleteGame, forceViewUpdate } = useContext(GameContext);
+  const { selectGame, unselectGame, deleteGame, forceViewUpdate } =
+    useContext(GameContext);
   return (
     <Box
       height="64px"
@@ -23,7 +24,10 @@ export function GameComponent(props: { game: Game; }) {
       {isEditing ? (
         <TextInput
           defaultValue={props.game.name}
-          onChange={(value) => GameApi.editGameName(props.game.gameId, value.target.value)}
+          onChange={(value) => {
+            if (value.target.value !== "")
+              GameApi.editGameName(props.game.gameId, value.target.value);
+          }}
         ></TextInput>
       ) : (
         <Button
@@ -31,7 +35,8 @@ export function GameComponent(props: { game: Game; }) {
           color="primary"
           onClick={() => {
             selectGame(props.game.gameId);
-          }}>
+          }}
+        >
           <Box flexDirection="row">
             <Typography>{props.game.name}</Typography>
             <Typography>
@@ -43,7 +48,12 @@ export function GameComponent(props: { game: Game; }) {
       <IconButton color={"secondary"} onClick={() => setIsEditing(!isEditing)}>
         <Edit />
       </IconButton>
-      <IconButton color={"secondary"} onClick={() => {deleteGame(props.game.gameId)}}>
+      <IconButton
+        color={"secondary"}
+        onClick={() => {
+          deleteGame(props.game.gameId);
+        }}
+      >
         <RemoveCircle />
       </IconButton>
       <IconButton color={"secondary"} onClick={() => unselectGame()}>
