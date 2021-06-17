@@ -9,7 +9,7 @@ class GameApi {
     
 
     private static instance: GameApi;
-    private readonly BACKEND_URL = process.env.BACKEND_URL //   "https://roborallyserver.tobiasmaneschijn.com/"
+    private readonly BACKEND_URL = "http://localhost:8080" // process.env.BACKEND_URL //   "https://roborallyserver.tobiasmaneschijn.com/"
     private constructor() { }
 
     public static getInstance(): GameApi {
