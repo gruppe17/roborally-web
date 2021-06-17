@@ -66,7 +66,7 @@ function MenuComponent(): ReactElement {
       <Text size="large">Roborally</Text>
       <Box pad="small" elevation="medium" overflow="hidden" round={{ size: "small" }} background="#E6E6E6" width="100%">
         <Box gap="small" justify="center" direction="row">
-          <Tooltip title="Current user. The user is randomly made for you and saved in a cookie for convenience">
+          <Tooltip title="Current user. The user is randomly made for you and saved in a cookie for your convenience">
             <Box
               height="xsmall"
               width="small"
