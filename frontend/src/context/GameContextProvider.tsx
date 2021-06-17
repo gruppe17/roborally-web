@@ -312,11 +312,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   };
 
   const startGame = async (gameId: number) => {
-
-
-
-
-    return false;
+      return (await GameApi.startGame(gameId)).data;
   };
 
   return (
