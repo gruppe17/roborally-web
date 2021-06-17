@@ -143,6 +143,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
             });
           }
           setCurrentBoard(updatedBoard);
+          console.log(updatedBoard);
           setLoaded(true);
         })
         .catch(() => {
@@ -372,9 +373,9 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         unselectGame: unselectGame,
         deleteGame: deleteGame,
         loaded: loaded,
-        board: board,
-        currentGame: game,
-        currentUser: user,
+        board: currentBoard,
+        currentGame: currentGame,
+        currentUser: currentUser!,
         setCurrentPlayerOnSpace: setPlayerOnSpace,
         switchCurrentPlayer: switchToNextPlayer,
         forceViewUpdate: forceViewUpdate,

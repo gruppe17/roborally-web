@@ -17,7 +17,6 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
   return (
     /*Apply css on div below*/
     <div data-testid="board" className={styles.container}>
-            
       {/*
                 The {...} notation is JSX allowing us to blend HTML and JS/TS together
                 The first map call returns an array of "divs" which are rendered.
@@ -38,13 +37,17 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
 
             */}
       {loaded ? (
-        board.spaceDtos.map((spaceArray, index) => (
-          <div key={"spaceArray" + index}>
-            {spaceArray.map((space, index) => (
-              <SpaceComponent key={"space" + index} space={space} />
-            ))}
-          </div>
-        ))
+        board.spaceDtos.map((spaceArray, index) => {
+          console.log(spaceArray);
+
+          return (
+            <div key={"spaceArray" + index}>
+              {spaceArray.map((space, index) => (
+                <SpaceComponent key={"space" + index} space={space} />
+              ))}
+            </div>
+          );
+        })
       ) : (
         <HashLoader color="#4CAF50" />
       )}
