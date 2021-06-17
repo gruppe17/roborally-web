@@ -57,12 +57,11 @@ export function GameComponent(props: { game: Game }) {
         <RemoveCircle />
       </IconButton>
       {
-      (currentGame.gameId === props.game.gameId) ? (
+      (currentGame.gameId === props.game.gameId) && (
       <IconButton color={"secondary"} onClick={() => unselectGame()}>
         <ExitToApp />
       </IconButton>
-      ) :
-      (<div/>)
+      )
       }
     </Box>
   );
