@@ -54,7 +54,7 @@ function App() {
   return (
     <div className={styles.app}>
       <ThemeProvider theme={muiTheme}>
-        <Box  background="white" height="100%" width="100%" direction="row">
+        <Box  background="#121212" height="100%" width="100%" direction="row">
           <GameContextProvider>
             <Main
               pad="large"
