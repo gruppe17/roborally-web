@@ -74,7 +74,7 @@ function MenuComponent(): ReactElement {
               gap="xsmall"
               direction="column"
             >
-              <People />{" "}
+              <People />
               <Typography>{currentUser && currentUser.userName}</Typography>
             </Box>
           </Tooltip>
