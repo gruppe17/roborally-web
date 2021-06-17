@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useMemo,
   useState,
+  useContext,
 } from "react";
 import GameContext from "./GameContext";
 import { Board } from "../types/Board";
@@ -12,16 +13,17 @@ import { Space } from "../types/Space";
 import GameApi from "../api/GameApi";
 import { Game, NO_GAME_GAMEID } from "../types/Game";
 import { User } from "../types/User";
-import useCookie from "react-use-cookie";
 import ReactInterval from "react-interval";
+import UserContext from "./UserContext";
 
 type GameContextProviderPropsType = {
   children: ReactNode;
 };
 
+
 const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
-  const [userToken, setUserToken] = useCookie("user");
   //const [lastGameToken, setLastGameToken] = useCookie("last-game");
+  const {currentUser, setCurrentUser} = useContext(UserContext)
 
   const [currentGame, setCurrentGame] = useState<Game>({
     gameId: 0,
@@ -30,7 +32,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     users: [],
   });
   const [games, setGames] = useState<Game[]>([]);
-  const [currentUser, setCurrentUser] = useState<User>();
   const [currentBoard, setCurrentBoard] = useState<Board>({
     playerDtos: [],
     spaceDtos: [],
@@ -45,33 +46,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     [currentBoard.playerDtos]
   );
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
-
-  const getCurrentUser = async () => {
-    if (userToken === undefined) {
-      await createUser();
-    } else {
-      try {
-        const fetched = (await GameApi.getUser(parseInt(userToken))).data;
-        setCurrentUser(fetched);
-      } catch (error) {
-        await createUser();
-      }
-    }
-  };
-
-  const createUser = async () => {
-    const user = (await GameApi.createUser()).data;
-    setUserToken(user + "");
-
-    const fetched = (await GameApi.getUser(user)).data;
-    setCurrentUser(fetched);
-  };
-
-  useEffect(() => {
-    getCurrentUser();
-
-    return () => {};
-  }, []);
 
   const updateGameContextGamesList = () =>
     GameApi.getGames()
@@ -162,7 +136,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     updateGameContextGamesList();
     updateGameContextGame(id);
     updateGameContextBoard();
-
     //  console.log(currentGame)
     //  console.log(currentBoard)
     //  console.log(currentUser)
@@ -221,7 +194,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     if (!currentGame || !currentUser) return;
 
     const usr = currentUser;
-    usr.currentGame = NO_GAME_GAMEID;
+    usr.currentGameId = NO_GAME_GAMEID;
     setCurrentUser(usr);
 
     try {
@@ -252,7 +225,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
 
   const forceViewUpdate = () => {
     if (!currentUser) return;
-    updateGameContext(currentUser.currentGame);
+    updateGameContext(currentUser.currentGameId);
   };
 
   const createGame = async () => {
@@ -270,7 +243,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       return;
     }
     const usr = currentUser;
-    usr.currentGame = gameId;
+    usr.currentGameId = gameId;
     setCurrentUser(usr);
     let game: Game;
     try {
@@ -311,7 +284,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         loaded: loaded,
         board: currentBoard,
         currentGame: currentGame,
-        currentUser: currentUser!,
         setCurrentPlayerOnSpace: setPlayerOnSpace,
         switchCurrentPlayer: switchToNextPlayer,
         forceViewUpdate: forceViewUpdate,

@@ -3,5 +3,5 @@
 export type User = {
     userId : number,
     userName : string,
-    currentGame: number
+    currentGameId: number
 }

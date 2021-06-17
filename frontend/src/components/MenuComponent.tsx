@@ -11,6 +11,7 @@ import { GamesListTab } from "./menu-tabs/GamesListTabComponent";
 import { PlayersTab } from "./menu-tabs/PlayersTabComponent";
 import { Box } from "grommet";
 import GameContext from "../context/GameContext";
+import UserContext from '../context/UserContext';
 
 function TabButton(props: {
   setCurrentTab: Function;
@@ -38,11 +39,11 @@ function MenuComponent(): ReactElement {
 
   const {
     currentGame,
-    currentUser,
     createGame,
     changeGameName,
     forceViewUpdate,
   } = useContext(GameContext);
+  const {currentUser} = useContext(UserContext)
 
   const tabContent = () => {
     switch (currentTab) {
