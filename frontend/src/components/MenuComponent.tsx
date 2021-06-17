@@ -52,10 +52,10 @@ function MenuComponent(): ReactElement {
     >
       <Box justify="evenly" direction="row">
         <Box direction="row">
-          <People /> {currentUser.userName}
+          <People /> {currentUser && currentUser.userName}
         </Box>
         <Box direction="row">
-          <Games /> {currentGame.name}
+          <Games /> {currentGame && currentGame.name}
         </Box>
       </Box>
 
