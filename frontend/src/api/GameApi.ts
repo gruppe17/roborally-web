@@ -20,7 +20,7 @@ class GameApi {
     }
 
     public async getBoard(gameId : number) {
-        return axios.get<Board>(`${this.BACKEND_URL}/game/get/${gameId}/board`).then(value => value.data)
+        return axios.get<Board>(`${this.BACKEND_URL}/game/get/${gameId}/board`)
     }
 
     public async getBoards() {

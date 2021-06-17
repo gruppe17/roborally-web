@@ -88,17 +88,22 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         setCurrentGame(game.data);
       })
       .catch((error) => {
-        console.error(
-          `Error while fetching chosen game ${gameId} from backend`
-        );
+        setLoaded(false);
+        setCurrentGame({
+          gameId: 0,
+          name: "No current game",
+          started: false,
+          users: [],
+        });
         console.error(error);
       });
 
   const updateGameContext = (id: number) => {
-    const updateGameContextBoard = (gameId: number) =>
-      GameApi.getBoard(gameId)
-        .then((board) => {
-          let updatedBoard = currentBoard!;
+    const updateGameContextBoard = () =>
+      GameApi.getBoard(currentGame.gameId)
+        .then((result) => {
+          let updatedBoard = currentBoard;
+          const board = result.data
           updatedBoard.spaceDtos = board.spaceDtos;
           updatedBoard.playerDtos = board.playerDtos;
           updatedBoard.width = board.width;
@@ -117,12 +122,21 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
           setLoaded(true);
         })
         .catch(() => {
-          //console.error("Error while fetching board from backend");
+          setLoaded(false);
+          setCurrentBoard({
+            playerDtos: [],
+            spaceDtos: [],
+            boardId: -1,
+            boardName: "",
+            currentPlayerDto: undefined,
+            height: 0,
+            width: 0,
+          });
         });
 
     updateGameContextGamesList();
     updateGameContextGame(id);
-    updateGameContextBoard(id);
+    updateGameContextBoard();
 
     //  console.log(currentGame)
     //  console.log(currentBoard)
@@ -276,6 +290,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         width: 0,
       });
       forceViewUpdate();
+      setLoaded(false);
     } catch (error) {
       console.error(error);
       return;
