@@ -88,9 +88,12 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         setCurrentGame(game.data);
       })
       .catch((error) => {
-        console.error(
-          `Error while fetching chosen game ${gameId} from backend`
-        );
+        setCurrentGame({
+          gameId: 0,
+          name: "No current game",
+          started: false,
+          users: []
+        });
         console.error(error);
       });
 
@@ -117,7 +120,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
           setLoaded(true);
         })
         .catch(() => {
-          //console.error("Error while fetching board from backend");
+          
         });
 
     updateGameContextGamesList();
