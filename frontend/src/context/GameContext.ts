@@ -18,6 +18,7 @@ export type GameContextType = {
     switchCurrentPlayer: () => Promise<void>,
     forceViewUpdate : () => void,
     createGame : () => Promise<number>,
+    startGame : (gameId: number) => Promise<Boolean>,
     changeGameName : (gameId: number, name: string) => Promise<boolean>,
 }
 //Define a new context of type GameContextType
@@ -56,6 +57,7 @@ const GameContext = createContext<GameContextType>({
     },
     forceViewUpdate: () => {},
     createGame: async () => {return -1},
+    startGame: async () => { return false},
     changeGameName: async (gameId: number, name: string) => {return false},
 });
 

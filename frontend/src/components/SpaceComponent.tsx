@@ -25,12 +25,12 @@ export const SpaceComponent: FunctionComponent<SpaceComponentProps> = ({space}) 
     }, [space])
     //We define a function using the useCallback hook, it returns a memoized callback/function that is only
     // updated when the dependencies update.
-    const onClickField = useCallback(async () => {
+    const onClickField = async () => {
         if (!space.playerId) { // A shorthand, check equivalents at https://bit.ly/2MnA4Rk
             await setCurrentPlayerOnSpace(space)
             switchCurrentPlayer()
         }
-    }, [setCurrentPlayerOnSpace, space, switchCurrentPlayer])
+    }
     const playerColor = useMemo(() => {
         const res = board.playerDtos.find(value => value.playerId === space.playerId)
         if (res) return res.playerColor
