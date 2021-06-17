@@ -186,7 +186,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   }, [currentGame, updateGameContext]);
 
   //Define a function used to set a player ona  specific space
-  const setPlayerOnSpace = useCallback(
+  const setPlayerOnSpace = 
     async (space: Space) => {
       if (!currentGame || !currentBoard) return;
       //Check if space already has a player standing on it
@@ -218,11 +218,9 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         .catch(() => {
           //console.error("Error while fetching board from backend");
         });
-    },
-    [currentBoard, currentGame]
-  );
+    }
 
-  const switchToNextPlayer = useCallback(async () => {
+  const switchToNextPlayer = async () => {
     if (!currentGame || !currentBoard || !playerCount) return;
 
     await GameApi.switchPlayer(currentGame.gameId)
@@ -232,7 +230,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         setCurrentPlayerIndex(newPlayerIndex);
       })
       .catch(() => console.error("Error while switching player"));
-  }, [currentGame, currentBoard, currentPlayerIndex, playerCount]);
+  }
 
   const unselectGame = async () => {
     if (!currentGame || !currentUser) return;
