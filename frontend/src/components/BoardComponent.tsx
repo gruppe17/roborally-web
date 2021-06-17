@@ -4,6 +4,7 @@ import styles from "../styling/BoardComponent.module.scss"; //Import css module
 import GameContext from "../context/GameContext";
 import { HashLoader } from "react-spinners";
 import { Typography } from "@material-ui/core";
+import { Box } from "grommet";
 /*
 If the board component took any props/arguments they would be declared inside the type below
 see the space component for an example.
@@ -16,6 +17,8 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
 
   return (
     /*Apply css on div below*/
+    <Box gap="small">
+          { loaded && (<Typography > Current player: { board.currentPlayerDto?.playerName} </Typography>)} 
     <div data-testid="board" className={styles.container}>
       {/*
                 The {...} notation is JSX allowing us to blend HTML and JS/TS together
@@ -37,21 +40,24 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
 
             */}
       {loaded ? (
+       
         board.spaceDtos.map((spaceArray, index) => {
-          console.log(spaceArray);
+            console.log(spaceArray);
 
-          return (
-            <div key={"spaceArray" + index}>
-              {spaceArray.map((space, index) => (
-                <SpaceComponent key={"space" + index} space={space} />
-              ))}
-            </div>
-          );
-        })
+            return (
+              <div key={"spaceArray" + index}>
+                {spaceArray.map((space, index) => (
+                  <SpaceComponent key={"space" + index} space={space} />
+                ))}
+              </div>
+            );
+          })
+        
       ) : (
         <HashLoader color="#4CAF50" />
       )}
     </div>
+    </Box>
   );
 };
 

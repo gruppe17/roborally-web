@@ -109,9 +109,42 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       });
   };
 
-  const updateGameContext = (id: number) => {
-    const updateGameContextBoard = () => {
-      if (currentGame.gameId === NO_GAME_GAMEID) {
+  const updateGameContextBoard = () => {
+    if (currentGame.gameId === NO_GAME_GAMEID) {
+      setLoaded(false);
+      setCurrentBoard({
+        playerDtos: [],
+        spaceDtos: [],
+        gameId: NO_GAME_GAMEID,
+        boardName: "",
+        currentPlayerDto: undefined,
+        height: 0,
+        width: 0,
+      });
+      return;
+    }
+    GameApi.getBoard(currentGame.gameId)
+      .then((result) => {
+        let updatedBoard = currentBoard;
+        const board = result.data;
+        updatedBoard.spaceDtos = board.spaceDtos;
+        updatedBoard.playerDtos = board.playerDtos;
+        updatedBoard.width = board.width;
+        updatedBoard.height = board.height;
+
+        if (board.currentPlayerDto) {
+          updatedBoard.currentPlayerDto = board.currentPlayerDto;
+          board.playerDtos.forEach((player, index) => {
+            if (player.playerId === board.currentPlayerDto?.playerId) {
+              setCurrentPlayerIndex(index);
+            }
+          });
+        }
+        setCurrentBoard(updatedBoard);
+        console.log(updatedBoard);
+        setLoaded(true);
+      })
+      .catch(() => {
         setLoaded(false);
         setCurrentBoard({
           playerDtos: [],
@@ -122,43 +155,10 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
           height: 0,
           width: 0,
         });
-        return;
-      }
-      GameApi.getBoard(currentGame.gameId)
-        .then((result) => {
-          let updatedBoard = currentBoard;
-          const board = result.data;
-          updatedBoard.spaceDtos = board.spaceDtos;
-          updatedBoard.playerDtos = board.playerDtos;
-          updatedBoard.width = board.width;
-          updatedBoard.height = board.height;
+      });
+  };
 
-          if (board.currentPlayerDto) {
-            updatedBoard.currentPlayerDto = board.currentPlayerDto;
-            board.playerDtos.forEach((player, index) => {
-              if (player.playerId === board.currentPlayerDto?.playerId) {
-                setCurrentPlayerIndex(index);
-              }
-            });
-          }
-          setCurrentBoard(updatedBoard);
-          console.log(updatedBoard);
-          setLoaded(true);
-        })
-        .catch(() => {
-          setLoaded(false);
-          setCurrentBoard({
-            playerDtos: [],
-            spaceDtos: [],
-            gameId: NO_GAME_GAMEID,
-            boardName: "",
-            currentPlayerDto: undefined,
-            height: 0,
-            width: 0,
-          });
-        });
-    };
-
+  const updateGameContext = (id: number) => {
     updateGameContextGamesList();
     updateGameContextGame(id);
     updateGameContextBoard();
@@ -180,7 +180,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       } else {
         updateGameContext(0);
       }
-    }, 1500);
+    }, 200);
     return () => {
       clearInterval(intervalId);
     };
@@ -192,6 +192,8 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       if (!currentGame || !currentBoard) return;
       //Check if space already has a player standing on it
       if (space.playerId) return;
+      if(currentBoard.currentPlayerDto?.playerName !== currentUser?.userName)
+      return
       await GameApi.moveCurrentPlayer(currentGame!.gameId, {
         ...space,
         playerId: currentBoard!.currentPlayerDto?.playerId,
@@ -211,8 +213,9 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
               currentBoard!.currentPlayerDto?.y
             ].playerId = undefined;
           }
-
+          forceViewUpdate()
           setLoaded(true);
+          forceViewUpdate();
         })
         .catch(() => {
           //console.error("Error while fetching board from backend");
