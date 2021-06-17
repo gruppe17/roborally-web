@@ -45,7 +45,8 @@ const UserContextProvider = ({ children } : UserContextProviderPropsType) => {
         <UserContext.Provider
           value={ {
               currentUser: currentUser!, 
-              setCurrentUser: setCurrentUser
+              setCurrentUser: setCurrentUser,
+              getCurrentUser: getCurrentUser
             } }
         >
         </UserContext.Provider>

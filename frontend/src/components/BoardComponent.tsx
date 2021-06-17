@@ -6,6 +6,7 @@ import { HashLoader } from "react-spinners";
 import { Button, Color, Tooltip, Typography, withStyles } from "@material-ui/core";
 import { Box } from "grommet";
 import { green, red } from "@material-ui/core/colors";
+import BoardContext from '../context/BoardContext';
 /*
 If the board component took any props/arguments they would be declared inside the type below
 see the space component for an example.
@@ -19,7 +20,8 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
 
 
   //{...} context is known as object destructuring
-  const { currentGame, board, loaded, startGame } = useContext(GameContext); //Hook form of Context.Consumer, used to access the context
+  const { currentGame, startGame } = useContext(GameContext); //Hook form of Context.Consumer, used to access the context
+  const { board, loaded } = useContext(BoardContext)
 
   const StartGameButton = withStyles({
     root: {

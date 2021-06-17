@@ -2,9 +2,7 @@ import { Button, IconButton, Box, Tooltip } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { Edit, RemoveCircle, ExitToApp } from "@material-ui/icons";
 import { TextInput } from "grommet";
-import * as React from "react";
 import { useContext, useState } from "react";
-import GameApi from "../api/GameApi";
 import { Game } from "../types/Game";
 import GameContext from "../context/GameContext";
 

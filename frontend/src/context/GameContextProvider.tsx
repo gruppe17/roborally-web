@@ -1,20 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {
   ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
   useState,
   useContext,
 } from "react";
 import GameContext from "./GameContext";
-import { Board } from "../types/Board";
-import { Space } from "../types/Space";
+//import { Board, noBoardBoard } from '../types/Board';
 import GameApi from "../api/GameApi";
 import { Game, NO_GAME_GAMEID } from "../types/Game";
-import { User } from "../types/User";
 import ReactInterval from "react-interval";
 import UserContext from "./UserContext";
+import BoardContext from './BoardContext';
+import { isAwaitExpression } from "typescript";
 
 type GameContextProviderPropsType = {
   children: ReactNode;
@@ -23,7 +20,8 @@ type GameContextProviderPropsType = {
 
 const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   //const [lastGameToken, setLastGameToken] = useCookie("last-game");
-  const {currentUser, setCurrentUser} = useContext(UserContext)
+  const {currentUser, setCurrentUser, getCurrentUser} = useContext(UserContext)
+  const {updateBoardContext, setLoaded, setCurrentBoard} = useContext(BoardContext)
 
   const [currentGame, setCurrentGame] = useState<Game>({
     gameId: 0,
@@ -32,20 +30,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     users: [],
   });
   const [games, setGames] = useState<Game[]>([]);
-  const [currentBoard, setCurrentBoard] = useState<Board>({
-    playerDtos: [],
-    spaceDtos: [],
-    gameId: -1,
-    boardName: "",
-    currentPlayerDto: undefined,
-    height: 0,
-    width: 0,
-  });
-  const playerCount = useMemo(
-    () => (currentBoard.playerDtos ? currentBoard.playerDtos.length : 0),
-    [currentBoard.playerDtos]
-  );
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
 
   const updateGameContextGamesList = () =>
     GameApi.getGames()
@@ -84,110 +68,13 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       });
   };
 
-  const updateGameContextBoard = () => {
-    if (currentGame.gameId === NO_GAME_GAMEID) {
-      setLoaded(false);
-      setCurrentBoard({
-        playerDtos: [],
-        spaceDtos: [],
-        gameId: NO_GAME_GAMEID,
-        boardName: "",
-        currentPlayerDto: undefined,
-        height: 0,
-        width: 0,
-      });
-      return;
-    }
-    GameApi.getBoard(currentGame.gameId)
-      .then((result) => {
-        let updatedBoard = currentBoard;
-        const board = result.data;
-        updatedBoard.spaceDtos = board.spaceDtos;
-        updatedBoard.playerDtos = board.playerDtos;
-        updatedBoard.width = board.width;
-        updatedBoard.height = board.height;
 
-        if (board.currentPlayerDto) {
-          updatedBoard.currentPlayerDto = board.currentPlayerDto;
-          board.playerDtos.forEach((player, index) => {
-            if (player.playerId === board.currentPlayerDto?.playerId) {
-              setCurrentPlayerIndex(index);
-            }
-          });
-        }
-        setCurrentBoard(updatedBoard);
-        setLoaded(true);
-      })
-      .catch(() => {
-        setLoaded(false);
-        setCurrentBoard({
-          playerDtos: [],
-          spaceDtos: [],
-          gameId: NO_GAME_GAMEID,
-          boardName: "",
-          currentPlayerDto: undefined,
-          height: 0,
-          width: 0,
-        });
-      });
-  };
 
   const updateGameContext = (id: number) => {
     updateGameContextGamesList();
     updateGameContextGame(id);
-    updateGameContextBoard();
     //  console.log(currentGame)
-    //  console.log(currentBoard)
     //  console.log(currentUser)
-  };
-
-  const [loaded, setLoaded] = useState<boolean>(false);
-
-
-  //Define a function used to set a player ona  specific space
-  const setPlayerOnSpace = async (space: Space) => {
-    if (!currentGame || !currentBoard) return;
-    //Check if space already has a player standing on it
-    if (space.playerId) return;
-    if ((currentBoard.currentPlayerDto?.playerId !== currentUser?.userId) || !currentGame.started) return;
-    await GameApi.moveCurrentPlayer(currentGame!.gameId, {
-      ...space,
-      playerId: currentBoard!.currentPlayerDto?.playerId,
-    })
-      .then(() => {
-        let tempSpaces = [...currentBoard!.spaceDtos]; //Use spread operator to copy spaces array, needed for making immutable changes
-        //See https://bit.ly/2My8Bfz, until the section about Immutable.js
-        tempSpaces[space.x][space.y].playerId =
-          currentBoard!.currentPlayerDto?.playerId; //Set the player on the new space they clicked on
-
-        if (
-          currentBoard!.currentPlayerDto?.x !== undefined &&
-          currentBoard!.currentPlayerDto?.y !== undefined
-        ) {
-          //If the player was standing on a space previously, remove them from that space
-          tempSpaces[currentBoard!.currentPlayerDto?.x][
-            currentBoard!.currentPlayerDto?.y
-          ].playerId = undefined;
-        }
-        setLoaded(true);
-        forceViewUpdate();
-      })
-      .catch(() => {
-        //console.error("Error while fetching board from backend");
-      });
-  };
-
-  const switchToNextPlayer = async () => {
-    if (!currentGame || !currentBoard || !playerCount) return;
-    if ((currentBoard.currentPlayerDto?.playerId !== currentUser?.userId) || !currentGame.started) return;
-
-    await GameApi.switchPlayer(currentGame.gameId)
-      .then(() => {
-        const newPlayerIndex = (currentPlayerIndex + 1) % playerCount;
-
-        setCurrentPlayerIndex(newPlayerIndex);
-      })
-      .catch(() => console.error("Error while switching player"));
   };
 
   const unselectGame = async () => {
@@ -215,7 +102,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         currentPlayerDto: undefined,
         height: 0,
         width: 0,
-      });
+    }); //Not neccessary? forceViewUpdate calls updateBoardContext which will set it to noBoard
       forceViewUpdate();
       setLoaded(false);
     } catch (error) {
@@ -223,9 +110,13 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     }
   };
 
-  const forceViewUpdate = () => {
-    if (!currentUser) return;
+  const forceViewUpdate = async () => {
+    console.log(currentUser);
+    if (!currentUser) {
+      await getCurrentUser();
+    }
     updateGameContext(currentUser.currentGameId);
+    updateBoardContext();
   };
 
   const createGame = async () => {
@@ -278,18 +169,14 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     <GameContext.Provider
       value={{
         games: games,
+        currentGame: currentGame,
         selectGame: selectGame,
         unselectGame: unselectGame,
-        deleteGame: deleteGame,
-        loaded: loaded,
-        board: currentBoard,
-        currentGame: currentGame,
-        setCurrentPlayerOnSpace: setPlayerOnSpace,
-        switchCurrentPlayer: switchToNextPlayer,
-        forceViewUpdate: forceViewUpdate,
         createGame: createGame,
+        deleteGame: deleteGame,
+        startGame: startGame,
         changeGameName: changeGameName,
-        startGame: startGame
+        forceViewUpdate: forceViewUpdate,
       }}
     >
       <ReactInterval enabled={true} timeout={2000} callback= {() => forceViewUpdate()}/>

@@ -1,7 +1,7 @@
-import {FunctionComponent, useCallback, useContext, useMemo} from "react";
+import {FunctionComponent, useContext, useMemo} from "react";
 import {Space} from "../types/Space";
-import GameContext from "../context/GameContext";
 import styles from "../styling/SpaceComponent.module.scss"
+import BoardContext from '../context/BoardContext';
 
 export type SpaceComponentProps = {
     space: Space
@@ -12,7 +12,7 @@ export type SpaceComponentProps = {
  */
 
 export const SpaceComponent: FunctionComponent<SpaceComponentProps> = ({space}) => {
-    const {board, setCurrentPlayerOnSpace, switchCurrentPlayer,} = useContext(GameContext)
+    const {board, setCurrentPlayerOnSpace, switchCurrentPlayer,} = useContext(BoardContext)
     //Below we essentially define a new variable using the useMemo hook, which can only take the value "white" or "black"
     //Additionally the code inside the hook (the calculation of whether it is black or white) is only executed
     // when the space prop updates (this is known as the dependencies of the hook)

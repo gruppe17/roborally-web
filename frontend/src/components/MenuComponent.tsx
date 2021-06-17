@@ -37,13 +37,8 @@ function TabButton(props: {
 function MenuComponent(): ReactElement {
   const [currentTab, setCurrentTab] = useState<"games" | "players">("games");
 
-  const {
-    currentGame,
-    createGame,
-    changeGameName,
-    forceViewUpdate,
-  } = useContext(GameContext);
-  const {currentUser} = useContext(UserContext)
+  const { currentGame, createGame, changeGameName } = useContext(GameContext);
+  const { currentUser } = useContext(UserContext)
 
   const tabContent = () => {
     switch (currentTab) {
