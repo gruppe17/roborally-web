@@ -141,7 +141,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
           });
         }
         setCurrentBoard(updatedBoard);
-        console.log(updatedBoard);
         setLoaded(true);
       })
       .catch(() => {
@@ -180,7 +179,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       } else {
         updateGameContext(0);
       }
-    }, 200);
+    }, 1000);
     return () => {
       clearInterval(intervalId);
     };
@@ -213,7 +212,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
               currentBoard!.currentPlayerDto?.y
             ].playerId = undefined;
           }
-          forceViewUpdate()
           setLoaded(true);
           forceViewUpdate();
         })

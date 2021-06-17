@@ -42,8 +42,6 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
       {loaded ? (
        
         board.spaceDtos.map((spaceArray, index) => {
-            console.log(spaceArray);
-
             return (
               <div key={"spaceArray" + index}>
                 {spaceArray.map((space, index) => (
