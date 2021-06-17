@@ -6,10 +6,10 @@ import { User } from "../types/User";
 
 
 class GameApi {
-    
+
 
     private static instance: GameApi;
-    private readonly BACKEND_URL = "https://roborally-backend.herokuapp.com" // process.env.BACKEND_URL //   "https://roborallyserver.tobiasmaneschijn.com/"
+    private readonly BACKEND_URL = "https://roborally-backend.herokuapp.com" // process.env.BACKEND_URL
 
     private constructor() { }
 
@@ -20,7 +20,7 @@ class GameApi {
         return GameApi.instance;
     }
 
-    public async getBoard(gameId : number) {
+    public async getBoard(gameId: number) {
         return axios.get<Board>(`${this.BACKEND_URL}/game/get/${gameId}/board`)
     }
 
@@ -41,16 +41,16 @@ class GameApi {
     }
 
 
-    public async getGame(gameId : number) {
+    public async getGame(gameId: number) {
         return await axios.get<Game>(`${this.BACKEND_URL}/game/get/${gameId}`)
     }
 
-    public async joinGame(gameId: number, userId : number)  {
+    public async joinGame(gameId: number, userId: number) {
 
         return await axios.post(`${this.BACKEND_URL}/game/join/${gameId}/${userId}`)
     }
 
-    public async leaveGame (gameId : number, userId : number) {
+    public async leaveGame(gameId: number, userId: number) {
         return await axios.put(`${this.BACKEND_URL}/game/leave/${gameId}/${userId}`, {})
     }
 
@@ -63,6 +63,9 @@ class GameApi {
         return await axios.delete(`${this.BACKEND_URL}/game/get/${gameId}/remove`)
     }
 
+    public async startGame(gameId: number) {
+        return await axios.put<Boolean>(`${this.BACKEND_URL}/game/get/${gameId}/start`)
+    }
 
     public async getAllUsers() {
         return await axios.get<User[]>(`${this.BACKEND_URL}/user/all`);
@@ -73,11 +76,11 @@ class GameApi {
     }
 
 
-    public async getUser(userId : number) {
+    public async getUser(userId: number) {
         return await axios.get<User>(`${this.BACKEND_URL}/user/get/${userId}`)
     }
 
-    public async removeUser(userId : number) {
+    public async removeUser(userId: number) {
         return await axios.delete(`${this.BACKEND_URL}/user/get/${userId}/remove`)
     }
 

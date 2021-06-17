@@ -41,14 +41,20 @@ const muiTheme = createMuiTheme({
       main: red[500],
     }
   },
+  overrides: {
+    MuiButton: {
+      disabled: {
+        color: "white"
+      }
+    }
+  }
 });
 
 function App() {
   return (
     <div className={styles.app}>
-      <Grommet theme={theme}>
       <ThemeProvider theme={muiTheme}>
-        <Box background="#121212" height="100%" width="100%" direction="row">
+        <Box  background="#121212" height="100%" width="100%" direction="row">
           <GameContextProvider>
             <Main
               pad="large"
@@ -62,14 +68,13 @@ function App() {
                 <BoardComponent />
               </Box>
 
-              <Box height="100%" >
+              <Box round height="100%" >
                 <MenuComponent />
               </Box>
             </Main>
           </GameContextProvider>
         </Box>
         </ThemeProvider>
-      </Grommet>
     </div>
   );
 }

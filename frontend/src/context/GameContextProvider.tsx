@@ -179,49 +179,48 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       } else {
         updateGameContext(0);
       }
-    }, 1000);
+    }, 500);
     return () => {
       clearInterval(intervalId);
     };
   }, [currentGame, updateGameContext]);
 
   //Define a function used to set a player ona  specific space
-  const setPlayerOnSpace = 
-    async (space: Space) => {
-      if (!currentGame || !currentBoard) return;
-      //Check if space already has a player standing on it
-      if (space.playerId) return;
-      if(currentBoard.currentPlayerDto?.playerName !== currentUser?.userName)
-      return
-      await GameApi.moveCurrentPlayer(currentGame!.gameId, {
-        ...space,
-        playerId: currentBoard!.currentPlayerDto?.playerId,
-      })
-        .then(() => {
-          let tempSpaces = [...currentBoard!.spaceDtos]; //Use spread operator to copy spaces array, needed for making immutable changes
-          //See https://bit.ly/2My8Bfz, until the section about Immutable.js
-          tempSpaces[space.x][space.y].playerId =
-            currentBoard!.currentPlayerDto?.playerId; //Set the player on the new space they clicked on
+  const setPlayerOnSpace = async (space: Space) => {
+    if (!currentGame || !currentBoard) return;
+    //Check if space already has a player standing on it
+    if (space.playerId) return;
+    if ((currentBoard.currentPlayerDto?.playerId !== currentUser?.userId) || !currentGame.started) return;
+    await GameApi.moveCurrentPlayer(currentGame!.gameId, {
+      ...space,
+      playerId: currentBoard!.currentPlayerDto?.playerId,
+    })
+      .then(() => {
+        let tempSpaces = [...currentBoard!.spaceDtos]; //Use spread operator to copy spaces array, needed for making immutable changes
+        //See https://bit.ly/2My8Bfz, until the section about Immutable.js
+        tempSpaces[space.x][space.y].playerId =
+          currentBoard!.currentPlayerDto?.playerId; //Set the player on the new space they clicked on
 
-          if (
-            currentBoard!.currentPlayerDto?.x !== undefined &&
-            currentBoard!.currentPlayerDto?.y !== undefined
-          ) {
-            //If the player was standing on a space previously, remove them from that space
-            tempSpaces[currentBoard!.currentPlayerDto?.x][
-              currentBoard!.currentPlayerDto?.y
-            ].playerId = undefined;
-          }
-          setLoaded(true);
-          forceViewUpdate();
-        })
-        .catch(() => {
-          //console.error("Error while fetching board from backend");
-        });
-    }
+        if (
+          currentBoard!.currentPlayerDto?.x !== undefined &&
+          currentBoard!.currentPlayerDto?.y !== undefined
+        ) {
+          //If the player was standing on a space previously, remove them from that space
+          tempSpaces[currentBoard!.currentPlayerDto?.x][
+            currentBoard!.currentPlayerDto?.y
+          ].playerId = undefined;
+        }
+        setLoaded(true);
+        forceViewUpdate();
+      })
+      .catch(() => {
+        //console.error("Error while fetching board from backend");
+      });
+  };
 
   const switchToNextPlayer = async () => {
     if (!currentGame || !currentBoard || !playerCount) return;
+    if ((currentBoard.currentPlayerDto?.playerId !== currentUser?.userId) || !currentGame.started) return;
 
     await GameApi.switchPlayer(currentGame.gameId)
       .then(() => {
@@ -230,7 +229,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         setCurrentPlayerIndex(newPlayerIndex);
       })
       .catch(() => console.error("Error while switching player"));
-  }
+  };
 
   const unselectGame = async () => {
     if (!currentGame || !currentUser) return;
@@ -310,7 +309,15 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   const changeGameName = async (gameId: number, name: string) => {
     if (name !== "") return (await GameApi.editGameName(gameId, name)).data;
     return false;
-  }
+  };
+
+  const startGame = async (gameId: number) => {
+
+
+
+
+    return false;
+  };
 
   return (
     <GameContext.Provider
@@ -328,6 +335,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         forceViewUpdate: forceViewUpdate,
         createGame: createGame,
         changeGameName: changeGameName,
+        startGame: startGame
       }}
     >
       {children}
