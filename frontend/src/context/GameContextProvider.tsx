@@ -7,11 +7,10 @@ import React, {
   useState,
 } from "react";
 import GameContext from "./GameContext";
-import { Player } from "../types/Player";
 import { Board } from "../types/Board";
 import { Space } from "../types/Space";
 import GameApi from "../api/GameApi";
-import { Game } from "../types/Game";
+import { Game, NO_GAME_GAMEID } from "../types/Game";
 import { User } from "../types/User";
 import useCookie from "react-use-cookie";
 
@@ -21,34 +20,57 @@ type GameContextProviderPropsType = {
 
 const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   const [userToken, setUserToken] = useCookie("user");
-  const [currentGame, setCurrentGame] = useState<Game>();
+  //const [lastGameToken, setLastGameToken] = useCookie("last-game");
+
+  const [currentGame, setCurrentGame] = useState<Game>({
+    gameId: 0,
+    name: "No game loaded",
+    started: false,
+    users: [],
+  });
   const [games, setGames] = useState<Game[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
-  const [currentBoard, setCurrentBoard] = useState<Board>();
+  const [currentBoard, setCurrentBoard] = useState<Board>({
+    playerDtos: [],
+    spaceDtos: [],
+    gameId: -1,
+    boardName: "",
+    currentPlayerDto: undefined,
+    height: 0,
+    width: 0,
+  });
   const playerCount = useMemo(
-    () => currentBoard?.playerDtos.length,
-    [currentBoard?.playerDtos]
+    () => (currentBoard.playerDtos ? currentBoard.playerDtos.length : 0),
+    [currentBoard.playerDtos]
   );
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
 
-useEffect(() => {
+  const getCurrentUser = async () => {
     if (userToken === undefined) {
-      GameApi.createUser().then(async (response) => {
-        setUserToken("" + response.data);
-  
-        const fetched = (await GameApi.getUser(response.data)).data;
-        setCurrentUser(fetched);
-      });
+      await createUser();
     } else {
-      GameApi.getUser(parseInt(userToken)).then((res) => {
-        setCurrentUser(res.data);
-      });
+      try {
+        const fetched = (await GameApi.getUser(parseInt(userToken))).data;
+        setCurrentUser(fetched);
+      } catch (error) {
+        await createUser();
+      }
     }
-  
-  return () => {
-    
-  }
-}, [])
+  };
+
+  const createUser = async () => {
+    const user = (await GameApi.createUser()).data;
+    setUserToken(user + "");
+
+    const fetched = (await GameApi.getUser(user)).data;
+    setCurrentUser(fetched);
+  };
+
+  useEffect(() => {
+    getCurrentUser();
+
+    return () => {};
+  }, []);
 
   const updateGameContextGamesList = () =>
     GameApi.getGames()
@@ -57,23 +79,55 @@ useEffect(() => {
         setGames(games);
       })
       .catch(() => {
-        console.error("Error while fetching all games from backend");
+        //console.error("Error while fetching all games from backend");
       });
 
-  const updateGameContextGame = (gameId: number) =>
+  const updateGameContextGame = (gameId: number) => {
+    if (gameId === NO_GAME_GAMEID) {
+      setCurrentGame({
+        gameId: NO_GAME_GAMEID,
+        name: "No current game",
+        started: false,
+        users: [],
+      });
+      return;
+    }
+
     GameApi.getGame(gameId)
       .then((game) => {
         setCurrentGame(game.data);
       })
-      .catch(() => {
-        console.error("Error while fetching chosen game from backend");
+      .catch((error) => {
+        setLoaded(false);
+        setCurrentGame({
+          gameId: NO_GAME_GAMEID,
+          name: "No current game",
+          started: false,
+          users: [],
+        });
+        console.error(error);
       });
+  };
 
   const updateGameContext = (id: number) => {
-    const updateGameContextBoard = (gameId: number) =>
-      GameApi.getBoard(gameId)
-        .then((board) => {
-          let updatedBoard = currentBoard!;
+    const updateGameContextBoard = () => {
+      if (currentGame.gameId === NO_GAME_GAMEID) {
+        setLoaded(false);
+        setCurrentBoard({
+          playerDtos: [],
+          spaceDtos: [],
+          gameId: NO_GAME_GAMEID,
+          boardName: "",
+          currentPlayerDto: undefined,
+          height: 0,
+          width: 0,
+        });
+        return;
+      }
+      GameApi.getBoard(currentGame.gameId)
+        .then((result) => {
+          let updatedBoard = currentBoard;
+          const board = result.data;
           updatedBoard.spaceDtos = board.spaceDtos;
           updatedBoard.playerDtos = board.playerDtos;
           updatedBoard.width = board.width;
@@ -88,29 +142,45 @@ useEffect(() => {
             });
           }
           setCurrentBoard(updatedBoard);
-
+          console.log(updatedBoard);
           setLoaded(true);
         })
         .catch(() => {
-          console.error("Error while fetching board from backend");
+          setLoaded(false);
+          setCurrentBoard({
+            playerDtos: [],
+            spaceDtos: [],
+            gameId: NO_GAME_GAMEID,
+            boardName: "",
+            currentPlayerDto: undefined,
+            height: 0,
+            width: 0,
+          });
         });
+    };
 
     updateGameContextGamesList();
-    updateGameContextBoard(id);
     updateGameContextGame(id);
+    updateGameContextBoard();
+
+    //  console.log(currentGame)
+    //  console.log(currentBoard)
+    //  console.log(currentUser)
   };
 
   const [loaded, setLoaded] = useState<boolean>(false);
-  useEffect(() => {
-    updateGameContext(0);
-  }, [updateGameContext]);
 
   useEffect(() => {
+    /*if (!currentGame) {
+      updateGameContext(0);
+    }*/
     const intervalId = setInterval(() => {
-      if (currentGame) {
-        updateGameContext(currentGame.gameId);
+      if (currentUser) {
+        updateGameContext(currentUser.currentGame);
+      } else {
+        updateGameContext(0);
       }
-    }, 5000);
+    }, 1500);
     return () => {
       clearInterval(intervalId);
     };
@@ -145,7 +215,7 @@ useEffect(() => {
           setLoaded(true);
         })
         .catch(() => {
-          console.error("Error while fetching board from backend");
+          //console.error("Error while fetching board from backend");
         });
     },
     [currentBoard, currentGame]
@@ -163,83 +233,99 @@ useEffect(() => {
       .catch(() => console.error("Error while switching player"));
   }, [currentGame, currentBoard, currentPlayerIndex, playerCount]);
 
-  const game = useMemo<Game>(() => {
-    if (currentGame)
-      return {
-        gameId: currentGame!.gameId,
-        name: currentGame!.name,
-        started: currentGame!.started,
-        users: currentGame!.users,
-      };
-    return {
-      gameId: 0,
-      name: "No game loaded",
-      started: false,
-      users: [],
-    };
-  }, [currentGame]);
+  const unselectGame = async () => {
+    if (!currentGame || !currentUser) return;
 
-  const user = useMemo<User>(() => {
-    if (currentUser)
-      return {
-        userId: currentUser!.userId,
-        userName: currentUser!.userName,
-      };
+    const usr = currentUser;
+    usr.currentGame = NO_GAME_GAMEID;
+    setCurrentUser(usr);
 
-    return {
-      userId: 0,
-      userName: "Not logged in!",
-    };
-  }, [currentUser]);
+    try {
+      GameApi.leaveGame(currentGame.gameId, currentUser.userId).catch(
+        (err) => {}
+      );
+      setCurrentGame({
+        gameId: NO_GAME_GAMEID,
+        name: "No game loaded",
+        started: false,
+        users: [],
+      });
+      setCurrentBoard({
+        playerDtos: [],
+        spaceDtos: [],
+        gameId: NO_GAME_GAMEID,
+        boardName: "",
+        currentPlayerDto: undefined,
+        height: 0,
+        width: 0,
+      });
+      forceViewUpdate();
+      setLoaded(false);
+    } catch (error) {
+      return;
+    }
+  };
 
-  const board = useMemo<Board>(() => {
-    if (currentBoard)
-      return {
-        spaceDtos: currentBoard!.spaceDtos,
-        playerDtos: currentBoard!.playerDtos,
-        currentPlayerDto: currentBoard!.currentPlayerDto,
-        currentPlayerIndex: currentPlayerIndex,
-        width: currentBoard!.width,
-        height: currentBoard!.height,
-        boardName: currentBoard!.boardName,
-        boardId: currentBoard!.boardId,
-      };
+  const forceViewUpdate = () => {
+    if (!currentUser) return;
+    updateGameContext(currentUser.currentGame);
+  };
 
-    return {
-      playerDtos: [],
-      spaceDtos: [],
-      boardId: -1,
-      boardName: "",
-      currentPlayerDto: undefined,
-      height: 0,
-      width: 0,
-    };
-  }, [currentBoard, currentPlayerIndex]);
+  const createGame = async () => {
+    const gameId = (await GameApi.createGame()).data;
+    forceViewUpdate();
+    return gameId;
+  };
+
+  const selectGame = async (gameId: number) => {
+    if (!currentUser) return;
+    try {
+      await GameApi.joinGame(gameId, currentUser!.userId);
+    } catch (e) {
+      console.error(e);
+      return;
+    }
+    const usr = currentUser;
+    usr.currentGame = gameId;
+    setCurrentUser(usr);
+    let game: Game;
+    try {
+      game = (await GameApi.getGame(gameId)).data;
+      setCurrentGame(game);
+    } catch (e) {
+      console.error(e);
+    }
+    forceViewUpdate();
+  };
+
+  const deleteGame = async (gameid: number) => {
+    if (!currentUser) return;
+
+    if (currentGame) {
+      if (currentGame.gameId === gameid) unselectGame();
+    }
+    GameApi.removeGame(gameid).catch((err) => {});
+    forceViewUpdate(); //suboptimal: this is called twice here and in unselectGame
+  };
 
   return (
     <GameContext.Provider
       value={{
         games: games,
-        selectGame: async (gameId: number) => {
-          GameApi.joinGame(gameId, currentUser!.userId);
-          setCurrentGame((await GameApi.getGame(gameId)).data);
-        },
-        unselectGame: async () => {
-          if (!currentGame || !currentUser) return;
-          GameApi.leaveGame(currentGame?.gameId, currentUser?.userId);
-          setCurrentGame(undefined);
-          setCurrentBoard(undefined);
-        },
+        selectGame: selectGame,
+        unselectGame: unselectGame,
+        deleteGame: deleteGame,
         loaded: loaded,
-        board: board,
-        currentGame: game,
-        currentUser: user,
+        board: currentBoard,
+        currentGame: currentGame,
+        currentUser: currentUser!,
         setCurrentPlayerOnSpace: setPlayerOnSpace,
         switchCurrentPlayer: switchToNextPlayer,
+        forceViewUpdate: forceViewUpdate,
+        createGame: createGame,
       }}
     >
-      {children}{" "}
-      {/*See: https://reactjs.org/docs/composition-vs-inheritance.html*/}
+      {children}
     </GameContext.Provider>
   );
 };

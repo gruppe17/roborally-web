@@ -4,10 +4,12 @@ import { Game } from "../types/Game";
 import { Space } from "../types/Space";
 import { User } from "../types/User";
 
+
 class GameApi {
+    
 
     private static instance: GameApi;
-    private readonly BACKEND_URL = "https://roborally-backend.herokuapp.com" // "http://localhost:8080" "https://roborallyserver.tobiasmaneschijn.com/"
+    private readonly BACKEND_URL = "https://roborally-backend.herokuapp.com" // "http://localhost:8080" //   "https://roborallyserver.tobiasmaneschijn.com/"
     private constructor() { }
 
     public static getInstance(): GameApi {
@@ -17,8 +19,8 @@ class GameApi {
         return GameApi.instance;
     }
 
-    public getBoard(gameId : number) {
-        return axios.get<Board>(`${this.BACKEND_URL}/game/get/${gameId}/board`).then(value => value.data)
+    public async getBoard(gameId : number) {
+        return axios.get<Board>(`${this.BACKEND_URL}/game/get/${gameId}/board`)
     }
 
     public async getBoards() {
@@ -43,11 +45,12 @@ class GameApi {
     }
 
     public async joinGame(gameId: number, userId : number)  {
+
         return await axios.post(`${this.BACKEND_URL}/game/join/${gameId}/${userId}`)
     }
 
     public async leaveGame (gameId : number, userId : number) {
-        return await axios.put(`${this.BACKEND_URL}/game/leave/${gameId}/${userId}`)
+        return await axios.put(`${this.BACKEND_URL}/game/leave/${gameId}/${userId}`, {})
     }
 
     public async editGameName(gameId: number, title: string) {
@@ -81,7 +84,7 @@ class GameApi {
     public async createBoard(gameId: number, name: String, height: number, width: Number) {
 
         const board = {
-            "boardId": gameId,
+            "gameId": gameId,
             "boardName": name,
             "height": height,
             "width": width,

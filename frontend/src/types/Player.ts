@@ -1,5 +1,5 @@
 export type Player = {
-    boardId : number,
+    gameId : number,
     playerId : number,
     playerName: string,
     //The | operator is known as the "union" type, allowing us to have a property that can take different values

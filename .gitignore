@@ -88,3 +88,5 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 # Local Netlify folder
 .netlify
+
+package-lock.json

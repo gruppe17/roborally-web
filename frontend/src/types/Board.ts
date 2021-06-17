@@ -2,7 +2,7 @@ import {Space} from "./Space";
 import {Player} from "./Player";
 
 export type Board = {
-    boardId : number,
+    gameId : number,
     boardName : string,
     height : number,
     width : number,

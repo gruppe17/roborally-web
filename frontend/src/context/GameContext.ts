@@ -1,6 +1,6 @@
 import {createContext} from "react";
 import {Board} from "../types/Board";
-import { Game } from "../types/Game";
+import { Game, NO_GAME_GAMEID } from "../types/Game";
 import {Space} from "../types/Space";
 import { User } from "../types/User";
 
@@ -11,11 +11,13 @@ export type GameContextType = {
     unselectGame: () => Promise<void>,
     currentUser : User,
     currentGame : Game,
-
+    deleteGame :  (gameId: number) => Promise<void>,
     loaded : boolean,
     board: Board,
     setCurrentPlayerOnSpace: (space: Space) => Promise<void>,
-    switchCurrentPlayer: () => Promise<void>
+    switchCurrentPlayer: () => Promise<void>,
+    forceViewUpdate : () => void,
+    createGame : () => Promise<number>,
 }
 //Define a new context of type GameContextType
 //Below we define the "default" values which are set upon initialization of the context
@@ -23,7 +25,7 @@ export type GameContextType = {
 const GameContext = createContext<GameContextType>({
     games: [],
     currentGame: {
-        gameId: 0,
+        gameId: NO_GAME_GAMEID,
         name: "No game loaded",
         started: false,
         users: []
@@ -31,15 +33,17 @@ const GameContext = createContext<GameContextType>({
     },
     currentUser: {
         userId: 0,
-        userName: "Not logged in!"
+        userName: "Not logged in!",
+        currentGame: NO_GAME_GAMEID
     },
     selectGame: async () => {},
     unselectGame: async () => {},
+    deleteGame: async (gameId : number) => {},
     loaded : false,
     board: {
         playerDtos: [],
         spaceDtos: [],
-        boardId: -1,
+        gameId: NO_GAME_GAMEID,
         boardName: "",
         currentPlayerDto: undefined,
         height: 0,
@@ -48,7 +52,9 @@ const GameContext = createContext<GameContextType>({
     setCurrentPlayerOnSpace: async () => {
     },
     switchCurrentPlayer: async () => {
-    }
+    },
+    forceViewUpdate: () => {},
+    createGame: async () => {return -1},
 });
 
 export default GameContext

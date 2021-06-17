@@ -2,12 +2,12 @@ import React, { useState, ReactElement, useContext } from "react";
 import { IconButton } from "@material-ui/core/";
 import { Gamepad, Add, People , Games} from "@material-ui/icons";
 
-import styles from "../styling/MenuComponent.module.scss";
-import { NewGameTab } from "./menu-tabs/NewGameTabComponent";
 import { GamesListTab } from "./menu-tabs/GamesListTabComponent";
 import { PlayersTab } from "./menu-tabs/PlayersTabComponent";
 import { Box } from "grommet";
 import GameContext from "../context/GameContext";
+import GameApi from "../api/GameApi";
+
 
 function TabButton(props: {
   setCurrentTab: Function;
@@ -15,7 +15,7 @@ function TabButton(props: {
   label: string;
   badge?: number;
   icon?: JSX.Element;
-}) {
+}) : JSX.Element {
   return (
     <IconButton
       color={"primary"}
@@ -29,14 +29,12 @@ function TabButton(props: {
 
 function MenuComponent(): ReactElement {
   const [currentTab, setCurrentTab] =
-    useState<"new-game" | "games" | "players">("new-game");
+    useState<"games" | "players">("games");
 
-  const { currentGame, currentUser } = useContext(GameContext);
+  const { currentGame, currentUser, createGame, forceViewUpdate } = useContext(GameContext);
 
   const tabContent = () => {
     switch (currentTab) {
-      case "new-game":
-        return <NewGameTab />;
       case "games":
         return <GamesListTab />;
       case "players":
@@ -54,10 +52,10 @@ function MenuComponent(): ReactElement {
     >
       <Box justify="evenly" direction="row">
         <Box direction="row">
-          <People /> {currentUser.userName}
+          <People /> {currentUser && currentUser.userName}
         </Box>
         <Box direction="row">
-          <Games /> {currentGame.name}
+          <Games /> {currentGame && currentGame.name}
         </Box>
       </Box>
 
@@ -69,12 +67,16 @@ function MenuComponent(): ReactElement {
         flex
         direction="row"
       >
-        <TabButton
-          setCurrentTab={setCurrentTab}
-          tabName="new-game"
-          label="New game"
-          icon={<Add />}
-        />
+        <IconButton
+          color={"primary"}
+          size={"medium"}
+          onClick={ () => {
+            if(currentTab !== "games") setCurrentTab("games")
+            createGame()
+          }}
+        >
+          <Add/>
+        </IconButton>
         <TabButton
           setCurrentTab={setCurrentTab}
           tabName="games"
