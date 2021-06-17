@@ -222,7 +222,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
 
   const switchToNextPlayer = async () => {
     if (!currentGame || !currentBoard || !playerCount) return;
-    if(currentBoard.currentPlayerDto?.playerId !== currentUser?.userId) return
+    if (currentBoard.currentPlayerDto?.playerId !== currentUser?.userId) return
 
     await GameApi.switchPlayer(currentGame.gameId)
       .then(() => {
