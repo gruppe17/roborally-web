@@ -43,7 +43,7 @@ const GameContext = createContext<GameContextType>({
     board: {
         playerDtos: [],
         spaceDtos: [],
-        boardId: -1,
+        gameId: 0,
         boardName: "",
         currentPlayerDto: undefined,
         height: 0,

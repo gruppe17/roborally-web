@@ -33,7 +33,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   const [currentBoard, setCurrentBoard] = useState<Board>({
     playerDtos: [],
     spaceDtos: [],
-    boardId: -1,
+    gameId: -1,
     boardName: "",
     currentPlayerDto: undefined,
     height: 0,
@@ -117,7 +117,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       setCurrentBoard({
         playerDtos: [],
         spaceDtos: [],
-        boardId: -1,
+        gameId: -1,
         boardName: "",
         currentPlayerDto: undefined,
         height: 0,
@@ -151,7 +151,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
           setCurrentBoard({
             playerDtos: [],
             spaceDtos: [],
-            boardId: -1,
+            gameId: 0,
             boardName: "",
             currentPlayerDto: undefined,
             height: 0,
@@ -276,13 +276,13 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         width: currentBoard.width,
         height: currentBoard.height,
         boardName: currentBoard.boardName,
-        boardId: currentBoard.boardId,
+        gameId: currentBoard.gameId,
       };
 
     return {
       playerDtos: [],
       spaceDtos: [],
-      boardId: -1,
+      gameId: 0,
       boardName: "",
       currentPlayerDto: undefined,
       height: 0,
@@ -310,7 +310,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       setCurrentBoard({
         playerDtos: [],
         spaceDtos: [],
-        boardId: -1,
+        gameId: 0,
         boardName: "",
         currentPlayerDto: undefined,
         height: 0,
