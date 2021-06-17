@@ -143,7 +143,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
             });
           }
           setCurrentBoard(updatedBoard);
-          console.log(updatedBoard);
           setLoaded(true);
         })
         .catch(() => {
@@ -282,7 +281,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     return {
       playerDtos: [],
       spaceDtos: [],
-      gameId: 0,
+      gameId: -1,
       boardName: "",
       currentPlayerDto: undefined,
       height: 0,
@@ -310,7 +309,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       setCurrentBoard({
         playerDtos: [],
         spaceDtos: [],
-        gameId: 0,
+        gameId: -1,
         boardName: "",
         currentPlayerDto: undefined,
         height: 0,
