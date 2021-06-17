@@ -180,7 +180,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       } else {
         updateGameContext(0);
       }
-    }, 1500);
+    }, 200);
     return () => {
       clearInterval(intervalId);
     };
@@ -215,6 +215,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
           }
 
           setLoaded(true);
+          forceViewUpdate();
         })
         .catch(() => {
           //console.error("Error while fetching board from backend");
