@@ -10,7 +10,7 @@ import GameContext from "./GameContext";
 import { Board } from "../types/Board";
 import { Space } from "../types/Space";
 import GameApi from "../api/GameApi";
-import { Game } from "../types/Game";
+import { Game, NO_GAME_GAMEID } from "../types/Game";
 import { User } from "../types/User";
 import useCookie from "react-use-cookie";
 
@@ -83,9 +83,9 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       });
 
   const updateGameContextGame = (gameId: number) => {
-    if (gameId === 0) {
+    if (gameId === NO_GAME_GAMEID) {
       setCurrentGame({
-        gameId: 0,
+        gameId: NO_GAME_GAMEID,
         name: "No current game",
         started: false,
         users: [],
@@ -100,7 +100,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       .catch((error) => {
         setLoaded(false);
         setCurrentGame({
-          gameId: 0,
+          gameId: NO_GAME_GAMEID,
           name: "No current game",
           started: false,
           users: [],
@@ -111,12 +111,12 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
 
   const updateGameContext = (id: number) => {
     const updateGameContextBoard = () => {
-      if (currentGame.gameId === 0) {
+      if (currentGame.gameId === NO_GAME_GAMEID) {
         setLoaded(false);
         setCurrentBoard({
           playerDtos: [],
           spaceDtos: [],
-          gameId: -1,
+          gameId: NO_GAME_GAMEID,
           boardName: "",
           currentPlayerDto: undefined,
           height: 0,
@@ -150,7 +150,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
           setCurrentBoard({
             playerDtos: [],
             spaceDtos: [],
-            gameId: 0,
+            gameId: NO_GAME_GAMEID,
             boardName: "",
             currentPlayerDto: undefined,
             height: 0,
@@ -237,7 +237,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     if (!currentGame || !currentUser) return;
 
     const usr = currentUser;
-    usr.currentGame = 0;
+    usr.currentGame = NO_GAME_GAMEID;
     setCurrentUser(usr);
 
     try {
@@ -245,7 +245,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         (err) => {}
       );
       setCurrentGame({
-        gameId: 0,
+        gameId: NO_GAME_GAMEID,
         name: "No game loaded",
         started: false,
         users: [],
@@ -253,7 +253,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       setCurrentBoard({
         playerDtos: [],
         spaceDtos: [],
-        gameId: -1,
+        gameId: NO_GAME_GAMEID,
         boardName: "",
         currentPlayerDto: undefined,
         height: 0,
