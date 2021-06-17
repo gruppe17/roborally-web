@@ -191,7 +191,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       if (!currentGame || !currentBoard) return;
       //Check if space already has a player standing on it
       if (space.playerId) return;
-      if(currentBoard.currentPlayerDto?.playerName !== currentUser?.userName)
+      if(currentBoard.currentPlayerDto?.playerId !== currentUser?.userId)
       return
       await GameApi.moveCurrentPlayer(currentGame!.gameId, {
         ...space,
@@ -222,6 +222,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
 
   const switchToNextPlayer = async () => {
     if (!currentGame || !currentBoard || !playerCount) return;
+    if(currentBoard.currentPlayerDto?.playerId !== currentUser?.userId) return
 
     await GameApi.switchPlayer(currentGame.gameId)
       .then(() => {
