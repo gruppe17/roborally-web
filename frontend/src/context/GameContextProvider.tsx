@@ -141,7 +141,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
           });
         }
         setCurrentBoard(updatedBoard);
-        console.log(updatedBoard);
         setLoaded(true);
       })
       .catch(() => {
