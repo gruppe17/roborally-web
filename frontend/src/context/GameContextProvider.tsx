@@ -101,8 +101,9 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   const updateGameContext = (id: number) => {
     const updateGameContextBoard = () =>
       GameApi.getBoard(currentGame.gameId)
-        .then((board) => {
+        .then((result) => {
           let updatedBoard = currentBoard;
+          const board = result.data
           updatedBoard.spaceDtos = board.spaceDtos;
           updatedBoard.playerDtos = board.playerDtos;
           updatedBoard.width = board.width;
