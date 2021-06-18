@@ -7,7 +7,7 @@ import React, {
 import GameContext from "./GameContext";
 //import { Board, noBoardBoard } from '../types/Board';
 import GameApi from "../api/GameApi";
-import { Game, NO_GAME_GAMEID } from "../types/Game";
+import { Game, NO_GAME_GAME, NO_GAME_GAMEID } from '../types/Game';
 import ReactInterval from "react-interval";
 import UserContext from "./UserContext";
 import BoardContext from './BoardContext';
@@ -23,12 +23,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   const {currentUser, setCurrentUser} = useContext(UserContext)
   const {updateBoardContext, setLoaded, setCurrentBoard} = useContext(BoardContext)
 
-  const [currentGame, setCurrentGame] = useState<Game>({
-    gameId: NO_GAME_GAMEID,
-    name: "No game loaded",
-    started: false,
-    users: [],
-  });
+  const [currentGame, setCurrentGame] = useState<Game>(NO_GAME_GAME);
   const [games, setGames] = useState<Game[]>([]);
 
   const updateGameContextGamesList = () =>
@@ -43,12 +38,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
 
   const updateGameContextGame = (gameId: number) => {
     if (gameId === NO_GAME_GAMEID) {
-      setCurrentGame({
-        gameId: NO_GAME_GAMEID,
-        name: "No current game",
-        started: false,
-        users: [],
-      });
+      setCurrentGame(NO_GAME_GAME);
       return;
     }
 
@@ -58,12 +48,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       })
       .catch((error) => {
         setLoaded(false);
-        setCurrentGame({
-          gameId: NO_GAME_GAMEID,
-          name: "No current game",
-          started: false,
-          users: [],
-        });
+        setCurrentGame(NO_GAME_GAME);
         console.error(error);
       });
   };
@@ -88,12 +73,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       GameApi.leaveGame(currentGame.gameId, currentUser.userId).catch(
         (err) => {}
       );
-      setCurrentGame({
-        gameId: NO_GAME_GAMEID,
-        name: "No game loaded",
-        started: false,
-        users: [],
-      });
+      setCurrentGame(NO_GAME_GAME);
       setCurrentBoard(noBoardBoard); //Not neccessary? forceViewUpdate calls updateBoardContext which will set it to noBoard
       forceViewUpdate();
       setLoaded(false);
