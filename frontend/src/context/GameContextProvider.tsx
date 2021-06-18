@@ -74,7 +74,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         (err) => {}
       );
       setCurrentGame(NO_GAME_GAME);
-      setCurrentBoard(noBoardBoard); //Not neccessary? forceViewUpdate calls updateBoardContext which will set it to noBoard
+      //setCurrentBoard(noBoardBoard); //Not neccessary? forceViewUpdate calls updateBoardContext which will set it to noBoard
       forceViewUpdate();
       setLoaded(false);
     } catch (error) {
