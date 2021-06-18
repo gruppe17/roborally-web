@@ -34,12 +34,12 @@ const UserContextProvider = ({ children } : UserContextProviderPropsType) => {
         const fetched = (await GameApi.getUser(user)).data;
         setCurrentUser(fetched);
     };
-/*
+
     useEffect(() => {
         getCurrentUser();
         return () => {};
     }, []);
-*/
+
 
     return (
         <UserContext.Provider
