@@ -5,6 +5,7 @@ import BoardContext from "./BoardContext";
 import GameApi from '../api/GameApi';
 import UserContext from './UserContext';
 import { Space } from "../types/Space";
+import { forEach } from "cypress/types/lodash";
 
 type BoardContextProviderPropsType = {
     children : ReactNode
@@ -68,36 +69,41 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
     };
 
 
+    const getUpdatedBoard = () => {
+      if (currentUser.currentGameId === NO_GAME_GAMEID) 
+        return noBoardBoard
+
+      GameApi.getBoard(currentUser.currentGameId).then((result) => {
+        const fetchedBoard = result.data
+        let updatedBord = currentBoard
+        updatedBord.spaceDtos = fetchedBoard.spaceDtos
+        updatedBord.playerDtos = fetchedBoard.playerDtos
+        updatedBord.width = fetchedBoard.width
+        updatedBord.height = fetchedBoard.height
+
+        if (!fetchedBoard.currentPlayerDto) 
+          updatedBord.currentPlayerDto = fetchedBoard.currentPlayerDto
+
+        return updatedBord;
+      }).catch(() => {return noBoardBoard})
+    }
+    
+
+
     const updateBoardContext = () => {
-        if (currentUser.currentGameId === NO_GAME_GAMEID) {
-            setLoaded(false);
-            setCurrentBoard(noBoardBoard);
+        const updatedBoard = getUpdatedBoard();
+        if(!updatedBoard || updatedBoard === noBoardBoard) {
+          setLoaded(false);
+          setCurrentBoard(noBoardBoard);
           return;
         }
-        GameApi.getBoard(currentUser.currentGameId)
-          .then((result) => {
-            let updatedBoard = currentBoard;
-            const board = result.data;
-            updatedBoard.spaceDtos = board.spaceDtos;
-            updatedBoard.playerDtos = board.playerDtos;
-            updatedBoard.width = board.width;
-            updatedBoard.height = board.height;
-    
-            if (board.currentPlayerDto) {
-              updatedBoard.currentPlayerDto = board.currentPlayerDto;
-              board.playerDtos.forEach((player, index) => {
-                if (player.playerId === board.currentPlayerDto?.playerId) {
-                  setCurrentPlayerIndex(index);
-                }
-              });
-            }
-            setCurrentBoard(updatedBoard);
-            setLoaded(true);
-          })
-          .catch(() => {
-                setLoaded(false);
-                setCurrentBoard(noBoardBoard);
+
+        if (updatedBoard?.currentPlayerDto) 
+          updatedBoard.playerDtos.forEach((player, index) => {
+            if (player.playerId === updatedBoard.currentPlayerDto?.playerId) setCurrentPlayerIndex(index); //:'( can't break out
           });
+        setCurrentBoard(updatedBoard)
+        setLoaded(true);
       };
 
     return (
@@ -116,5 +122,7 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
         </BoardContext.Provider>
       );
 }
+
+
 
 export default BoardContextProvider
