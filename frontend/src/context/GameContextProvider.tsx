@@ -62,15 +62,12 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   const unselectGame = async () => {
     if (!currentGame || !currentUser) return;
 
-    await setCurrentUserGameId(NO_GAME_GAMEID)
-
     try {
       GameApi.leaveGame(currentGame.gameId, currentUser.userId).catch(
-        (err) => {}
+        (err) => {console.error(err)}
       );
-      setCurrentGame(NO_GAME_GAME);
+      await setCurrentUserGameId(NO_GAME_GAMEID)
       forceViewUpdate();
-      setLoaded(false); //Unnecessary?
     } catch (error) {
       return;
     }
