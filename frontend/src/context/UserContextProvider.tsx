@@ -17,13 +17,13 @@ const UserContextProvider = ({ children } : UserContextProviderPropsType) => {
     const getCurrentUser = async () => {
         if (userToken === undefined) {
             await createUser();
-        } else {
-            try {
+        } 
+
+        try {
             const fetched = (await GameApi.getUser(parseInt(userToken))).data;
             setCurrentUser(fetched);
-            } catch (error) {
+        } catch (error) {
             await createUser();
-            }
         }
     };
 
