@@ -1,5 +1,5 @@
 import {createContext} from "react";
-import { Game, NO_GAME_GAMEID } from "../types/Game";
+import { Game, NO_GAME_GAME } from "../types/Game";
 
 
 export type GameContextType = {
@@ -21,12 +21,7 @@ export type GameContextType = {
 
 const GameContext = createContext<GameContextType>({
     games: [],
-    currentGame: {
-        gameId: NO_GAME_GAMEID,
-        name: "No game loaded",
-        started: false,
-        users: []
-    },
+    currentGame: NO_GAME_GAME,
     selectGame: async () => {},
     unselectGame: async () => {},
     deleteGame: async (gameId : number) => {},
