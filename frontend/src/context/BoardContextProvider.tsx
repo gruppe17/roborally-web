@@ -70,7 +70,6 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
 
 
     const getUpdatedBoard = async () => {
-      console.log("getUpdatedBoard")
       if (currentUser.currentGameId === NO_GAME_GAMEID) return noBoardBoard
 
       const fetchedBoard = (await GameApi.getBoard(currentUser.currentGameId)).data
@@ -83,8 +82,6 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
       updatedBord.height = fetchedBoard.height
       if (!fetchedBoard.currentPlayerDto) 
         updatedBord.currentPlayerDto = fetchedBoard.currentPlayerDto
-      console.log(fetchedBoard)
-      console.log(updatedBord)
       return updatedBord;
     }
 
