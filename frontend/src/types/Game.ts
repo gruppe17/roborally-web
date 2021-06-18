@@ -1,6 +1,6 @@
 import  {User} from "./User"
 
-export const NO_GAME_GAMEID = -1;
+export const NO_GAME_GAMEID : number = -1;
 
 export const NO_GAME_GAME : Game = {
     gameId: NO_GAME_GAMEID,
