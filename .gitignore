@@ -88,3 +88,4 @@ buildNumber.properties
 .netlify
 
 *.package-lock.json
+frontend/package-lock.json
