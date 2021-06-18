@@ -58,8 +58,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   const updateGameContext = (id: number) => {
     updateGameContextGamesList();
     updateGameContextGame(id);
-    //  console.log(currentGame)
-    //  console.log(currentUser)
   };
 
   const unselectGame = async () => {
