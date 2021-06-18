@@ -1,9 +1,5 @@
-import React, { useState, ReactElement, useContext } from "react";
-import {
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@material-ui/core/";
+import { useState, ReactElement, useContext } from "react";
+import { IconButton, Tooltip, Typography } from "@material-ui/core/";
 import { Gamepad, Add, People, Games } from "@material-ui/icons";
 import { Text } from "grommet";
 import { GamesListTab } from "./menu-tabs/GamesListTabComponent";
@@ -37,7 +33,7 @@ function MenuComponent(): ReactElement {
   const [currentTab, setCurrentTab] = useState<"games" | "players">("games");
 
   const { currentGame, createGame, changeGameName } = useContext(GameContext);
-  const { currentUser } = useContext(UserContext)
+  const { currentUser } = useContext(UserContext);
 
   const tabContent = () => {
     switch (currentTab) {
@@ -59,7 +55,14 @@ function MenuComponent(): ReactElement {
       justify="end"
     >
       <Text size="large">Roborally</Text>
-      <Box pad="small" elevation="medium" overflow="hidden" round={{ size: "small" }} background="#E6E6E6" width="100%">
+      <Box
+        pad="small"
+        elevation="medium"
+        overflow="hidden"
+        round={{ size: "small" }}
+        background="#E6E6E6"
+        width="100%"
+      >
         <Box gap="small" justify="center" direction="row">
           <Tooltip title="Current user. The user is randomly made for you and saved in a cookie for your convenience">
             <Box
@@ -69,7 +72,7 @@ function MenuComponent(): ReactElement {
               gap="xsmall"
               direction="column"
             >
-              <People />{" "}
+              <People />
               <Typography>{currentUser && currentUser.userName}</Typography>
             </Box>
           </Tooltip>
@@ -83,7 +86,7 @@ function MenuComponent(): ReactElement {
               gap="xsmall"
               direction="column"
             >
-              <Games />{" "}
+              <Games />
               <Text wordBreak="break-all">
                 {currentGame && currentGame.name}
               </Text>
