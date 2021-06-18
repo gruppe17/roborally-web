@@ -70,55 +70,35 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
 
 
     const getUpdatedBoard = async () => {
-      console.log("getUpdatedBoard: getting updated board")
       if (currentUser.currentGameId === NO_GAME_GAMEID) {
-        console.log("getUpdatedBoard: currentUser.currentGameId is " + currentUser.currentGameId + ". Returning noBoardBoard")
-        return noBoardBoard
-      }
-      console.log("getUpdatedBoard: Current User in getUpdatedBoard:")
-      console.log(currentUser)
-      console.log("getUpdatedBoard: getting board from backend")
+      if (currentUser.currentGameId === NO_GAME_GAMEID) return noBoardBoard
+
       const fetchedBoard = (await GameApi.getBoard(currentUser.currentGameId)).data
-      console.log("getUpdatedBoard: recived board from backend:")
-      console.log(fetchedBoard)
       let updatedBord = currentBoard
       updatedBord.gameId = fetchedBoard.gameId; //Why does board have a game id? We only ever display one at a time
       updatedBord.spaceDtos = fetchedBoard.spaceDtos
       updatedBord.playerDtos = fetchedBoard.playerDtos
       updatedBord.width = fetchedBoard.width
       updatedBord.height = fetchedBoard.height
-
-      if (!(fetchedBoard.currentPlayerDto)) 
+      if (!fetchedBoard.currentPlayerDto) 
         updatedBord.currentPlayerDto = fetchedBoard.currentPlayerDto
-      console.log("getUpdatedBoard: Returning board from backend:")
-      console.log(updatedBord)
+
       return updatedBord;
     }
 
     const updateBoardContext = async () => {
-      console.log("updateBoardContext: Updating board context.")
-      console.log("updateBoardContext: getting updated board.")
       const updatedBoard = await getUpdatedBoard();
-      console.log("updateBoardContext: recived board:"); console.log(updatedBoard);
       if(!updatedBoard || updatedBoard.gameId === NO_GAME_GAMEID) {
-        console.log("updateBoardContext: no (real) board recived. Setting loaded to false and board to noBoardBoard")
         setLoaded(false);
         setCurrentBoard(noBoardBoard);
         return;
       }
-      console.log("updateBoardContext: about to set current player")
       if (updatedBoard?.currentPlayerDto) 
         updatedBoard.playerDtos.forEach((player, index) => {
           if (player.playerId === updatedBoard.currentPlayerDto?.playerId) setCurrentPlayerIndex(index); //:'( can't break out
         });
-      else {
-        console.log("updateBoardContext: updated board contains no current player; settning current player to " + NO_USER_USERID);
-      }
-      console.log("getUpdatedBoard: setting updatedBoard as current board.")
       setCurrentBoard(updatedBoard)
-      console.log("About to set loaded true.")
       setLoaded(true);
-      console.log("Loaded should now be true. Value of loaded: " + loaded)
     };
 
     return (
