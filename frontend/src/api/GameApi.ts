@@ -75,7 +75,6 @@ class GameApi {
         return await axios.post<number>(`${this.BACKEND_URL}/user/new`)
     }
 
-
     public async getUser(userId: number) {
         return await axios.get<User>(`${this.BACKEND_URL}/user/get/${userId}`)
     }
