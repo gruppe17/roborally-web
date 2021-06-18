@@ -9,31 +9,28 @@ import { Box, Main } from "grommet";
 import { red, green, purple } from "@material-ui/core/colors";
 import UserContextProvider from "./context/UserContextProvider";
 import BoardContextProvider from './context/BoardContextProvider';
-import FetchCurrentUserComponent from './components/FetchUserComponent';
 
 const muiTheme = createMuiTheme({
   palette: {
     primary: {
-      light: purple[500],
       main: purple[700],
-      dark: purple[800],
     },
     secondary: {
-      light: green[600],
       main: green[800],
-      dark: '#b9f6ca',
     },
     warning:{
       main: red[500],
-    }
-  },
+    },
+  }
 });
+
+
 
 function App() {
   return (
     <div className={styles.app}>
       <ThemeProvider theme={muiTheme}>
-        <Box  background="#121212" height="100%" width="100%" direction="row">
+        <Box background="#121212" height="100%" width="100%" direction="row">
           <UserContextProvider>
             <BoardContextProvider>
               <GameContextProvider>
