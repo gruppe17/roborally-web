@@ -37,7 +37,6 @@ function App() {
           <UserContextProvider>
             <BoardContextProvider>
               <GameContextProvider>
-                <FetchCurrentUserComponent/>
                 <Main
                   pad="large"
                   width="100vw"

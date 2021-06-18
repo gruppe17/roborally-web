@@ -1,10 +1,11 @@
 import React, {
-    ReactNode, useState, useEffect,
+    ReactNode, useState,
 } from "react";
 import useCookie from "react-use-cookie";
 import { User } from "../types/User";
 import GameApi from "../api/GameApi";
 import UserContext from "./UserContext";
+import FetchCurrentUserComponent from "../components/FetchUserComponent";
 
 type UserContextProviderPropsType = {
     children : ReactNode
@@ -56,7 +57,8 @@ const UserContextProvider = ({ children } : UserContextProviderPropsType) => {
               setCurrentUserGameId: setCurrentUserGameId,
             } }
         >
-        {children}
+            <FetchCurrentUserComponent/>
+            {children}
         </UserContext.Provider>
       );
 }
