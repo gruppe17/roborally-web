@@ -146,7 +146,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         forceViewUpdate: forceViewUpdate,
       }}
     >
-      <ReactInterval enabled={true} timeout={2000} callback= {() => forceViewUpdate()}/>
+      <ReactInterval enabled={true} timeout={1000} callback= {() => forceViewUpdate()}/>
       {children}
     </GameContext.Provider>
   );
