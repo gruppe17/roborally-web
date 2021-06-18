@@ -21,7 +21,7 @@ type GameContextProviderPropsType = {
 const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   //const [lastGameToken, setLastGameToken] = useCookie("last-game");
   const {currentUser, setCurrentUser} = useContext(UserContext)
-  const {updateBoardContext, setLoaded, setCurrentBoard} = useContext(BoardContext)
+  const {updateBoardContext, setLoaded} = useContext(BoardContext)
 
   const [currentGame, setCurrentGame] = useState<Game>(NO_GAME_GAME);
   const [games, setGames] = useState<Game[]>([]);
@@ -74,7 +74,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         (err) => {}
       );
       setCurrentGame(NO_GAME_GAME);
-      //setCurrentBoard(noBoardBoard); //Not neccessary? forceViewUpdate calls updateBoardContext which will set it to noBoard
       forceViewUpdate();
       setLoaded(false);
     } catch (error) {
