@@ -70,10 +70,12 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
 
 
     const getUpdatedBoard = async () => {
+      console.log("getUpdatedBoard")
       if (currentUser.currentGameId === NO_GAME_GAMEID) return noBoardBoard
 
       const fetchedBoard = (await GameApi.getBoard(currentUser.currentGameId)).data
       let updatedBord = currentBoard
+      updatedBord.boardName = fetchedBoard.boardName;
       updatedBord.gameId = fetchedBoard.gameId; //Why does board have a game id? We only ever display one at a time
       updatedBord.spaceDtos = fetchedBoard.spaceDtos
       updatedBord.playerDtos = fetchedBoard.playerDtos
@@ -81,7 +83,8 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
       updatedBord.height = fetchedBoard.height
       if (!fetchedBoard.currentPlayerDto) 
         updatedBord.currentPlayerDto = fetchedBoard.currentPlayerDto
-      
+      console.log(fetchedBoard)
+      console.log(updatedBord)
       return updatedBord;
     }
 

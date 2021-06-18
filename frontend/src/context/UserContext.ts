@@ -4,8 +4,8 @@ import {NO_GAME_GAMEID } from "../types/Game";
 
 export type UserContextType = {
     currentUser : User,
-    setCurrentUser : React.Dispatch<React.SetStateAction<User | undefined>>,
     getCurrentUser: () => Promise<void>,
+    setCurrentUserGameId : (gameId : number) => Promise<void>,
 }
 
 const UserContext = createContext<UserContextType>({
@@ -14,8 +14,8 @@ const UserContext = createContext<UserContextType>({
         userName: "Not logged in!",
         currentGameId: NO_GAME_GAMEID
     },
-    setCurrentUser : () => {},
-    getCurrentUser: async () => {}
+    getCurrentUser: async () => {},
+    setCurrentUserGameId : async (gameId : number) => {}
 })
 
 export default UserContext

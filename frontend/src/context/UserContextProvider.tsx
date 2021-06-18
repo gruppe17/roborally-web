@@ -40,12 +40,19 @@ const UserContextProvider = ({ children } : UserContextProviderPropsType) => {
         return () => {};
     }, []);
 
+    const setCurrentUserGameId = async (gameId : number) => {
+        if (!currentUser) await getCurrentUser();
+        if (!currentUser) throw new Error("No current user");
+        currentUser.currentGameId = gameId;
+        setCurrentUser(currentUser); //Is this necessary?
+    }
+
     return (
         <UserContext.Provider
           value={ {
               currentUser: currentUser!, 
-              setCurrentUser: setCurrentUser,
-              getCurrentUser: getCurrentUser
+              getCurrentUser: getCurrentUser,
+              setCurrentUserGameId: setCurrentUserGameId,
             } }
         >
         {children}

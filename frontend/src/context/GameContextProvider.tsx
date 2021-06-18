@@ -19,7 +19,7 @@ type GameContextProviderPropsType = {
 
 const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   //const [lastGameToken, setLastGameToken] = useCookie("last-game");
-  const {currentUser, setCurrentUser} = useContext(UserContext)
+  const {currentUser, setCurrentUserGameId} = useContext(UserContext)
   const {updateBoardContext, setLoaded} = useContext(BoardContext)
 
   const [currentGame, setCurrentGame] = useState<Game>(NO_GAME_GAME);
@@ -62,9 +62,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   const unselectGame = async () => {
     if (!currentGame || !currentUser) return;
 
-    const usr = currentUser;
-    usr.currentGameId = NO_GAME_GAMEID;
-    setCurrentUser(usr);
+    await setCurrentUserGameId(NO_GAME_GAMEID)
 
     try {
       GameApi.leaveGame(currentGame.gameId, currentUser.userId).catch(
@@ -72,7 +70,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       );
       setCurrentGame(NO_GAME_GAME);
       forceViewUpdate();
-      setLoaded(false);
+      setLoaded(false); //Unnecessary?
     } catch (error) {
       return;
     }
@@ -101,9 +99,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       console.error(e);
       return;
     }
-    const usr = currentUser;
-    usr.currentGameId = gameId;
-    setCurrentUser(usr);
+    await setCurrentUserGameId(gameId)
     let game: Game;
     try {
       game = (await GameApi.getGame(gameId)).data;
