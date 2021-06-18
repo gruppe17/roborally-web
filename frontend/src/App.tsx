@@ -9,6 +9,7 @@ import { Box, Main } from "grommet";
 import { red, green, purple } from "@material-ui/core/colors";
 import UserContextProvider from "./context/UserContextProvider";
 import BoardContextProvider from './context/BoardContextProvider';
+import FetchCurrentUserComponent from './components/FetchUserComponent';
 
 const muiTheme = createMuiTheme({
   palette: {
@@ -36,6 +37,7 @@ function App() {
           <UserContextProvider>
             <BoardContextProvider>
               <GameContextProvider>
+                <FetchCurrentUserComponent/>
                 <Main
                   pad="large"
                   width="100vw"

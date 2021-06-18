@@ -15,6 +15,7 @@ const UserContextProvider = ({ children } : UserContextProviderPropsType) => {
     const [currentUser, setCurrentUser] = useState<User>();
 
     const fetchCurrentUser = async () => {
+        console.log("Fetching User")
         if (userToken === undefined) {
             await createUser();
         } 
@@ -34,12 +35,12 @@ const UserContextProvider = ({ children } : UserContextProviderPropsType) => {
         const fetched = (await GameApi.getUser(user)).data;
         setCurrentUser(fetched);
     };
-    
+/*
     useEffect(() => {
         fetchCurrentUser();
         return () => {};
     }, []);
-
+*/
     const setCurrentUserGameId = async (gameId : number) => {
         if (!currentUser) await fetchCurrentUser();
         if (!currentUser) throw new Error("No current user");
