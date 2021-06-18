@@ -1,6 +1,5 @@
 import { createContext, Dispatch, SetStateAction } from "react"
 import { Board, noBoardBoard } from '../types/Board';
-import { Game, NO_GAME_GAMEID } from "../types/Game";
 import { Space } from "../types/Space";
 
 export type BoardContextType = {

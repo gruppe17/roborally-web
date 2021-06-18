@@ -1,11 +1,10 @@
 import { ReactNode, useMemo, useState, useContext } from "react";
 import { Board, noBoardBoard } from '../types/Board';
-import { Game, NO_GAME_GAMEID } from "../types/Game";
+import { NO_GAME_GAMEID } from "../types/Game";
 import BoardContext from "./BoardContext";
 import GameApi from '../api/GameApi';
 import UserContext from './UserContext';
 import { Space } from "../types/Space";
-import { forEach } from "cypress/types/lodash";
 
 type BoardContextProviderPropsType = {
     children : ReactNode
