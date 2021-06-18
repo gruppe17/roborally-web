@@ -92,8 +92,9 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
 
   const selectGame = async (gameId: number) => {
     if (!currentUser) return;
+    
     try {
-      await GameApi.joinGame(gameId, currentUser!.userId);
+      await GameApi.joinGame(gameId, currentUser.userId);
     } catch (e) {
       console.error(e);
       return;
@@ -107,7 +108,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       console.error(e);
     }
     forceViewUpdate();
-  };
+  }
 
   const deleteGame = async (gameid: number) => {
     if (!currentUser) return;
