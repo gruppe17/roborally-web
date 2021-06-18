@@ -83,6 +83,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       return;
     }
     updateGameContext(currentUser.currentGameId);
+    console.log("forceViewUpdate: About to update board context")
     updateBoardContext();
   };
 
