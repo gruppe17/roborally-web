@@ -81,7 +81,7 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
       updatedBord.height = fetchedBoard.height
       if (!fetchedBoard.currentPlayerDto) 
         updatedBord.currentPlayerDto = fetchedBoard.currentPlayerDto
-
+      
       return updatedBord;
     }
 
