@@ -14,7 +14,7 @@ const UserContextProvider = ({ children } : UserContextProviderPropsType) => {
     const [userToken, setUserToken] = useCookie("user");
     const [currentUser, setCurrentUser] = useState<User>();
 
-    const getCurrentUser = async () => {
+    const fetchCurrentUser = async () => {
         if (userToken === undefined) {
             await createUser();
         } 
@@ -36,12 +36,12 @@ const UserContextProvider = ({ children } : UserContextProviderPropsType) => {
     };
     
     useEffect(() => {
-        getCurrentUser();
+        fetchCurrentUser();
         return () => {};
     }, []);
 
     const setCurrentUserGameId = async (gameId : number) => {
-        if (!currentUser) await getCurrentUser();
+        if (!currentUser) await fetchCurrentUser();
         if (!currentUser) throw new Error("No current user");
         currentUser.currentGameId = gameId;
         setCurrentUser(currentUser); //Is this necessary?
@@ -51,7 +51,7 @@ const UserContextProvider = ({ children } : UserContextProviderPropsType) => {
         <UserContext.Provider
           value={ {
               currentUser: currentUser!, 
-              getCurrentUser: getCurrentUser,
+              fetchCurrentUser: fetchCurrentUser,
               setCurrentUserGameId: setCurrentUserGameId,
             } }
         >

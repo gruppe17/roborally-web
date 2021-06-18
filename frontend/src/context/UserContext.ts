@@ -4,7 +4,7 @@ import {NO_GAME_GAMEID } from "../types/Game";
 
 export type UserContextType = {
     currentUser : User,
-    getCurrentUser: () => Promise<void>,
+    fetchCurrentUser: () => Promise<void>,
     setCurrentUserGameId : (gameId : number) => Promise<void>,
 }
 
@@ -14,7 +14,7 @@ const UserContext = createContext<UserContextType>({
         userName: "Not logged in!",
         currentGameId: NO_GAME_GAMEID
     },
-    getCurrentUser: async () => {},
+    fetchCurrentUser: async () => {},
     setCurrentUserGameId : async (gameId : number) => {}
 })
 
