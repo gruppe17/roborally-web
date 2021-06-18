@@ -70,7 +70,6 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
 
 
     const getUpdatedBoard = async () => {
-      if (currentUser.currentGameId === NO_GAME_GAMEID) {
       if (currentUser.currentGameId === NO_GAME_GAMEID) return noBoardBoard
 
       const fetchedBoard = (await GameApi.getBoard(currentUser.currentGameId)).data
