@@ -37,7 +37,6 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
       textTransform: 'capitalize',
     },
   })(Button);
-  
   return (
     /*Apply css on div below*/
     <Box gap="small">
