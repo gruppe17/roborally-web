@@ -1,5 +1,5 @@
 import { ReactNode, useMemo, useState, useContext } from "react";
-import { Board } from "../types/Board";
+import { Board, noBoardBoard } from '../types/Board';
 import { Game, NO_GAME_GAMEID } from "../types/Game";
 import BoardContext from "./BoardContext";
 import GameApi from '../api/GameApi';
@@ -14,15 +14,7 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
     const {currentUser} = useContext(UserContext)
 
     const [loaded, setLoaded] = useState<boolean>(false);
-    const [currentBoard, setCurrentBoard] = useState<Board>({
-        playerDtos: [],
-        spaceDtos: [],
-        gameId: NO_GAME_GAMEID,
-        boardName: "",
-        currentPlayerDto: undefined,
-        height: 0,
-        width: 0,
-      });
+    const [currentBoard, setCurrentBoard] = useState<Board>(noBoardBoard);
       const playerCount = useMemo(
         () => (currentBoard.playerDtos ? currentBoard.playerDtos.length : 0),
         [currentBoard.playerDtos]
@@ -79,15 +71,7 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
     const updateBoardContext = () => {
         if (currentUser.currentGameId === NO_GAME_GAMEID) {
             setLoaded(false);
-            setCurrentBoard({
-              playerDtos: [],
-              spaceDtos: [],
-              gameId: NO_GAME_GAMEID,
-              boardName: "",
-              currentPlayerDto: undefined,
-              height: 0,
-              width: 0,
-            });
+            setCurrentBoard(noBoardBoard);
           return;
         }
         GameApi.getBoard(currentUser.currentGameId)
@@ -112,15 +96,7 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
           })
           .catch(() => {
                 setLoaded(false);
-                setCurrentBoard({
-                playerDtos: [],
-                spaceDtos: [],
-                gameId: NO_GAME_GAMEID,
-                boardName: "",
-                currentPlayerDto: undefined,
-                height: 0,
-                width: 0,
-              });
+                setCurrentBoard(noBoardBoard);
           });
       };
 

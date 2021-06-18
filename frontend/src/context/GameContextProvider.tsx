@@ -11,6 +11,7 @@ import { Game, NO_GAME_GAMEID } from "../types/Game";
 import ReactInterval from "react-interval";
 import UserContext from "./UserContext";
 import BoardContext from './BoardContext';
+import { noBoardBoard } from "../types/Board";
 
 type GameContextProviderPropsType = {
   children: ReactNode;
@@ -23,7 +24,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   const {updateBoardContext, setLoaded, setCurrentBoard} = useContext(BoardContext)
 
   const [currentGame, setCurrentGame] = useState<Game>({
-    gameId: 0,
+    gameId: NO_GAME_GAMEID,
     name: "No game loaded",
     started: false,
     users: [],
@@ -93,15 +94,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         started: false,
         users: [],
       });
-      setCurrentBoard({
-        playerDtos: [],
-        spaceDtos: [],
-        gameId: NO_GAME_GAMEID,
-        boardName: "",
-        currentPlayerDto: undefined,
-        height: 0,
-        width: 0,
-    }); //Not neccessary? forceViewUpdate calls updateBoardContext which will set it to noBoard
+      setCurrentBoard(noBoardBoard); //Not neccessary? forceViewUpdate calls updateBoardContext which will set it to noBoard
       forceViewUpdate();
       setLoaded(false);
     } catch (error) {

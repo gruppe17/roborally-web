@@ -16,15 +16,7 @@ export type BoardContextType = {
 const BoardContext = createContext<BoardContextType>({
     loaded : false,
     setLoaded : () => {},
-    board: {
-        playerDtos: [],
-        spaceDtos: [],
-        gameId: NO_GAME_GAMEID,
-        boardName: "",
-        currentPlayerDto: undefined,
-        height: 0,
-        width: 0,
-    },
+    board: noBoardBoard,
     switchCurrentPlayer: async () => {},
     setCurrentPlayerOnSpace: async () => {},
     updateBoardContext: () => {},
