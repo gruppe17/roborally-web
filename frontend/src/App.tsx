@@ -7,6 +7,8 @@ import styles from "./styling/App.module.scss"; //Import css module
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { Box, Main } from "grommet";
 import { red, green, purple } from "@material-ui/core/colors";
+import UserContextProvider from "./context/UserContextProvider";
+import BoardContextProvider from './context/BoardContextProvider';
 
 const muiTheme = createMuiTheme({
   palette: {
@@ -34,13 +36,12 @@ const muiTheme = createMuiTheme({
 });
 
 function App() {
-  debugger;
   return (
     <div className={styles.app}>
       <ThemeProvider theme={muiTheme}>
         <Box  background="#121212" height="100%" width="100%" direction="row">
-          
-            
+          <UserContextProvider>
+            <BoardContextProvider>
               <GameContextProvider>
                 <Main
                   pad="large"
@@ -59,8 +60,8 @@ function App() {
                   </Box>
                 </Main>
               </GameContextProvider>
-            
-          
+            </BoardContextProvider>
+          </UserContextProvider>
         </Box>
         </ThemeProvider>
     </div>

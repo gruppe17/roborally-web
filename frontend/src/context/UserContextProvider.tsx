@@ -25,7 +25,7 @@ const UserContextProvider = ({ children } : UserContextProviderPropsType) => {
             await createUser();
             }
         }
-        };
+    };
 
     const createUser = async () => {
         const user = (await GameApi.createUser()).data;
@@ -40,7 +40,6 @@ const UserContextProvider = ({ children } : UserContextProviderPropsType) => {
         return () => {};
     }, []);
 
-
     return (
         <UserContext.Provider
           value={ {
@@ -49,6 +48,7 @@ const UserContextProvider = ({ children } : UserContextProviderPropsType) => {
               getCurrentUser: getCurrentUser
             } }
         >
+        {children}
         </UserContext.Provider>
       );
 }

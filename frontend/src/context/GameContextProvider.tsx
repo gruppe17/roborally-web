@@ -152,7 +152,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     }
     GameApi.removeGame(gameid).catch((err) => {});
     forceViewUpdate(); //suboptimal: this is called twice here and in unselectGame
-  };
+  }; 
 
   const changeGameName = async (gameId: number, name: string) => {
     if (name !== "") return (await GameApi.editGameName(gameId, name)).data;

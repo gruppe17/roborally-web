@@ -1,8 +1,7 @@
 import { ReactNode, useMemo, useState, useContext } from "react";
 import { Board } from "../types/Board";
-import { NO_GAME_GAMEID } from "../types/Game";
+import { Game, NO_GAME_GAMEID } from "../types/Game";
 import BoardContext from "./BoardContext";
-import GameContext from './GameContext';
 import GameApi from '../api/GameApi';
 import UserContext from './UserContext';
 import { Space } from "../types/Space";
@@ -12,7 +11,6 @@ type BoardContextProviderPropsType = {
 }
 
 const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
-    const {currentGame, forceViewUpdate} = useContext(GameContext)
     const {currentUser} = useContext(UserContext)
 
     const [loaded, setLoaded] = useState<boolean>(false);
@@ -32,10 +30,10 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
     const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
 
     const switchToNextPlayer = async () => {
-        if (!currentGame || !currentBoard || !playerCount) return;
-        if ((currentBoard.currentPlayerDto?.playerId !== currentUser?.userId) || !currentGame.started) return;
+        if (!currentBoard || !playerCount) return;
+        if ((currentBoard.currentPlayerDto?.playerId !== currentUser?.userId)) return;
 
-        await GameApi.switchPlayer(currentGame.gameId)
+        await GameApi.switchPlayer(currentUser.currentGameId)
             .then(() => {
             const newPlayerIndex = (currentPlayerIndex + 1) % playerCount;
 
@@ -46,11 +44,11 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
 
       //Define a function used to set a player ona  specific space
     const setPlayerOnSpace = async (space: Space) => {
-        if (!currentGame || !currentBoard) return;
+        if (!currentBoard) return;
         //Check if space already has a player standing on it
         if (space.playerId) return;
-        if ((currentBoard.currentPlayerDto?.playerId !== currentUser?.userId) || !currentGame.started) return;
-        await GameApi.moveCurrentPlayer(currentGame!.gameId, {
+        if (currentBoard.currentPlayerDto?.playerId !== currentUser?.userId) return;
+        await GameApi.moveCurrentPlayer(currentBoard.gameId, {
         ...space,
         playerId: currentBoard!.currentPlayerDto?.playerId,
         })
@@ -70,7 +68,7 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
             ].playerId = undefined;
             }
             setLoaded(true);
-            forceViewUpdate();
+            updateBoardContext();
         })
         .catch(() => {
             //console.error("Error while fetching board from backend");
@@ -79,20 +77,20 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
 
 
     const updateBoardContext = () => {
-        if (currentGame.gameId === NO_GAME_GAMEID) {
+        if (currentUser.currentGameId === NO_GAME_GAMEID) {
             setLoaded(false);
             setCurrentBoard({
-    playerDtos: [],
-    spaceDtos: [],
-    gameId: NO_GAME_GAMEID,
-    boardName: "",
-    currentPlayerDto: undefined,
-    height: 0,
-    width: 0,
-});
+              playerDtos: [],
+              spaceDtos: [],
+              gameId: NO_GAME_GAMEID,
+              boardName: "",
+              currentPlayerDto: undefined,
+              height: 0,
+              width: 0,
+            });
           return;
         }
-        GameApi.getBoard(currentGame.gameId)
+        GameApi.getBoard(currentUser.currentGameId)
           .then((result) => {
             let updatedBoard = currentBoard;
             const board = result.data;
@@ -115,14 +113,14 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
           .catch(() => {
                 setLoaded(false);
                 setCurrentBoard({
-    playerDtos: [],
-    spaceDtos: [],
-    gameId: NO_GAME_GAMEID,
-    boardName: "",
-    currentPlayerDto: undefined,
-    height: 0,
-    width: 0,
-});
+                playerDtos: [],
+                spaceDtos: [],
+                gameId: NO_GAME_GAMEID,
+                boardName: "",
+                currentPlayerDto: undefined,
+                height: 0,
+                width: 0,
+              });
           });
       };
 
@@ -138,6 +136,7 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
             setCurrentBoard: setCurrentBoard
             } }
         >
+          {children}
         </BoardContext.Provider>
       );
 }
