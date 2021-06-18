@@ -15,13 +15,13 @@ export type Board = {
     currentPlayerDto? : Player
 }
 
-export const noBoardBoard = {
-    playerDtos: [],
-    spaceDtos: [],
+export const noBoardBoard : Board = {
     gameId: NO_GAME_GAMEID,
     boardName: "",
-    currentPlayerDto: undefined,
     height: 0,
     width: 0,
+    playerDtos: [],
+    spaceDtos: [],
+    currentPlayerDto : undefined,
 }
 
