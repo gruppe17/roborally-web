@@ -13,6 +13,7 @@ import GameApi from "../api/GameApi";
 import { Game, NO_GAME_GAMEID } from "../types/Game";
 import { User } from "../types/User";
 import useCookie from "react-use-cookie";
+import ReactInterval from "react-interval";
 
 type GameContextProviderPropsType = {
   children: ReactNode;
@@ -169,21 +170,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
 
   const [loaded, setLoaded] = useState<boolean>(false);
 
-  useEffect(() => {
-    /*if (!currentGame) {
-      updateGameContext(0);
-    }*/
-    const intervalId = setInterval(() => {
-      if (currentUser) {
-        updateGameContext(currentUser.currentGame);
-      } else {
-        updateGameContext(0);
-      }
-    }, 500);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [currentGame, updateGameContext]);
 
   //Define a function used to set a player ona  specific space
   const setPlayerOnSpace = async (space: Space) => {
@@ -312,11 +298,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   };
 
   const startGame = async (gameId: number) => {
-
-
-
-
-    return false;
+      return (await GameApi.startGame(gameId)).data;
   };
 
   return (
@@ -338,6 +320,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         startGame: startGame
       }}
     >
+      <ReactInterval enabled={true} timeout={2000} callback= {() => forceViewUpdate()}/>
       {children}
     </GameContext.Provider>
   );
