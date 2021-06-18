@@ -1,6 +1,6 @@
 import { ReactNode, useMemo, useState, useContext } from "react";
 import { Board, noBoardBoard } from '../types/Board';
-import { NO_GAME_GAMEID } from "../types/Game";
+import { NO_GAME_GAMEID, NO_GAME_GAME } from '../types/Game';
 import BoardContext from "./BoardContext";
 import GameApi from '../api/GameApi';
 import UserContext from './UserContext';
@@ -100,7 +100,7 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
       console.log("updateBoardContext: getting updated board.")
       const updatedBoard = await getUpdatedBoard();
       console.log("updateBoardContext: recived board:"); console.log(updatedBoard);
-      if(!updatedBoard || updatedBoard === noBoardBoard) {
+      if(!updatedBoard || updatedBoard.gameId === NO_GAME_GAMEID) {
         console.log("updateBoardContext: no (real) board recived. Setting loaded to false and board to noBoardBoard")
         setLoaded(false);
         setCurrentBoard(noBoardBoard);
