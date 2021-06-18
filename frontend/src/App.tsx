@@ -26,13 +26,6 @@ const muiTheme = createMuiTheme({
       main: red[500],
     }
   },
-  overrides: {
-    MuiButton: {
-      disabled: {
-        color: "white"
-      }
-    }
-  }
 });
 
 function App() {
