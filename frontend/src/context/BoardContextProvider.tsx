@@ -1,5 +1,5 @@
 import { ReactNode, useMemo, useState, useContext } from "react";
-import { Board, noBoardBoard } from "../types/Board";
+import { Board } from "../types/Board";
 import { NO_GAME_GAMEID } from "../types/Game";
 import BoardContext from "./BoardContext";
 import GameContext from './GameContext';

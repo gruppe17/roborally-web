@@ -1,4 +1,3 @@
-import {Player} from "./Player";
 
 export type Space = {
     x: number,

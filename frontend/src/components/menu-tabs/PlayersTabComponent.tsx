@@ -1,7 +1,5 @@
 import { PersonPin } from '@material-ui/icons';
-import userEvent from '@testing-library/user-event';
 import { Box } from 'grommet';
-import * as React from 'react';
 import { useContext } from 'react';
 import { Typography } from '@material-ui/core';
 import { Player } from '../../types/Player';

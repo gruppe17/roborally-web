@@ -3,7 +3,7 @@ import { SpaceComponent } from "./SpaceComponent";
 import styles from "../styling/BoardComponent.module.scss"; //Import css module
 import GameContext from "../context/GameContext";
 import { HashLoader } from "react-spinners";
-import { Button, Color, Tooltip, Typography, withStyles } from "@material-ui/core";
+import { Button, Tooltip, Typography, withStyles } from "@material-ui/core";
 import { Box } from "grommet";
 import { green, red } from "@material-ui/core/colors";
 import BoardContext from '../context/BoardContext';

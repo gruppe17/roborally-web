@@ -1,7 +1,6 @@
 import React, { useState, ReactElement, useContext } from "react";
 import {
   IconButton,
-  Box as MBox,
   Tooltip,
   Typography,
 } from "@material-ui/core/";

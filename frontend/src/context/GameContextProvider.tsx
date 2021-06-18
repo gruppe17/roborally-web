@@ -11,7 +11,6 @@ import { Game, NO_GAME_GAMEID } from "../types/Game";
 import ReactInterval from "react-interval";
 import UserContext from "./UserContext";
 import BoardContext from './BoardContext';
-import { isAwaitExpression } from "typescript";
 
 type GameContextProviderPropsType = {
   children: ReactNode;
@@ -20,7 +19,7 @@ type GameContextProviderPropsType = {
 
 const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   //const [lastGameToken, setLastGameToken] = useCookie("last-game");
-  const {currentUser, setCurrentUser, getCurrentUser} = useContext(UserContext)
+  const {currentUser, setCurrentUser} = useContext(UserContext)
   const {updateBoardContext, setLoaded, setCurrentBoard} = useContext(BoardContext)
 
   const [currentGame, setCurrentGame] = useState<Game>({
@@ -114,7 +113,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     if (!currentUser) {
       return;
     }
-    if (isNaN(currentUser.userId)) getCurrentUser()
     updateGameContext(currentUser.currentGameId);
     updateBoardContext();
   };
