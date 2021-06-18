@@ -38,7 +38,7 @@ const UserContextProvider = ({ children } : UserContextProviderPropsType) => {
     useEffect(() => {
         getCurrentUser();
         return () => {};
-    });
+    }, []);
 
     return (
         <UserContext.Provider
