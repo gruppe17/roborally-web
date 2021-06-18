@@ -22,6 +22,5 @@ export const noBoardBoard : Board = {
     width: 0,
     playerDtos: [],
     spaceDtos: [],
-    currentPlayerDto : undefined,
 }
 
