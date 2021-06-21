@@ -67,23 +67,23 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         (err) => {console.error(err)}
       );
       await setCurrentUserGameId(NO_GAME_GAMEID)
-      forceViewUpdate();
+      await forceViewUpdate();
     } catch (error) {
       return;
     }
   };
 
-  const forceViewUpdate = () => {
+  const forceViewUpdate = async () => {
     if (!currentUser) {
       return;
     }
-    updateGameContext(currentUser.currentGameId);
-    updateBoardContext();
+    await updateGameContext(currentUser.currentGameId);
+    await updateBoardContext();
   };
 
   const createGame = async () => {
     const gameId = (await GameApi.createGame()).data;
-    forceViewUpdate();
+    await forceViewUpdate();
     return gameId;
   };
 
@@ -104,7 +104,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     } catch (e) {
       console.error(e);
     }
-    forceViewUpdate();
+    await forceViewUpdate();
   }
 
   const deleteGame = async (gameid: number) => {
@@ -114,7 +114,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       if (currentGame.gameId === gameid) unselectGame();
     }
     await GameApi.removeGame(gameid).catch((err) => {});
-    forceViewUpdate(); //suboptimal: this is called twice here and in unselectGame
+    await forceViewUpdate(); //suboptimal: this is called twice here and in unselectGame
   }; 
 
   const changeGameName = async (gameId: number, name: string) => {
@@ -140,7 +140,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
         forceViewUpdate: forceViewUpdate,
       }}
     >
-      <ReactInterval enabled={true} timeout={1000} callback= {() => forceViewUpdate()}/>
+      <ReactInterval enabled={true} timeout={1000} callback= {async () => await forceViewUpdate()}/>
       {children}
     </GameContext.Provider>
   );
