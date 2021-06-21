@@ -113,7 +113,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     if (currentGame) {
       if (currentGame.gameId === gameid) unselectGame();
     }
-    GameApi.removeGame(gameid).catch((err) => {});
+    await GameApi.removeGame(gameid).catch((err) => {});
     forceViewUpdate(); //suboptimal: this is called twice here and in unselectGame
   }; 
 
