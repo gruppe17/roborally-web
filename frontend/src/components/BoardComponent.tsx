@@ -7,7 +7,6 @@ import { Button, Tooltip, Typography, withStyles } from "@material-ui/core";
 import { Box } from "grommet";
 import { green, red } from "@material-ui/core/colors";
 import BoardContext from '../context/BoardContext';
-import { NO_GAME_GAMEID } from '../types/Game';
 /*
 If the board component took any props/arguments they would be declared inside the type below
 see the space component for an example.

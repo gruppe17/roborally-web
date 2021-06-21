@@ -10,6 +10,7 @@ import { Game, NO_GAME_GAME, NO_GAME_GAMEID } from '../types/Game';
 import ReactInterval from "react-interval";
 import UserContext from "./UserContext";
 import BoardContext from './BoardContext';
+import _ from "cypress/types/lodash";
 
 type GameContextProviderPropsType = {
   children: ReactNode;
@@ -21,7 +22,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   const {currentUser, setCurrentUserGameId} = useContext(UserContext)
   const {updateBoardContext, setLoaded} = useContext(BoardContext)
 
-  const [currentGame, setCurrentGame] = useState<Game>(NO_GAME_GAME);
+  const [currentGame, setCurrentGame] = useState<Game>(_.cloneDeep(NO_GAME_GAME));
   const [games, setGames] = useState<Game[]>([]);
 
   const updateGameContextGamesList = () =>
@@ -36,7 +37,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
 
   const updateGameContextGame = (gameId: number) => {
     if (gameId === NO_GAME_GAMEID) {
-      setCurrentGame(NO_GAME_GAME);
+      setCurrentGame(_.cloneDeep(NO_GAME_GAME));
       return;
     }
 
@@ -46,7 +47,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       })
       .catch((error) => {
         setLoaded(false);
-        setCurrentGame(NO_GAME_GAME);
+        setCurrentGame(_.cloneDeep(NO_GAME_GAME));
         console.error(error);
       });
   };
@@ -65,7 +66,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       GameApi.leaveGame(currentGame.gameId, currentUser.userId).catch(
         (err) => {console.error(err)}
       );
-      await setCurrentUserGameId(NO_GAME_GAMEID)
+      await setCurrentUserGameId(_.cloneDeep(NO_GAME_GAME))
       await forceViewUpdate();
     } catch (error) {
       return;

@@ -21,12 +21,12 @@ export type GameContextType = {
 
 const GameContext = createContext<GameContextType>({
     games: [],
-    currentGame: NO_GAME_GAME,
+    currentGame: _.cloneDeep(NO_GAME_GAME),
     selectGame: async () => {},
     unselectGame: async () => {},
     deleteGame: async (gameId : number) => {},
     forceViewUpdate: async () => {},
-    createGame: async () => {return NO_GAME_GAMEID},
+    createGame: async () => {return _.cloneDeep(NO_GAME_GAME)},
     startGame: async () => { return false},
     changeGameName: async (gameId: number, name: string) => {return false},
 });
