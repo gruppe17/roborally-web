@@ -85,14 +85,7 @@ class GameApi {
 
 
     public async createBoard(gameId: number, name: String, height: number, width: Number) {
-
-        const board = {
-            "gameId": gameId,
-            "boardName": name,
-            "height": height,
-            "width": width,
-        }
-        return await axios.post(`${this.BACKEND_URL}/game/get/${gameId}/board/new`, board)
+        return await axios.post(`${this.BACKEND_URL}/game/get/${gameId}/board/new`)
     }
 
 

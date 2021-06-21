@@ -41,6 +41,7 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
         //Check if space already has a player standing on it
         if (space.playerId) return;
         if (currentBoard.currentPlayerDto?.playerId !== currentUser?.userId) return;
+
         await GameApi.moveCurrentPlayer(currentBoard.gameId, {
         ...space,
         playerId: currentBoard!.currentPlayerDto?.playerId,
@@ -80,8 +81,7 @@ const BoardContextProvider = ({ children } : BoardContextProviderPropsType) => {
       updatedBord.playerDtos = fetchedBoard.playerDtos
       updatedBord.width = fetchedBoard.width
       updatedBord.height = fetchedBoard.height
-      if (!fetchedBoard.currentPlayerDto) 
-        updatedBord.currentPlayerDto = fetchedBoard.currentPlayerDto
+      updatedBord.currentPlayerDto = fetchedBoard.currentPlayerDto
       return updatedBord;
     }
 
