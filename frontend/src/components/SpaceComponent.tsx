@@ -28,8 +28,7 @@ export const SpaceComponent: FunctionComponent<SpaceComponentProps> = ({space}) 
             return "black"
         }
     }, [space])
-    //We define a function using the useCallback hook, it returns a memoized callback/function that is only
-    // updated when the dependencies update.
+
     const onClickField = async () => {
         if (!space.playerId && canMove && board.currentPlayerDto?.playerId === currentUser.userId) { // A shorthand, check equivalents at https://bit.ly/2MnA4Rk
             forceViewUpdate();
