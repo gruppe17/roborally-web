@@ -40,7 +40,7 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
   return (
     /*Apply css on div below*/
     <Box gap="small">
-          { (loaded && currentGame.started) && (<Typography > Current player: { board.currentPlayerDto?.playerName} </Typography>)} 
+          { (loaded && currentGame.started) && (<Typography > Current player: { board.currentPlayerDto?.playerName ? board.currentPlayerDto?.playerName : "No current player"} </Typography>)} 
     <div data-testid="board" className={styles.container}>
       {/*
                 The {...} notation is JSX allowing us to blend HTML and JS/TS together
