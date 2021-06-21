@@ -77,6 +77,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     if (!currentUser) {
       return;
     }
+    await setCurrentUserGameId((await GameApi.getUser(currentUser.userId)).data.currentGameId)
     await updateGameContext(currentUser.currentGameId);
     await updateBoardContext();
   };
