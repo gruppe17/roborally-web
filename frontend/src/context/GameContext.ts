@@ -1,3 +1,4 @@
+import _ from "cypress/types/lodash";
 import {createContext} from "react";
 import { Game, NO_GAME_GAME, NO_GAME_GAMEID } from '../types/Game';
 
@@ -26,7 +27,7 @@ const GameContext = createContext<GameContextType>({
     unselectGame: async () => {},
     deleteGame: async (gameId : number) => {},
     forceViewUpdate: async () => {},
-    createGame: async () => {return _.cloneDeep(NO_GAME_GAME)},
+    createGame: async () => {return NO_GAME_GAMEID},
     startGame: async () => { return false},
     changeGameName: async (gameId: number, name: string) => {return false},
 });

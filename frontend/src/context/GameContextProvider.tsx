@@ -66,7 +66,7 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
       GameApi.leaveGame(currentGame.gameId, currentUser.userId).catch(
         (err) => {console.error(err)}
       );
-      await setCurrentUserGameId(_.cloneDeep(NO_GAME_GAME))
+      await setCurrentUserGameId(NO_GAME_GAMEID)
       await forceViewUpdate();
     } catch (error) {
       return;
