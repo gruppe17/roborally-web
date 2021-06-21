@@ -23,20 +23,7 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
   const { currentGame, startGame } = useContext(GameContext); //Hook form of Context.Consumer, used to access the context
   const { board, loaded } = useContext(BoardContext)
 
-  const StartGameButton = withStyles({
-    root: {
-      background: currentGame.users.length < 2 ? red[500] : green[500],
-      borderRadius: 3,
-      border: 0,
-      color: 'white',
-      height: 48,
-      padding: '0 30px',
-      boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-    },
-    label: {
-      textTransform: 'capitalize',
-    },
-  })(Button);
+ 
   return (
     /*Apply css on div below*/
     <Box gap="small">
@@ -77,7 +64,7 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
         <HashLoader color="#4CAF50" />
       )}
     </div>
-    { (loaded && !currentGame.started) && <Tooltip title={currentGame.users.length < 2 ? "You need to be between 2 to 6 players to start the game!" : "Press to start the game" }><StartGameButton  variant="contained" onClick={() => startGame(currentGame.gameId)} > Start game </StartGameButton></Tooltip>} 
+    { (loaded && !currentGame.started) && <Tooltip title={currentGame.users.length < 2 ? "You need to be between 2 to 6 players to start the game!" : "Press to start the game" }><Box><Button  color="primary" variant="contained" disabled={currentGame.users.length < 2} onClick={() => startGame(currentGame.gameId)} > Start game </Button></Box></Tooltip>} 
     </Box>
   );
 };

@@ -25,8 +25,8 @@ const muiTheme = createMuiTheme({
       disabledBackground: red[500],
       disabled: 'white',
       active: red[500],
-
-    }
+    },
+  
   }
 });
 
