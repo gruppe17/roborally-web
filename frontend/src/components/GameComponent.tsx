@@ -3,13 +3,14 @@ import Typography from "@material-ui/core/Typography";
 import { Edit, RemoveCircle, ExitToApp } from "@material-ui/icons";
 import { TextInput } from "grommet";
 import { useContext, useState } from "react";
-import { Game } from "../types/Game";
+import { Game, NO_GAME_GAMEID } from '../types/Game';
 import GameContext from "../context/GameContext";
 
 export function GameComponent(props: { game: Game }) {
   const [isEditing, setIsEditing] = useState(false);
   const { selectGame, unselectGame, deleteGame, changeGameName, currentGame } =
     useContext(GameContext);
+  const inGame : boolean = currentGame.gameId !== NO_GAME_GAMEID
   return (
     <Box
       height="small"
@@ -43,15 +44,18 @@ export function GameComponent(props: { game: Game }) {
             }}
           ></TextInput>
         ) : (
-          <Tooltip title={"Join " + props.game.name}>
+          
+          <Tooltip title={inGame ? "You are already in a game you cannot join another" : "Join " + props.game.name}>
             <Button
               fullWidth
               size="small"
               variant="contained"
               color="primary"
-              onClick={() => {
-                selectGame(props.game.gameId);
-              }}
+              onClick={
+                inGame ?
+                () => {} :
+                () => {selectGame(props.game.gameId)}
+              }
             >
               <Box
                 textOverflow="ellipsis"
