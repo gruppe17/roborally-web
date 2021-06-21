@@ -55,22 +55,20 @@ function MenuComponent(): ReactElement {
       justify="end"
     >
       <Text size="large">Roborally</Text>
-      <Box
-        pad="small"
-        elevation="medium"
-        overflow="hidden"
-        round={{ size: "small" }}
-        background="#E6E6E6"
-        width="100%"
-      >
+      <Box pad="small" overflow="hidden" width="100%">
         <Box gap="small" justify="center" direction="row">
           <Tooltip title="Current user. The user is randomly made for you and saved in a cookie for your convenience">
             <Box
+              margin={{ bottom: "small" }}
               height="xsmall"
               width="small"
               align="center"
               gap="xsmall"
               direction="column"
+              elevation="small"
+              background="#F8F8F8"
+              pad="small"
+              round="small"
             >
               <People />
               <Typography>{currentUser && currentUser.userName}</Typography>
@@ -79,12 +77,17 @@ function MenuComponent(): ReactElement {
 
           <Tooltip title="The current game you are playing in">
             <Box
+              margin={{ bottom: "small" }}
+              elevation="small"
+              background="#F8F8F8"
+              pad="small"
               height="xsmall"
               width="small"
               overflow="hidden"
               align="center"
               gap="xsmall"
               direction="column"
+              round="small"
             >
               <Games />
               <Text wordBreak="break-all">

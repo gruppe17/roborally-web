@@ -21,6 +21,12 @@ const muiTheme = createMuiTheme({
     warning:{
       main: red[500],
     },
+    action: {
+      disabledBackground: red[500],
+      disabled: 'white',
+      active: red[500],
+
+    }
   }
 });
 
