@@ -59,20 +59,6 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     updateGameContextGame(id);
   };
 
-  const unselectGame = async () => {
-    if (!currentGame || !currentUser) return;
-
-    try {
-      GameApi.leaveGame(currentGame.gameId, currentUser.userId).catch(
-        (err) => {console.error(err)}
-      );
-      await setCurrentUserGameId(NO_GAME_GAMEID)
-      await forceViewUpdate();
-    } catch (error) {
-      return;
-    }
-  };
-
   const forceViewUpdate = async () => {
     if (!currentUser) {
       return;
@@ -86,6 +72,20 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
     const gameId = (await GameApi.createGame()).data;
     await forceViewUpdate();
     return gameId;
+  };
+
+  const unselectGame = async () => {
+    if (!currentGame || !currentUser) return;
+
+    try {
+      GameApi.leaveGame(currentGame.gameId, currentUser.userId).catch(
+        (err) => {console.error(err)}
+      );
+      await setCurrentUserGameId(NO_GAME_GAMEID)
+      await forceViewUpdate();
+    } catch (error) {
+      return;
+    }
   };
 
   const selectGame = async (gameId: number) => {
