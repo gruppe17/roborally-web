@@ -2,6 +2,7 @@ import {FunctionComponent, useContext, useMemo} from "react";
 import {Space} from "../types/Space";
 import styles from "../styling/SpaceComponent.module.scss"
 import BoardContext from '../context/BoardContext';
+import UserContext from '../context/UserContext';
 
 export type SpaceComponentProps = {
     space: Space
@@ -12,7 +13,9 @@ export type SpaceComponentProps = {
  */
 
 export const SpaceComponent: FunctionComponent<SpaceComponentProps> = ({space}) => {
-    const {board, setCurrentPlayerOnSpace, switchCurrentPlayer,} = useContext(BoardContext)
+    const {board, setCurrentPlayerOnSpace, switchCurrentPlayer, canMove} = useContext(BoardContext)
+    const {currentUser} = useContext(UserContext)
+
     //Below we essentially define a new variable using the useMemo hook, which can only take the value "white" or "black"
     //Additionally the code inside the hook (the calculation of whether it is black or white) is only executed
     // when the space prop updates (this is known as the dependencies of the hook)
@@ -26,9 +29,9 @@ export const SpaceComponent: FunctionComponent<SpaceComponentProps> = ({space}) 
     //We define a function using the useCallback hook, it returns a memoized callback/function that is only
     // updated when the dependencies update.
     const onClickField = async () => {
-        if (!space.playerId) { // A shorthand, check equivalents at https://bit.ly/2MnA4Rk
+        if (!space.playerId && canMove && board.currentPlayerDto?.playerId === currentUser.userId) { // A shorthand, check equivalents at https://bit.ly/2MnA4Rk
             await setCurrentPlayerOnSpace(space)
-            switchCurrentPlayer()
+            await switchCurrentPlayer()
         }
     }
     const playerColor = useMemo(() => {
