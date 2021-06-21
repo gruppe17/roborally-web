@@ -60,9 +60,8 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
   };
 
   const forceViewUpdate = async () => {
-    if (!currentUser) {
-      return;
-    }
+    if (!currentUser) return;
+
     await setCurrentUserGameId((await GameApi.getUser(currentUser.userId)).data.currentGameId)
     await updateGameContext(currentUser.currentGameId);
     await updateBoardContext();
@@ -76,9 +75,8 @@ const GameContextProvider = ({ children }: GameContextProviderPropsType) => {
 
   const unselectGame = async () => {
     if (!currentGame || !currentUser) return;
-
     try {
-      GameApi.leaveGame(currentGame.gameId, currentUser.userId).catch(
+      await GameApi.leaveGame(currentGame.gameId, currentUser.userId).catch(
         (err) => {console.error(err)}
       );
       await setCurrentUserGameId(NO_GAME_GAMEID)
