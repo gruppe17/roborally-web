@@ -66,7 +66,6 @@ const BoardContextProvider = ({ children }: BoardContextProviderPropsType) => {
           ].playerId = undefined;
         }
         setLoaded(true);
-        setCanMove(true);
         updateBoardContext();
       })
       .catch(() => {

@@ -3,6 +3,7 @@ import {Space} from "../types/Space";
 import styles from "../styling/SpaceComponent.module.scss"
 import BoardContext from '../context/BoardContext';
 import UserContext from '../context/UserContext';
+import GameContext from '../context/GameContext';
 
 export type SpaceComponentProps = {
     space: Space
@@ -15,6 +16,7 @@ export type SpaceComponentProps = {
 export const SpaceComponent: FunctionComponent<SpaceComponentProps> = ({space}) => {
     const {board, setCurrentPlayerOnSpace, switchCurrentPlayer, canMove} = useContext(BoardContext)
     const {currentUser} = useContext(UserContext)
+    const {forceViewUpdate} = useContext(GameContext)
 
     //Below we essentially define a new variable using the useMemo hook, which can only take the value "white" or "black"
     //Additionally the code inside the hook (the calculation of whether it is black or white) is only executed
@@ -30,6 +32,7 @@ export const SpaceComponent: FunctionComponent<SpaceComponentProps> = ({space}) 
     // updated when the dependencies update.
     const onClickField = async () => {
         if (!space.playerId && canMove && board.currentPlayerDto?.playerId === currentUser.userId) { // A shorthand, check equivalents at https://bit.ly/2MnA4Rk
+            forceViewUpdate();
             await setCurrentPlayerOnSpace(space)
             await switchCurrentPlayer()
         }

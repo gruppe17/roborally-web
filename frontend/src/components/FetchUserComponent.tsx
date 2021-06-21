@@ -6,7 +6,7 @@ function FetchCurrentUserComponent(): ReactElement {
     const { currentUser, fetchCurrentUser } = useContext(UserContext);
     if (!currentUser || currentUser.userId === NO_USER_USERID)
         fetchCurrentUser()
-    return (<div/>);
+    return (<> </>);
   }
   
   export default FetchCurrentUserComponent;
