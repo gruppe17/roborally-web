@@ -4,6 +4,7 @@ import { Space } from "../types/Space";
 
 export type BoardContextType = {
     loaded : boolean,
+    canMove : boolean,
     setLoaded : Dispatch<SetStateAction<boolean>>,
     board: Board,
     switchCurrentPlayer: () => Promise<void>,
@@ -14,6 +15,7 @@ export type BoardContextType = {
 
 const BoardContext = createContext<BoardContextType>({
     loaded : false,
+    canMove : false,
     setLoaded : () => {},
     board: noBoardBoard,
     switchCurrentPlayer: async () => {},
