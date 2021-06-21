@@ -62,7 +62,7 @@ const BoardComponent: FunctionComponent<BoardComponentProps> = () => {
                     </div>
 
             */}
-      {currentGame.gameId !== NO_GAME_GAMEID && loaded ? (
+      {loaded ? (
        
         board.spaceDtos.map((spaceArray, index) => {
             return (
