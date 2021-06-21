@@ -6,7 +6,7 @@ import GameApi from "../api/GameApi";
 import UserContext from "./UserContext";
 import { Space } from "../types/Space";
 import { NO_USER_USERID } from "../types/User";
-import _ from "cypress/types/lodash";
+import _ from "lodash";
 
 type BoardContextProviderPropsType = {
   children: ReactNode;
