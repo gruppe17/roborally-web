@@ -38,8 +38,8 @@ export function GameComponent(props: { game: Game }) {
         {isEditing ? (
           <TextInput
             defaultValue={props.game.name}
-            onChange={(value) => {
-              changeGameName(props.game.gameId, value.target.value);
+            onChange={async (value) => {
+              await changeGameName(props.game.gameId, value.target.value);
             }}
           ></TextInput>
         ) : (
@@ -49,8 +49,8 @@ export function GameComponent(props: { game: Game }) {
               size="small"
               variant="contained"
               color="primary"
-              onClick={() => {
-                selectGame(props.game.gameId);
+              onClick={async () => {
+                await selectGame(props.game.gameId);
               }}
             >
               <Box
@@ -85,8 +85,8 @@ export function GameComponent(props: { game: Game }) {
         <Tooltip title={"Delete " + props.game.name}>
           <IconButton
             color={"secondary"}
-            onClick={() => {
-              deleteGame(props.game.gameId);
+            onClick={async () => {
+              await deleteGame(props.game.gameId);
             }}
           >
             <RemoveCircle />
@@ -94,7 +94,7 @@ export function GameComponent(props: { game: Game }) {
         </Tooltip>
         {currentGame.gameId === props.game.gameId && !currentGame.started && (
           <Tooltip title={"Leave " + props.game.name}>
-            <IconButton color={"secondary"} onClick={() => unselectGame()}>
+            <IconButton color={"secondary"} onClick={async () => await unselectGame()}>
               <ExitToApp />
             </IconButton>
           </Tooltip>
