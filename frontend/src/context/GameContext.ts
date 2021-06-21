@@ -1,4 +1,4 @@
-import _ from "cypress/types/lodash";
+import _ from "lodash";
 import {createContext} from "react";
 import { Game, NO_GAME_GAME, NO_GAME_GAMEID } from '../types/Game';
 

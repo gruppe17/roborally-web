@@ -10,7 +10,7 @@ import { Game, NO_GAME_GAME, NO_GAME_GAMEID } from '../types/Game';
 import ReactInterval from "react-interval";
 import UserContext from "./UserContext";
 import BoardContext from './BoardContext';
-import _ from "cypress/types/lodash";
+import _ from "lodash";
 
 type GameContextProviderPropsType = {
   children: ReactNode;

@@ -1,4 +1,4 @@
-import _ from "cypress/types/lodash";
+import _ from "lodash";
 import { createContext, Dispatch, SetStateAction } from "react"
 import { Board, noBoardBoard } from '../types/Board';
 import { Space } from "../types/Space";
