@@ -17,7 +17,7 @@ const BoardContext = createContext<BoardContextType>({
     loaded : false,
     canMove : false,
     setLoaded : () => {},
-    board: noBoardBoard,
+    board: _.cloneDeep(noBoardBoard),
     switchCurrentPlayer: async () => {},
     setCurrentPlayerOnSpace: async () => {},
     updateBoardContext: () => {},

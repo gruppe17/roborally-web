@@ -5,7 +5,6 @@ import React, {
   useContext,
 } from "react";
 import GameContext from "./GameContext";
-//import { Board, noBoardBoard } from '../types/Board';
 import GameApi from "../api/GameApi";
 import { Game, NO_GAME_GAME, NO_GAME_GAMEID } from '../types/Game';
 import ReactInterval from "react-interval";

@@ -6,7 +6,7 @@ import GameApi from "../api/GameApi";
 import UserContext from "./UserContext";
 import { Space } from "../types/Space";
 import { NO_USER_USERID } from "../types/User";
-import { truncate } from "cypress/types/lodash";
+import _ from "cypress/types/lodash";
 
 type BoardContextProviderPropsType = {
   children: ReactNode;
@@ -18,7 +18,8 @@ const BoardContextProvider = ({ children }: BoardContextProviderPropsType) => {
   const [canMove, setCanMove] = useState<boolean>(true);
 
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [currentBoard, setCurrentBoard] = useState<Board>(noBoardBoard);
+  
+  const [currentBoard, setCurrentBoard] = useState<Board>(_.cloneDeep(noBoardBoard));
   const playerCount = useMemo(
     () => (currentBoard.playerDtos ? currentBoard.playerDtos.length : 0),
     [currentBoard.playerDtos]
@@ -74,7 +75,7 @@ const BoardContextProvider = ({ children }: BoardContextProviderPropsType) => {
   };
 
   const getUpdatedBoard = async () => {
-    if (currentUser.currentGameId === NO_GAME_GAMEID) return noBoardBoard;
+    if (currentUser.currentGameId === NO_GAME_GAMEID) return _.cloneDeep(noBoardBoard);
 
     const fetchedBoard = (await GameApi.getBoard(currentUser.currentGameId))
       .data;
@@ -93,7 +94,7 @@ const BoardContextProvider = ({ children }: BoardContextProviderPropsType) => {
     const updatedBoard = await getUpdatedBoard();
     if (!updatedBoard || updatedBoard.gameId === NO_GAME_GAMEID) {
       setLoaded(false);
-      setCurrentBoard(noBoardBoard);
+      setCurrentBoard(_.cloneDeep(noBoardBoard));
       return;
     }
     if (updatedBoard?.currentPlayerDto)
