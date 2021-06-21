@@ -1,7 +1,5 @@
 import { Box } from "@material-ui/core";
-import * as React from "react";
-import { useContext, useEffect } from "react";
-import { Board } from "../../types/Board";
+import { useContext } from "react";
 import GameContext from "../../context/GameContext";
 import { GameComponent } from "../GameComponent";
 

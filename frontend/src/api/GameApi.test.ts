@@ -81,7 +81,7 @@ describe('User', () => {
         expect((await GameApi.joinGame(game.gameId, newUsersIds[0])).data).toBeTrue();
         game = (await GameApi.getGame(game.gameId)).data
         expect(game.users).toBeArrayOfSize(1);
-        const board = (await GameApi.getBoard(game.gameId)).playerDtos;
+        const board = (await GameApi.getBoard(game.gameId)).data.playerDtos;
         expect(board).toBeArrayOfSize(1);
     })
 

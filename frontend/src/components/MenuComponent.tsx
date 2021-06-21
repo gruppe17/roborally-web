@@ -1,16 +1,12 @@
-import React, { useState, ReactElement, useContext } from "react";
-import {
-  IconButton,
-  Box as MBox,
-  Tooltip,
-  Typography,
-} from "@material-ui/core/";
+import { useState, ReactElement, useContext } from "react";
+import { IconButton, Tooltip, Typography } from "@material-ui/core/";
 import { Gamepad, Add, People, Games } from "@material-ui/icons";
 import { Text } from "grommet";
 import { GamesListTab } from "./menu-tabs/GamesListTabComponent";
 import { PlayersTab } from "./menu-tabs/PlayersTabComponent";
 import { Box } from "grommet";
 import GameContext from "../context/GameContext";
+import UserContext from "../context/UserContext";
 
 function TabButton(props: {
   setCurrentTab: Function;
@@ -36,13 +32,8 @@ function TabButton(props: {
 function MenuComponent(): ReactElement {
   const [currentTab, setCurrentTab] = useState<"games" | "players">("games");
 
-  const {
-    currentGame,
-    currentUser,
-    createGame,
-    changeGameName,
-    forceViewUpdate,
-  } = useContext(GameContext);
+  const { currentGame, createGame, changeGameName } = useContext(GameContext);
+  const { currentUser } = useContext(UserContext);
 
   const tabContent = () => {
     switch (currentTab) {
@@ -64,15 +55,20 @@ function MenuComponent(): ReactElement {
       justify="end"
     >
       <Text size="large">Roborally</Text>
-      <Box pad="small" elevation="medium" overflow="hidden" round={{ size: "small" }} background="#E6E6E6" width="100%">
+      <Box pad="small" overflow="hidden" width="100%">
         <Box gap="small" justify="center" direction="row">
           <Tooltip title="Current user. The user is randomly made for you and saved in a cookie for your convenience">
             <Box
+              margin={{ bottom: "small" }}
               height="xsmall"
               width="small"
               align="center"
               gap="xsmall"
               direction="column"
+              elevation="small"
+              background="#F8F8F8"
+              pad="small"
+              round="small"
             >
               <People />
               <Typography>{currentUser && currentUser.userName}</Typography>
@@ -81,14 +77,19 @@ function MenuComponent(): ReactElement {
 
           <Tooltip title="The current game you are playing in">
             <Box
+              margin={{ bottom: "small" }}
+              elevation="small"
+              background="#F8F8F8"
+              pad="small"
               height="xsmall"
               width="small"
               overflow="hidden"
               align="center"
               gap="xsmall"
               direction="column"
+              round="small"
             >
-              <Games />{" "}
+              <Games />
               <Text wordBreak="break-all">
                 {currentGame && currentGame.name}
               </Text>

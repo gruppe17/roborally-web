@@ -1,62 +1,33 @@
+import _ from "lodash";
 import {createContext} from "react";
-import {Board} from "../types/Board";
-import { Game, NO_GAME_GAMEID } from "../types/Game";
-import {Space} from "../types/Space";
-import { User } from "../types/User";
+import { Game, NO_GAME_GAME, NO_GAME_GAMEID } from '../types/Game';
+
 
 export type GameContextType = {
     // Information about games
-    games: Game[]
+    games: Game[],
+    currentGame : Game,
+    // Actions on information about games
     selectGame: (gameId: number) => Promise<void>,
     unselectGame: () => Promise<void>,
-    currentUser : User,
-    currentGame : Game,
-    deleteGame :  (gameId: number) => Promise<void>,
-    loaded : boolean,
-    board: Board,
-    setCurrentPlayerOnSpace: (space: Space) => Promise<void>,
-    switchCurrentPlayer: () => Promise<void>,
-    forceViewUpdate : () => void,
     createGame : () => Promise<number>,
+    deleteGame :  (gameId: number) => Promise<void>,
     startGame : (gameId: number) => Promise<Boolean>,
     changeGameName : (gameId: number, name: string) => Promise<boolean>,
+    // Nothing to do with games
+    forceViewUpdate : () => Promise<void>,
 }
 //Define a new context of type GameContextType
 //Below we define the "default" values which are set upon initialization of the context
 
 const GameContext = createContext<GameContextType>({
     games: [],
-    currentGame: {
-        gameId: NO_GAME_GAMEID,
-        name: "No game loaded",
-        started: false,
-        users: []
-
-    },
-    currentUser: {
-        userId: 0,
-        userName: "Not logged in!",
-        currentGame: NO_GAME_GAMEID
-    },
+    currentGame: _.cloneDeep(NO_GAME_GAME),
     selectGame: async () => {},
     unselectGame: async () => {},
     deleteGame: async (gameId : number) => {},
-    loaded : false,
-    board: {
-        playerDtos: [],
-        spaceDtos: [],
-        gameId: NO_GAME_GAMEID,
-        boardName: "",
-        currentPlayerDto: undefined,
-        height: 0,
-        width: 0
-    },
-    setCurrentPlayerOnSpace: async () => {
-    },
-    switchCurrentPlayer: async () => {
-    },
-    forceViewUpdate: () => {},
-    createGame: async () => {return -1},
+    forceViewUpdate: async () => {},
+    createGame: async () => {return NO_GAME_GAMEID},
     startGame: async () => { return false},
     changeGameName: async (gameId: number, name: string) => {return false},
 });
