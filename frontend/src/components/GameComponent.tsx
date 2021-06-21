@@ -92,7 +92,7 @@ export function GameComponent(props: { game: Game }) {
             <RemoveCircle />
           </IconButton>
         </Tooltip>
-        {currentGame.gameId === props.game.gameId && (
+        {currentGame.gameId === props.game.gameId && !currentGame.started && (
           <Tooltip title={"Leave " + props.game.name}>
             <IconButton color={"secondary"} onClick={() => unselectGame()}>
               <ExitToApp />
